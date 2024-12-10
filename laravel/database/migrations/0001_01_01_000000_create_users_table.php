@@ -12,13 +12,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->id('userID');
+            $table->string('firstName');
+            $table->string('lastName');
+            $table->string('username');
+            $table->string('nickname');
+            $table->string(column: 'role');
+            $table->date('dateOfBirth');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string(column: 'phoneNo');
             $table->string('password');
-            $table->rememberToken();
+            //$table->timestamp('email_verified_at')->nullable();
+            $table->string(column: 'status');
+            //$table->rememberToken();
             $table->timestamps();
+            /* Example of foreign key, constrained means that go to users table and take
+            * the primary key.
+            */
+            //$table->foreignId('userID')->constrained('users');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
