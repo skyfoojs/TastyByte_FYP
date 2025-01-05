@@ -17,7 +17,7 @@
     </head>
     <body>
 
-    <main>
+    <main class="font-mont">
         {{ $slot }}
     </main>
     </body>
