@@ -13,7 +13,12 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                mont: ['Montserrat', 'sans-serif'],
             },
+
+            colors: {
+                'blue-button' : '#3B82F6',
+            }
         },
     },
     plugins: [],
