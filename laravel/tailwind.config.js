@@ -18,6 +18,7 @@ export default {
 
             colors: {
                 'blue-button' : '#3B82F6',
+                'light-gray' : '#CFCFCF',
             }
         },
     },
