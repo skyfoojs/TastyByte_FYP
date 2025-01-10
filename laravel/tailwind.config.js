@@ -12,8 +12,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 mont: ['Montserrat', 'sans-serif'],
+                pop: ['Poppins', 'sans-serif'],
             },
 
             colors: {
