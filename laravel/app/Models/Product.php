@@ -29,4 +29,8 @@ class Product extends Model
     {
         return $this->hasMany(Inventory::class, 'productID', 'productID');
     }
+
+    public function customizableCategory() {
+        return $this->hasMany(CustomizeableCategory::class, 'productID', 'productID');
+    }
 }
