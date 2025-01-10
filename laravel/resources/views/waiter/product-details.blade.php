@@ -18,30 +18,34 @@
                         </div>
                     </div>
 
-                    <div class="px-7">
+                    <div class="px-7 pb-28">
                         <div class="flex bg-[#EEEEEE] items-center mt-4 justify-between px-8 py-4 rounded-lg">
                             <label class="font-bold" for="takeaway">Takeaway</label>
                             <input class="custom-radio bg-white" type="radio" value="takeaway">
                         </div>
 
-                        <!-- Loop through the grouped customizable details -->
-                        @foreach ($groupedCustomizableDetails as $categoryName => $customizableOptions)
+                        <!-- Loop through the categories with their options -->
+                        @foreach ($categoriesWithOptions as $category)
                             <!-- Display category name -->
-                            <p class="font-bold text-lg mt-7">{{ $categoryName }}</p>
+                            <p class="font-bold text-lg mt-7">{{ $category->name }}</p>
 
-                            <!-- Loop through options for this category -->
-                            @foreach ($customizableOptions as $option)
-                                <hr class="mt-2">
-                                <div class="flex justify-between w-full items-center my-4">
-                                    <label class="text-[#999]">{{ $option->name }}</label>
-                                    <input type="radio" name="{{ $categoryName }}_option" value="{{ $option->id }}" class="custom-radio bg-[#ECECEC]">
-                                </div>
-                            @endforeach
+                            <!-- Check if the category has options -->
+                            @if ($category->options->isEmpty())
+                                <p class="text-sm text-gray-500">No options available for this category.</p>
+                            @else
+                                <!-- Loop through options for this category -->
+                                @foreach ($category->options as $option)
+                                    <hr class="mt-2">
+                                    <div class="flex justify-between w-full items-center my-4">
+                                        <label for="option-{{ $option->id }}" class="text-gray-600">{{ $option->name }}</label>
+                                        <input required id="option-{{ $option->id }}" type="radio" name="{{ $category->name }}_option" value="{{ $option->id }}" class="custom-radio bg-gray-200 appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
+                                    </div>
+                                @endforeach
+                            @endif
                         @endforeach
                     </div>
 
-
-                    <div class="w-full bg-[#F3F3F3] py-6 sticky bottom-0 px-10 flex justify-between items-center">
+                    <div class="w-full bg-[#F3F3F3] py-6 fixed bottom-0 px-10 flex justify-between items-center">
                         <p class="text-2xl font-mont font-bold">{{ 'RM ' . $productDetails->price }}</p>
                         <button value="" type="submit" class="bg-blue-button text-white py-3 px-12 rounded-2xl">Add to Cart</button>
                     </div>
