@@ -1,0 +1,18 @@
+INSERT INTO `category` (`categoryID`, `name`, `status`, `sort`, `created_at`, `updated_at`) VALUES
+(1, 'Food', 'oimqwdoim', 'oiqwd', '2025-01-08 04:27:43', '2025-01-08 04:27:43'),
+(2, 'Beverage', '1', '123', NULL, NULL);
+
+INSERT INTO `product` (`productID`, `categoryID`, `name`, `price`, `description`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Curry Mee', 8.80, 'Tasty Curry Mee', 'Available', '2025-01-08 04:28:10', '2025-01-08 04:28:10'),
+(2, 2, 'Ice Lemon Tea', 5.99, 'Refreshing Ice Lemon Tea!', '1', NULL, NULL),
+(3, 1, 'Fried Chicken', 20.00, 'Yu Xiang Favourite', '1', NULL, NULL);
+
+INSERT INTO `customizablecategory` (`customizeCategoryID`, `productID`, `name`, `status`, `sort`, `singleChoose`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Noodle Type', '1', '1', 0, '2025-01-10 07:10:46', '2025-01-10 07:10:46'),
+(2, 1, 'Spicy Level', '1', '2', 0, '2025-01-10 07:11:32', '2025-01-10 07:12:01');
+
+INSERT INTO `customizableoptions` (`customizeOptionsID`, `customizeCategoryID`, `name`, `maxAmount`, `status`, `sort`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Yellow Noodle', 10, '1', '1', '2025-01-10 07:12:23', '2025-01-10 07:12:23'),
+(2, 1, 'Kuey Teow', 20, '1', '2', '2025-01-10 07:12:56', '2025-01-10 07:12:56'),
+(3, 2, 'Less Spicy', 10, '1', '1', '2025-01-10 08:58:09', '2025-01-10 08:58:09'),
+(4, 2, 'More Spicy', 10, '1', '2', '2025-01-10 09:19:34', '2025-01-10 09:19:34');
