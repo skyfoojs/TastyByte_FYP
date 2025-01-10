@@ -1,11 +1,7 @@
 <x-layout>
     <x-navbar>
         <div class="flex flex-col">
-            <div class="flex w-full mt-4 items-center justify-center relative">
-                <i class='bx bx-chevron-left bx-md absolute left-3'></i>
-                <div class="text-lg font-semibold">Table 2</div>
-            </div>
-
+            <x-table-header>
             <div class="flex justify-center items-center mt-4">
                 <select class="w-72 rounded-2xl py-1 px-4 bg-[#E6E6E6] border-r-[12px]" name="" id="">
                     <option value="">Test</option>
@@ -22,6 +18,7 @@
 
                         <!-- Loop through products under the category -->
                         @foreach ($products as $product)
+                            <a href="{{ url('/product-details/' . $product->productID) }}">
                             <div class="flex gap-x-10 items-center mt-4 ml-8">
                                 <div class="w-28 h-28 bg-[#E1E1E1] rounded-lg"></div>
                                 <div>
@@ -29,11 +26,13 @@
                                     <p>{{ $product->price }}</p>
                                 </div>
                             </div>
+                            </a>
                             <hr class="mt-3">
                         @endforeach
                     </div>
                 @endforeach
             </div>
+            </x-table-header>
         </div>
     </x-navbar>
 </x-layout>
