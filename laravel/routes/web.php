@@ -5,6 +5,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductDetailsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,3 +23,6 @@ Route::get('/menu', [MenuController::class, 'mainMenu'])->name('mainMenu');
 
 // Get the view from Table Controller.
 Route::get('/table', [OrdersController::class, 'index'])->name('table');
+
+
+Route::get('/product-details/{id}', [ProductDetailsController::class, 'edit']);
