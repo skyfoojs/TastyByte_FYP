@@ -13,14 +13,12 @@ class ProductDetailsController extends Controller
     }
 
     public function edit($id) {
-        $productDetails = Product::find($id);
+    $productDetails = Product::findOrFail($id);
 
-        $productCustomizableDetails = CustomizableOptions::with('category')->get();
+    // Eager load categories and their options
+    $categoriesWithOptions = $productDetails->customizableCategory()->with('options')->get();
 
-        $groupedCustomizableDetails = $productCustomizableDetails->groupBy(function ($product) {
-            return $product->category->name ?? 'Uncategorized'; // Default if category is null
-        });
+    return view('waiter.product-details', compact('productDetails', 'categoriesWithOptions'));
+    }
 
-        return view('waiter.product-details', compact('productDetails', 'groupedCustomizableDetails'));
-}
 }
