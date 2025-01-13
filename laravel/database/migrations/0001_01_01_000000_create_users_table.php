@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('username');
             $table->string('nickname');
             $table->string(column: 'role');
+            $table->string(column: 'gender');
             $table->date('dateOfBirth');
             $table->string('email')->unique();
             $table->string(column: 'phoneNo');
@@ -26,10 +27,6 @@ return new class extends Migration
             $table->string(column: 'status');
             //$table->rememberToken();
             $table->timestamps();
-            /* Example of foreign key, constrained means that go to users table and take
-            * the primary key.
-            */
-            //$table->foreignId('userID')->constrained('users');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
