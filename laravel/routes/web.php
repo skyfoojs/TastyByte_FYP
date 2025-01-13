@@ -23,7 +23,7 @@ Route::post('/login', [LoginController::class, 'loginPost'])->name('login.post')
 Route::get('/order', [ProductController::class, 'index'])->name('order');
 
 // Get the view from Menu Controller.
-Route::get('/menu', [MenuController::class, 'mainMenu'])->name('mainMenu');
+Route::get('/menu', [MenuController::class, 'mainMenu'])->name('menu');
 
 // Get the view from Table Controller.
 Route::get('/table', [OrdersController::class, 'index'])->name('table');
