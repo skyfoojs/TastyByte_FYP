@@ -20,5 +20,12 @@ class ProductController extends Controller
         return view('waiter.order', compact('groupedProducts'));
     }
 
+    public function edit($id) {
+        $productDetails = Product::findOrFail($id);
 
+        // Eager load categories and their options
+        $categoriesWithOptions = $productDetails->customizableCategory()->with('options')->get();
+
+        return view('waiter.product-details', compact('productDetails', 'categoriesWithOptions'));
+        }
 }
