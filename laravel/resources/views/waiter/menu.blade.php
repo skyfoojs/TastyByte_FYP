@@ -1,5 +1,5 @@
-<x-layout>
-    <x-navbar>
+<x-waiter.layout>
+    <x-waiter.navbar>
 
     <div class="flex flex-col justify-center items-center">
         <p class="mt-6 font-semibold">Menu</p>
@@ -16,5 +16,5 @@
             </div>
         </div>
     </div>
-    </x-navbar>
-</x-layout>
+    </x-waiter.navbar>
+</x-waiter.layout>
