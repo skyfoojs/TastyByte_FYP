@@ -1,7 +1,7 @@
 <x-waiter.layout>
     <x-waiter.navbar>
         <div class="flex flex-col">
-            <x-waiter.table-header>
+            <x-waiter.table-header :table="session('tableNo')">
             <div class="flex justify-center items-center mt-4">
                 <select class="w-72 rounded-2xl py-1 px-4 bg-[#E6E6E6] border-r-[12px]" name="" id="">
                     <option value="">Test</option>
