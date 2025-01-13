@@ -1,6 +1,6 @@
-<x-layout>
-    <x-navbar>
-        <x-table-header>
+<x-waiter.layout>
+    <x-waiter.navbar>
+        <x-waiter.table-header>
 
         <div class="flex flex-col justify-center items-center">
             <div class="flex flex-col w-full">
@@ -52,9 +52,9 @@
                 </form>
             </div>
         </div>
-        </x-table-header>
-    </x-navbar>
-</x-layout>
+        </x-waiter.table-header>
+    </x-waiter.navbar>
+</x-waiter.layout>
 
 <style>
 .custom-radio {
