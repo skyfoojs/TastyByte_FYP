@@ -28,6 +28,9 @@ Route::get('/menu', [MenuController::class, 'mainMenu'])->name('menu');
 // Get the view from Table Controller.
 Route::get('/table', [OrdersController::class, 'index'])->name('table');
 
+// Get the Table Number from the View.
+Route::post('/table', [OrdersController::class, 'storeTable'])->name('storeTable');
+
 // Get the view from Product Details Controller.
 Route::get('/product-details/{id}', [ProductController::class, 'edit'])->name('product-details');
 
