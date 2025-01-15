@@ -24,8 +24,20 @@ class LoginController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if(Auth::attempt($credentials)) {
-            return redirect()->intended(route('menu'));
+        if (Auth::attempt($credentials)) {
+            // Get the authenticated user
+            $user = Auth::user();
+
+            // Check the user's role and redirect accordingly
+            if ($user->role === 'waiter') {
+                return redirect()->intended(route('menu'));
+            } elseif ($user->role === 'admin') {
+                return redirect()->route('admin-users');
+            } else {
+                // Logout the user if their role is not valid for redirection
+                Auth::logout();
+                return redirect()->route('login')->with('error', 'Unauthorized access.');
+            }
         }
 
         return redirect()->route('login')->with('error', 'Unsuccessful login. Incorrect credentials.');
