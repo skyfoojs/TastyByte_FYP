@@ -4,7 +4,7 @@
             <div class="relative">
                 <button id="dropdownToggle" class="flex items-center space-x-2 mr-2">
                     <!--Show username according the login username-->
-                    <span class="font-semibold text-gray-700 mr-2"><?php echo htmlspecialchars($_SESSION['username'] ?? 'Admin'); ?></span>
+                    <span class="font-semibold text-gray-700 mr-3">{{ session('username') ?? 'Admin' }}</span>
                     <img src="../../public/images/avatar.png" alt="Admin Avatar" class="w-10 h-10 rounded-full">
                 </button>
 
