@@ -15,7 +15,7 @@ class CustomizeableCategory extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'name', 'status', 'sort', 'singleChoose',
+        'name', 'status', 'sort', 'singleChoose', 'productID',
     ];
 
     // Define the relationship with Customizable Options.
