@@ -28,6 +28,6 @@ class LoginController extends Controller
             return redirect()->intended(route('menu'));
         }
 
-        return redirect(route('login'))->with('error', 'Login details are invalid.');
+        return redirect()->route('login')->with('error', 'Unsuccessful login. Incorrect credentials.');
     }
 }
