@@ -27,11 +27,11 @@
                 </a>
             </li>
             <li>
-                <!--Classes-->
-                <a href="../admin/classes.php"
-                   class="flex items-center space-x-5 py-3 px-5 <?php echo $current_page == 'classes.php' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100'; ?> rounded-md">
-                    <i class="bx bx-book text-base"></i>
-                    <span class="font-medium">Classes</span>
+                <!--Products-->
+                <a href="../admin/products"
+                   class="flex items-center space-x-5 py-3 px-5 {{ $current_page == 'products' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100' }} rounded-md">
+                    <i class="bx bxs-package text-base"></i>
+                    <span class="font-medium">Products</span>
                 </a>
             </li>
             <li>
