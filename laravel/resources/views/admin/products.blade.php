@@ -168,7 +168,7 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Product</h2>
                 <hr class="py-2">
-                <form action="{{ route('addUser.post') }}" method="POST">
+                <form action="{{ route('addProduct.post') }}" method="POST">
                     @csrf
                     <div class="flex space-x-4">
                         <div class="flex-1">
@@ -207,13 +207,13 @@
                     </div>
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Description</label>
-                    <input name="description" type="text" id="email" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+                    <input name="description" type="text" id="description" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Product Status <span class="text-red-500">*</span></label>
                     <select name="status" id="status" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                         <option value="">Select Status</option>
-                        <option value="available">Available</option>
-                        <option value="not-available">Not Available</option>
+                        <option value="Available">Available</option>
+                        <option value="Not Available">Not Available</option>
                     </select>
 
                     <div class="flex items-center ps-4 border border-gray-300 rounded-lg mt-8">
@@ -239,8 +239,8 @@
                         <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
                         <select name="customizable-status" id="customizable-status" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
                             <option value="">Select Status</option>
-                            <option value="available">Available</option>
-                            <option value="not-available">Not Available</option>
+                            <option value="Available">Available</option>
+                            <option value="Not Available">Not Available</option>
                         </select>
 
                         <h1 class="mt-8 text-xl font-semibold">Add Customizable Options</h1>
@@ -271,6 +271,15 @@
                                 </select>
                             </div>
                         </div>
+                        
+                        <div id="addCustomizableSection" class="flex justify-end mt-4">
+                            <button type="button" id="addCustomizableButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
+                                Add Customizable Category & Options
+                            </button>
+                        </div>
+
+                        <!-- Container for Additional Customizable Fields -->
+                        <div id="additionalCustomizables" class="mt-4"></div>
                     </div>
 
                     <div class="flex justify-end mt-10">
@@ -424,12 +433,15 @@
     document.addEventListener('DOMContentLoaded', function () {
         const categorySelect = document.getElementById('category');
         const otherCategoryField = document.getElementById('otherCategoryField');
+        const otherCategory = document.getElementById('otherCategory');
 
         categorySelect.addEventListener('change', function () {
             if (this.value === 'others') {
                 otherCategoryField.style.display = 'block';
+                otherCategory.setAttribute('required', '');
             } else {
                 otherCategoryField.style.display = 'none';
+                otherCategory.removeAttribute('required');
             }
         });
     });
@@ -464,5 +476,28 @@
             optionStatus.removeAttribute('required', '');
         }
     });
+
+    document.getElementById('addCustomizableButton').addEventListener('click', function () {
+    const customizableContainer = document.getElementById('additionalCustomizables');
+
+    const customizableHTML = `
+        <div class="customizable-category mt-6 border-t border-gray-300 pt-4">
+
+            <h1 class="text-xl font-semibold mt-4">Add Customizable Options</h1>
+            <div class="flex space-x-4">
+                <div class="flex-1 mt-2">
+                    <label class="block text-gray-700 text-sm font-medium">Option Name<span class="text-red-500">*</span></label>
+                    <input name="customizable-options[]" type="text" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
+                </div>
+                <div class="flex-1 mt-2">
+                    <label class="block text-gray-700 text-sm font-medium">Max Amount<span class="text-red-500">*</span></label>
+                    <input name="customizable-max-amounts[]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1">
+                </div>
+            </div>
+        </div>
+    `;
+
+    customizableContainer.insertAdjacentHTML('beforeend', customizableHTML);
+});
 
 </script>
