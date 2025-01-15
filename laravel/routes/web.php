@@ -45,3 +45,6 @@ Route::put('/admin/users', [AdminController::class, 'editUserPost'])->name('edit
 
 // Get the Product Page view from Admin Controller.
 Route::get('/admin/products', [AdminController::class, 'products'])->name('admin-products');
+
+// Get the Create Product Data from the View.
+Route::post('/admin/products', [AdminController::class, 'addProductPost'])->name('addProduct.post');
