@@ -15,7 +15,7 @@ class CustomizableOptions extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'name', 'maxAmount', 'status', 'sort',
+        'name', 'maxAmount', 'status', 'sort', 'customizeCategoryID',
     ];
 
     // Define the relationship with Customizable Category.
