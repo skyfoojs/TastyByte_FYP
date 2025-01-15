@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -12,6 +14,20 @@ class AdminController extends Controller
         $users = User::get();
         return view('admin.users', compact('users'));
     }
+
+    public function products() {
+        // Get the count of distinct sort values from customizableCategory
+        $categoryDistinctSortCount = DB::table('customizablecategory')->distinct('sort')->count('sort');
+
+        // Get the count of distinct sort values from customizableCategory
+        $optionDistinctSortCount = DB::table('customizableoptions')->distinct('sort')->count('sort');
+
+        // Fetch products with their categories and customizable categories
+        $products = Product::with(['category', 'customizableCategory'])->get();
+
+        return view('admin.products', compact('products', 'categoryDistinctSortCount', 'optionDistinctSortCount'));
+    }
+
 
     public function addUserPost(Request $request) {
         $request->validate([
