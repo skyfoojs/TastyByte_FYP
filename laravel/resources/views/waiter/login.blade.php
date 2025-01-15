@@ -15,13 +15,16 @@
 
     <div class="mt-12 flex flex-col justify-center items-center">
         <h1 class="font-bold">LOGIN WITH</h1>
+        @if (session('error'))
+                <span class="w-full bg-red-200 text-center m-3 text-gray-600 p-3 rounded-lg">{{ session('error') }}</span>
+            @endif
         <form action="{{ route('login.post') }}" method="POST" class="pt-2 flex flex-col">
             @csrf
             <label for="email">Email:</label>
-            <input name="email" class="mt-1 border border-[#D8D8D8] rounded-md py-2 px-2 w-60" placeholder="Enter Your Email Address" type="email">
+            <input required name="email" class="mt-1 border border-[#D8D8D8] rounded-md py-2 px-2 w-60" placeholder="Enter Your Email Address" type="email">
 
             <label class="mt-3" for="password">Password:</label>
-            <input name="password" class="mt-1 border border-[#D8D8D8] rounded-md py-2 px-2 w-60" placeholder="Enter Your Password" type="password">
+            <input required name="password" class="mt-1 border border-[#D8D8D8] rounded-md py-2 px-2 w-60" placeholder="Enter Your Password" type="password">
 
             <button class="py-2 px-20 bg-blue-button text-white rounded-xl mt-3 font-medium" value="submit" type="submit">LET'S GO</button>
         </form>
