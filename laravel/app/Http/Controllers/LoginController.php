@@ -28,6 +28,12 @@ class LoginController extends Controller
             // Get the authenticated user
             $user = Auth::user();
 
+            // Store user details in the session
+            session([
+                'username' => $user->username,
+                'userID' => $user->userID,
+            ]);
+
             // Check the user's role and redirect accordingly
             if ($user->role === 'waiter') {
                 return redirect()->intended(route('menu'));
