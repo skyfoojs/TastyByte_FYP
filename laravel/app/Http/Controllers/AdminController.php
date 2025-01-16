@@ -191,56 +191,30 @@ class AdminController extends Controller
     }
 
     public function addProduct(Request $request) {
-    $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'price' => 'required|numeric',
-        'category' => 'required|string',
-        'sort' => 'required|integer',
-        'description' => 'nullable|string',
-        'status' => 'required|string',
-        'customizable' => 'nullable|string',
-        'customizable-categories' => 'array',
-        'customizable-sorts' => 'array',
-        'customizable-options' => 'array',
-        'customizable-max-amounts' => 'array',
-    ]);
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'category' => 'required|string',
+            'sort' => 'required|integer',
+            'description' => 'nullable|string',
+            'status' => 'required|string',
+            'customizable' => 'nullable|string',
+            'customizable-categories' => 'array',
+            'customizable-sorts' => 'array',
+            'customizable-options' => 'array',
+            'customizable-max-amounts' => 'array',
+        ]);
 
-    // Save Product
-    $product = Product::create([
-        'name' => $validatedData['name'],
-        'price' => $validatedData['price'],
-        'category' => $validatedData['category'],
-        'sort' => $validatedData['sort'],
-        'description' => $validatedData['description'],
-        'status' => $validatedData['status'],
-        'customizable' => $validatedData['customizable'] ?? 'No',
-    ]);
-
-    // Save Customizable Categories and Options
-    if ($request->filled('customizable-categories')) {
-        foreach ($validatedData['customizable-categories'] as $index => $category) {
-            CustomizableCategory::create([
-                'product_id' => $product->id,
-                'name' => $category,
-                'sort' => $validatedData['customizable-sorts'][$index] ?? null,
-                'status' => 'Available', // Default status
-            ]);
-        }
+        // Save Product
+        $product = Product::create([
+            'name' => $validatedData['name'],
+            'price' => $validatedData['price'],
+            'category' => $validatedData['category'],
+            'sort' => $validatedData['sort'],
+            'description' => $validatedData['description'],
+            'status' => $validatedData['status'],
+            'customizable' => $validatedData['customizable'] ?? 'No',
+        ]);
+        return redirect()->back()->with('success', 'Product added successfully.');
     }
-
-    if ($request->filled('customizable-options')) {
-        foreach ($validatedData['customizable-options'] as $index => $option) {
-            CustomizableOptions::create([
-                'product_id' => $product->id,
-                'name' => $option,
-                'max_amount' => $validatedData['customizable-max-amounts'][$index] ?? 1,
-                'sort' => $validatedData['customizable-sorts'][$index] ?? null,
-                'status' => 'Available', // Default status
-            ]);
-        }
-    }
-
-    return redirect()->back()->with('success', 'Product added successfully.');
-}
-
 }
