@@ -223,7 +223,7 @@
 
                     <!-- Hidden input field for Customizable -->
                     <div id="customizableField" style="display: none;">
-                    <h1 class="mt-8 text-xl font-semibold">Add Customizable Category</h1>
+                    <h1 class="mt-8 text-xl font-semibold">Customizable Category {{ $categoryIndex = 1 }}</h1>
                         <div class="flex space-x-4">
                             <div class="flex-1 mt-2">
                                 <label class="block text-gray-700 text-sm font-medium">Customizable Category<span class="text-red-500">*</span></label>
@@ -243,7 +243,7 @@
                             <option value="Not Available">Not Available</option>
                         </select>
 
-                        <h1 class="mt-8 text-xl font-semibold">Add Customizable Options</h1>
+                        <h1 class="mt-8 text-xl font-semibold">Customizable Option {{ $optionIndex = 1 }}</h1>
                         <div class="flex space-x-4">
                             <div class="flex-1 mt-2">
                                 <label class="block text-gray-700 text-sm font-medium">Option Name<span class="text-red-500">*</span></label>
@@ -271,27 +271,60 @@
                                 </select>
                             </div>
                         </div>
-                        
-                        <div id="addCustomizableSection" class="flex justify-end mt-4">
-                            <button type="button" id="addCustomizableButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
-                                Add Customizable Category & Options
+
+                        <div class="flex justify-end mt-4">
+                            <button type="button" id="addCategoryButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
+                                Add Category
                             </button>
                         </div>
 
-                        <!-- Container for Additional Customizable Fields -->
-                        <div id="additionalCustomizables" class="mt-4"></div>
-                    </div>
+                        <div id="categories-container" class="mt-4"></div>
 
-                    <div class="flex justify-end mt-10">
-                        <button type="button" onclick="closeCreateModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                        <button type="submit" id="addUserButton" name="addUserButton" value="Add User" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
-                    </div>
+                        <div class="flex justify-end mt-10">
+                            <button type="button" onclick="closeCreateModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                            <button type="submit" id="addUserButton" name="addUserButton" value="Add User" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
+                        </div>
                 </form>
             </div>
         </div>
         </x-admin.navbar>
     </x-admin.sidebar>
 </x-admin.layout>
+<script type="text/template" id="category-template">
+    <div class="category mt-4 border p-4 rounded-lg">
+        <h2 class="font-semibold text-lg">Category #{{ 1 }}</h2>
+        <div class="flex space-x-4">
+            <div class="flex-1 mt-2">
+                <label class="block text-gray-700 text-sm font-medium">Customizable Category<span class="text-red-500">*</span></label>
+                <input name="categories[{{ 1 }}][name]" type="text" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
+            </div>
+
+            <div class="flex-1 mt-2">
+                <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ $categoryDistinctSortCount + 1 }}&#41;<span class="text-red-500">*</span></label>
+                <input name="sort[{{ 1 }}][name]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ $categoryDistinctSortCount + 1 }}">
+            </div>
+        </div>
+
+        <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
+        <select name="status[{{ 1 }}][name]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+            <option value="">Select Status</option>
+            <option value="Available">Available</option>
+            <option value="Not Available">Not Available</option>
+        </select>
+
+        <div class="mt-4" id="options-container-{{ 1 }}"></div>
+
+        <div class="flex justify-between mt-4">
+            <button type="button" class="add-option-btn bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+                Add Option
+            </button>
+
+            <button type="button" class="remove-category-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg">
+                Remove Category
+            </button>
+        </div>
+    </div>
+</script>
 
 <style>
     .modal {
@@ -477,27 +510,107 @@
         }
     });
 
-    document.getElementById('addCustomizableButton').addEventListener('click', function () {
-    const customizableContainer = document.getElementById('additionalCustomizables');
+    let categoryIndex = 1;
+const maxCategories = 4;
+const maxOptionsPerCategory = 4;
 
-    const customizableHTML = `
-        <div class="customizable-category mt-6 border-t border-gray-300 pt-4">
+// Add Category button click
+document.getElementById('addCategoryButton').addEventListener('click', function () {
+    if (categoryIndex <= maxCategories) {
+        categoryIndex++;
+        const categoryTemplate = document.getElementById('category-template').innerHTML;
+        const newCategory = categoryTemplate.replace(/{{ 1 }}/g, categoryIndex);
 
-            <h1 class="text-xl font-semibold mt-4">Add Customizable Options</h1>
-            <div class="flex space-x-4">
-                <div class="flex-1 mt-2">
-                    <label class="block text-gray-700 text-sm font-medium">Option Name<span class="text-red-500">*</span></label>
-                    <input name="customizable-options[]" type="text" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
-                </div>
-                <div class="flex-1 mt-2">
-                    <label class="block text-gray-700 text-sm font-medium">Max Amount<span class="text-red-500">*</span></label>
-                    <input name="customizable-max-amounts[]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1">
-                </div>
-            </div>
-        </div>
-    `;
+        // Append the new category to the container
+        const container = document.getElementById('categories-container');
+        container.insertAdjacentHTML('beforeend', newCategory);
 
-    customizableContainer.insertAdjacentHTML('beforeend', customizableHTML);
+        // Move the "Add Category" button to the bottom
+        const addButton = document.getElementById('addCategoryButton');
+        container.appendChild(addButton.parentElement);
+
+        // Scroll to the newly added category
+        const addedCategory = container.lastElementChild;
+        addedCategory.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        alert("You can only add up to 4 categories.");
+    }
 });
 
+// Event delegation for dynamically added categories
+document.getElementById('categories-container').addEventListener('click', function (event) {
+    // Add Option Button
+    if (event.target.classList.contains('add-option-btn')) {
+        const categoryElement = event.target.closest('.category');
+        const categoryId = categoryElement.querySelector('h2').textContent.split('#')[1];
+
+        // Limit options to the maximum number
+        const optionsContainer = document.getElementById(`options-container-${categoryId}`);
+        const currentOptionsCount = optionsContainer.querySelectorAll('.option').length;
+
+        if (currentOptionsCount < maxOptionsPerCategory) {
+            const newOptionHtml = `
+            <div class="option">
+                <div class="flex space-x-4 mt-2">
+                    <div class="flex-1 mt-2">
+                        <label for="option-name" class="block text-sm font-medium text-gray-700">Option Name <span class="text-red-500">*</span></label>
+                        <input type="text" name="categories[${categoryId}][options][${currentOptionsCount}][name]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                    </div>
+
+                    <div class="flex-1 mt-2">
+                        <label class="block text-gray-700 text-sm font-medium">Max Amount<span class="text-red-500">*</span></label>
+                        <input name="option-max-amount[${categoryId}][options][${currentOptionsCount}][amount]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1">
+                    </div>
+                </div>
+                <div class="flex space-x-4">
+                    <div class="flex-1 mt-2">
+                        <label class="block text-gray-700 text-sm font-medium">Options Sort (Max: 4)<span class="text-red-500">*</span></label>
+                        <input name="option-sort[${categoryId}][options][${currentOptionsCount}][sort]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="4">
+                    </div>
+
+                    <div class="flex-1 mt-2">
+                        <label class="block text-gray-700 text-sm font-medium">Option Status <span class="text-red-500">*</span></label>
+                        <select name="option-status[${categoryId}][options][${currentOptionsCount}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+                            <option value="">Select Status</option>
+                            <option value="available">Available</option>
+                            <option value="not-available">Not Available</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex-none mt-2">
+                    <button type="button" class="remove-option-btn bg-red-500 text-white px-4 py-2 rounded-lg">Remove</button>
+                </div>
+            </div>
+            `;
+            optionsContainer.insertAdjacentHTML('beforeend', newOptionHtml);
+        } else {
+            alert("You can only add up to 4 options per category.");
+        }
+    }
+
+    // Remove Option Button
+    if (event.target.classList.contains('remove-option-btn')) {
+        const optionElement = event.target.closest('.option');
+        if (optionElement) {
+            optionElement.remove();
+        } else {
+            console.error("Remove button not inside an option element.");
+        }
+    }
+
+    // Remove Category Button
+    if (event.target.classList.contains('remove-category-btn')) {
+        const categoryElement = event.target.closest('.category');
+        if (categoryElement) {
+            categoryElement.remove();
+            categoryIndex--;
+
+            // Move the "Add Category" button back to the correct position
+            const addButton = document.getElementById('addCategoryButton');
+            const container = document.getElementById('categories-container');
+            container.appendChild(addButton.parentElement);
+        }
+    }
+});
 </script>
