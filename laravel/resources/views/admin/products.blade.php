@@ -292,21 +292,21 @@
 </x-admin.layout>
 <script type="text/template" id="category-template">
     <div class="category mt-4 border p-4 rounded-lg">
-        <h2 class="font-semibold text-lg">Category #{{ 1 }}</h2>
+        <h2 class="font-semibold text-lg category-title"></h2>
         <div class="flex space-x-4">
             <div class="flex-1 mt-2">
                 <label class="block text-gray-700 text-sm font-medium">Customizable Category<span class="text-red-500">*</span></label>
-                <input name="categories[{{ 1 }}][name]" type="text" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
+                <input name="categories[${categoryId}][name]" type="text" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
             </div>
 
             <div class="flex-1 mt-2">
                 <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ $categoryDistinctSortCount + 1 }}&#41;<span class="text-red-500">*</span></label>
-                <input name="sort[{{ 1 }}][name]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ $categoryDistinctSortCount + 1 }}">
+                <input name="sort[${categoryId}][name]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ $categoryDistinctSortCount + 1 }}">
             </div>
         </div>
 
         <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
-        <select name="status[{{ 1 }}][name]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+        <select name="status[${categoryId}][name]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
             <option value="">Select Status</option>
             <option value="Available">Available</option>
             <option value="Not Available">Not Available</option>
@@ -520,11 +520,15 @@ document.getElementById('addCategoryButton').addEventListener('click', function 
         categoryIndex++;
         const categoryTemplate = document.getElementById('category-template').innerHTML;
         const newCategory = categoryTemplate.replace(/{{ 1 }}/g, categoryIndex);
+        const categoryTitles = document.getElementsByClassName('category-title');
 
         // Append the new category to the container
         const container = document.getElementById('categories-container');
         container.insertAdjacentHTML('beforeend', newCategory);
 
+        for (let i = 0; i < categoryTitles.length; i++) {
+            categoryTitles[i].innerHTML = 'Category #' + categoryIndex;
+        }
         // Move the "Add Category" button to the bottom
         const addButton = document.getElementById('addCategoryButton');
         container.appendChild(addButton.parentElement);
@@ -554,23 +558,23 @@ document.getElementById('categories-container').addEventListener('click', functi
                 <div class="flex space-x-4 mt-2">
                     <div class="flex-1 mt-2">
                         <label for="option-name" class="block text-sm font-medium text-gray-700">Option Name <span class="text-red-500">*</span></label>
-                        <input type="text" name="categories[${categoryId}][options][${currentOptionsCount}][name]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                        <input type="text" name="categories[${categoryId}][${currentOptionsCount}]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                     </div>
 
                     <div class="flex-1 mt-2">
                         <label class="block text-gray-700 text-sm font-medium">Max Amount<span class="text-red-500">*</span></label>
-                        <input name="option-max-amount[${categoryId}][options][${currentOptionsCount}][amount]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1">
+                        <input name="option-max-amount[${categoryId}][${currentOptionsCount}]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1">
                     </div>
                 </div>
                 <div class="flex space-x-4">
                     <div class="flex-1 mt-2">
                         <label class="block text-gray-700 text-sm font-medium">Options Sort (Max: 4)<span class="text-red-500">*</span></label>
-                        <input name="option-sort[${categoryId}][options][${currentOptionsCount}][sort]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="4">
+                        <input name="option-sort[${categoryId}][${currentOptionsCount}]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="4">
                     </div>
 
                     <div class="flex-1 mt-2">
                         <label class="block text-gray-700 text-sm font-medium">Option Status <span class="text-red-500">*</span></label>
-                        <select name="option-status[${categoryId}][options][${currentOptionsCount}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+                        <select name="option-status[${categoryId}][${currentOptionsCount}]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
                             <option value="">Select Status</option>
                             <option value="available">Available</option>
                             <option value="not-available">Not Available</option>
