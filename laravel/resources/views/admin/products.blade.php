@@ -188,7 +188,7 @@
                             <select name="category" id="category" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                                 <option value="">Select Category</option>
                                 @foreach ($products->unique('category.name') as $product)
-                                    <option value="{{ $product->category->name }}">{{ $product->category->name }}</option>
+                                    <option value="{{ $product->category->categoryID }}">{{ $product->category->name }}</option>
                                 @endforeach
                                 <option value="others">Others</option>
                             </select>
@@ -537,7 +537,7 @@ document.getElementById('addCategoryButton').addEventListener('click', function 
         // Append the new category to the container
         const container = document.getElementById('categories-container');
         container.insertAdjacentHTML('beforeend', newCategory);
-        
+
         for (let i = 0; i < categoryTitles.length; i++) {
             categoryTitles[i].innerHTML = 'Category #' + categoryIndex;
         }
