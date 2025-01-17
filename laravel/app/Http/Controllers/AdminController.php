@@ -108,113 +108,52 @@ class AdminController extends Controller
     }
 
     public function addProductPost(Request $request) {
-        // Validate Category Table data.
-        $request->validate([
-            'category' => 'required',
-            'sort' => 'required',
-            'otherCategory' => 'nullable|string|max:255',
-        ]);
-
-        // Validate Products Table data.
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'description' => 'required|string',
-            'status' => 'required|string',
-        ]);
-
-        // Check if "Others" was selected and use the specified category.
-        $categoryName = $request->category === 'others' ? $request->otherCategory : $request->category;
-
-        // Check if category exists or create a new one.
-        $category = Category::firstOrCreate(
-            ['name' => $categoryName],
-            ['sort' => $request->sort, 'status' => 'Available']
-        );
-
-        if (!$category) {
-            return redirect()->route('admin-products')->with('error', 'Error adding category.');
-        }
-
-        // Create product with the category ID.
-        $product = Product::create([
-            'categoryID' => $category->categoryID,
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description,
-            'status' => $request->status,
-        ]);
-
-        if (!$product) {
-            return redirect()->route('admin-products')->with('error', 'Error adding product.');
-        }
-
-        if($request->customizable === 'customizable') {
-            $request->validate([
-                'customizable-category' => 'required',
-                'customizable-sort' => 'required',
-                'customizable-status' => 'required',
-            ]);
-
-            $customizableCategory = CustomizeableCategory::create([
-                'productID' => $product->productID,
-                'name' => $request['customizable-category'],
-                'status' => $request['customizable-status'],
-                'sort' => $request['customizable-sort'],
-                'singleChoose' => 0,
-            ]);
-
-            if (!$customizableCategory) {
-                return redirect()->route('admin-products')->with('error', 'Error adding customizable category.');
-            }
-
-            $request->validate([
-                'option-name' => 'required',
-                'option-max-amount' => 'required',
-                'option-sort' => 'required',
-                'option-status' => 'required',
-            ]);
-
-            $customizableOptions = CustomizableOptions::create([
-                'customizeCategoryID' => $customizableCategory->customizeCategoryID,
-                'name' => $request['option-name'],
-                'maxAmount' => $request['option-max-amount'],
-                'status' => $request['option-status'],
-                'sort' => $request['option-sort'],
-            ]);
-
-            if (!$customizableOptions) {
-                return redirect()->route('admin-products')->with('error', 'Error adding customizable options.');
-            }
-        }
-        return redirect()->route('admin-products')->with('success', 'User added successfully!');
-    }
-
-    public function addProduct(Request $request) {
+        // Validate the request inputs
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'category' => 'required|string',
-            'sort' => 'required|integer',
-            'description' => 'nullable|string',
-            'status' => 'required|string',
-            'customizable' => 'nullable|string',
-            'customizable-categories' => 'array',
-            'customizable-sorts' => 'array',
-            'customizable-options' => 'array',
-            'customizable-max-amounts' => 'array',
+            'price' => 'required|numeric|min:0',
+            'category' => 'required|string|max:255',
+            'otherCategory' => 'nullable|string|max:255', // Only required if "others" is selected
+            'description' => 'nullable|string|max:1000',
+            'status' => 'required|in:Available,Not Available',
         ]);
 
-        // Save Product
-        $product = Product::create([
-            'name' => $validatedData['name'],
-            'price' => $validatedData['price'],
-            'category' => $validatedData['category'],
-            'sort' => $validatedData['sort'],
-            'description' => $validatedData['description'],
-            'status' => $validatedData['status'],
-            'customizable' => $validatedData['customizable'] ?? 'No',
-        ]);
-        return redirect()->back()->with('success', 'Product added successfully.');
+        // Handle dynamic category logic
+        $categoryID = null;
+
+        if ($validatedData['category'] === 'others') {
+            if (empty($validatedData['otherCategory'])) {
+                return back()->withErrors(['otherCategory' => 'Please specify the category if "Others" is selected.'])->withInput();
+            }
+
+            // Check if the "otherCategory" already exists
+            $existingCategory = Category::where('name', $validatedData['otherCategory'])->first();
+            if ($existingCategory) {
+                $categoryID = $existingCategory->categoryID;
+            } else {
+                // Create a new category and get its ID
+                $newCategory = new Category();
+                $newCategory->name = $validatedData['otherCategory'];
+                $newCategory->status = 'Available';
+                $newCategory->sort = '2';
+                $newCategory->save();
+                $categoryID = $newCategory->categoryID;
+            }
+        } else {
+            // Retrieve the category ID from the existing category name
+            $categoryID = $validatedData['category'];
+        }
+
+        // Save the product
+        $product = new Product();
+        $product->name = $validatedData['name'];
+        $product->price = $validatedData['price'];
+        $product->categoryID = $categoryID;
+        $product->description = $validatedData['description'];
+        $product->status = $validatedData['status'];
+        $product->save();
+
+        return redirect()->route('admin-products')->with('success', 'Product added successfully!');
     }
+
 }
