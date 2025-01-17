@@ -221,11 +221,13 @@
                         <label for="customizable" class="w-full py-4 ms-2 text-sm font-medium text-gray-700">Customizable</label>
                     </div>
 
+                    <div id="defaultButtonLocation">
                     <div id="modalFooter" class="flex justify-end mt-10">
                         <button type="button" onclick="closeCreateModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
                         <button type="submit" id="addProductButton" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
                     </div>
 
+                    </div>
                     <!-- Hidden input field for Customizable -->
                     <div id="customizableField" style="display: none;">
                     <h1 class="mt-8 text-xl font-semibold">Customizable Category {{ $categoryIndex = 1 }}</h1>
@@ -489,7 +491,9 @@
         const optionSort = document.getElementById('option-sort');
         const optionStatus = document.getElementById('option-status');
         const modalFooter = document.getElementById("modalFooter");
-        const categoriesContainer = document.getElementById("categories-container")
+        const categoriesContainer = document.getElementById("categories-container");
+        const addCategoryButtonContainer = document.getElementById('addCategoryButtonContainer');
+        const defaultButtonLocation = document.getElementById('defaultButtonLocation');
 
         if (this.checked) {
             customizableField.style.display = 'block';
@@ -500,7 +504,7 @@
             optionMaxAmount.setAttribute('required', '');
             optionSort.setAttribute('required', '');
             optionStatus.setAttribute('required', '');
-            categoriesContainer.appendChild(modalFooter);
+            addCategoryButtonContainer.appendChild(modalFooter);
         } else {
             customizableField.style.display = 'none';
             customizableCategoryName.removeAttribute('required');
@@ -510,8 +514,7 @@
             optionMaxAmount.removeAttribute('required', '');
             optionSort.removeAttribute('required', '');
             optionStatus.removeAttribute('required', '');
-            customizableField.style.display = "none";
-            document.getElementById("addProductForm").appendChild(modalFooter);
+            defaultButtonLocation.appendChild(modalFooter);
         }
     });
 
@@ -523,18 +526,18 @@ const maxOptionsPerCategory = 4;
 document.getElementById('addCategoryButton').addEventListener('click', function () {
     const modalFooter = document.getElementById('modalFooter');
     const addCategoryButtonContainer = document.getElementById('addCategoryButtonContainer');
+    const defaultButtonLocation = document.getElementById('defaultButtonLocation');
 
     if (categoryIndex <= maxCategories) {
         categoryIndex++;
         const categoryTemplate = document.getElementById('category-template').innerHTML;
         const newCategory = categoryTemplate.replace(/{{ 1 }}/g, categoryIndex);
         const categoryTitles = document.getElementsByClassName('category-title');
-        addCategoryButtonContainer.insertAdjacentElement('beforeend', modalFooter);
 
         // Append the new category to the container
         const container = document.getElementById('categories-container');
         container.insertAdjacentHTML('beforeend', newCategory);
-
+        
         for (let i = 0; i < categoryTitles.length; i++) {
             categoryTitles[i].innerHTML = 'Category #' + categoryIndex;
         }
@@ -545,6 +548,9 @@ document.getElementById('addCategoryButton').addEventListener('click', function 
         // Scroll to the newly added category
         const addedCategory = container.lastElementChild;
         addedCategory.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Move the modal footer back to the bottom of the modal content
+        addCategoryButtonContainer.appendChild(modalFooter);
     } else {
         alert("You can only add up to 4 categories.");
     }
