@@ -221,6 +221,11 @@
                         <label for="customizable" class="w-full py-4 ms-2 text-sm font-medium text-gray-700">Customizable</label>
                     </div>
 
+                    <div id="modalFooter" class="flex justify-end mt-10">
+                        <button type="button" onclick="closeCreateModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                        <button type="submit" id="addProductButton" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
+                    </div>
+
                     <!-- Hidden input field for Customizable -->
                     <div id="customizableField" style="display: none;">
                     <h1 class="mt-8 text-xl font-semibold">Customizable Category {{ $categoryIndex = 1 }}</h1>
@@ -272,18 +277,13 @@
                             </div>
                         </div>
 
-                        <div class="flex justify-end mt-4">
+                        <div id="addCategoryButtonContainer" class="flex mt-4 flex-col">
                             <button type="button" id="addCategoryButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
                                 Add Category
                             </button>
                         </div>
 
                         <div id="categories-container" class="mt-4"></div>
-
-                        <div class="flex justify-end mt-10">
-                            <button type="button" onclick="closeCreateModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                            <button type="submit" id="addUserButton" name="addUserButton" value="Add User" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
-                        </div>
                 </form>
             </div>
         </div>
@@ -488,6 +488,8 @@
         const optionMaxAmount = document.getElementById('option-max-amount');
         const optionSort = document.getElementById('option-sort');
         const optionStatus = document.getElementById('option-status');
+        const modalFooter = document.getElementById("modalFooter");
+        const categoriesContainer = document.getElementById("categories-container")
 
         if (this.checked) {
             customizableField.style.display = 'block';
@@ -498,6 +500,7 @@
             optionMaxAmount.setAttribute('required', '');
             optionSort.setAttribute('required', '');
             optionStatus.setAttribute('required', '');
+            categoriesContainer.appendChild(modalFooter);
         } else {
             customizableField.style.display = 'none';
             customizableCategoryName.removeAttribute('required');
@@ -507,20 +510,26 @@
             optionMaxAmount.removeAttribute('required', '');
             optionSort.removeAttribute('required', '');
             optionStatus.removeAttribute('required', '');
+            customizableField.style.display = "none";
+            document.getElementById("addProductForm").appendChild(modalFooter);
         }
     });
 
-    let categoryIndex = 1;
+let categoryIndex = 1;
 const maxCategories = 4;
 const maxOptionsPerCategory = 4;
 
 // Add Category button click
 document.getElementById('addCategoryButton').addEventListener('click', function () {
+    const modalFooter = document.getElementById('modalFooter');
+    const addCategoryButtonContainer = document.getElementById('addCategoryButtonContainer');
+
     if (categoryIndex <= maxCategories) {
         categoryIndex++;
         const categoryTemplate = document.getElementById('category-template').innerHTML;
         const newCategory = categoryTemplate.replace(/{{ 1 }}/g, categoryIndex);
         const categoryTitles = document.getElementsByClassName('category-title');
+        addCategoryButtonContainer.insertAdjacentElement('beforeend', modalFooter);
 
         // Append the new category to the container
         const container = document.getElementById('categories-container');
