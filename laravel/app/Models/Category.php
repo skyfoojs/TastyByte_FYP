@@ -12,7 +12,7 @@ class Category extends Model
     protected $table = 'category';
     protected $primaryKey = 'categoryID';
 
-    public $timestamps = true; 
+    public $timestamps = true;
 
     protected $fillable = [
         'name', 'status', 'sort',
