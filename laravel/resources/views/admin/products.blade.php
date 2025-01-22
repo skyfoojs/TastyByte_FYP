@@ -216,76 +216,22 @@
                         <option value="Not Available">Not Available</option>
                     </select>
 
-                    <div class="flex items-center ps-4 border border-gray-300 rounded-lg mt-8">
-                        <input id="customizable" type="checkbox" value="customizable" name="customizable" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                        <label for="customizable" class="w-full py-4 ms-2 text-sm font-medium text-gray-700">Customizable</label>
+                    <div id="addCategoryButtonContainer" class="flex mt-4 flex-col">
+                        <button type="button" id="addCategoryButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
+                            Add Category
+                        </button>
                     </div>
 
                     <div id="defaultButtonLocation">
-                    <div id="modalFooter" class="flex justify-end mt-10">
-                        <button type="button" onclick="closeCreateModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                        <button type="submit" id="addProductButton" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
+                        <div id="modalFooter" class="flex justify-end mt-10">
+                            <button type="button" onclick="closeCreateModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                            <button type="submit" id="addProductButton" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
+                        </div>
                     </div>
 
+                    <div id="categories-container" class="mt-8">
+                        <h2 class="text-xl font-bold hidden" id="categories-container-header">Customizable Category</h2>
                     </div>
-                    <!-- Hidden input field for Customizable -->
-                    <div id="customizableField" style="display: none;">
-                    <h1 class="mt-8 text-xl font-semibold">Customizable Category {{ $categoryIndex = 1 }}</h1>
-                        <div class="flex space-x-4">
-                            <div class="flex-1 mt-2">
-                                <label class="block text-gray-700 text-sm font-medium">Customizable Category<span class="text-red-500">*</span></label>
-                                <input name="customizable-category" type="text" id="customizable-category" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
-                            </div>
-
-                            <div class="flex-1 mt-2">
-                                <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ $categoryDistinctSortCount + 1 }}&#41;<span class="text-red-500">*</span></label>
-                                <input name="customizable-sort" type="number" id="customizable-sort" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ $categoryDistinctSortCount + 1 }}">
-                            </div>
-                        </div>
-
-                        <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
-                        <select name="customizable-status" id="customizable-status" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
-                            <option value="">Select Status</option>
-                            <option value="Available">Available</option>
-                            <option value="Not Available">Not Available</option>
-                        </select>
-
-                        <h1 class="mt-8 text-xl font-semibold">Customizable Option {{ $optionIndex = 1 }}</h1>
-                        <div class="flex space-x-4">
-                            <div class="flex-1 mt-2">
-                                <label class="block text-gray-700 text-sm font-medium">Option Name<span class="text-red-500">*</span></label>
-                                <input name="option-name" type="text" id="option-name" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
-                            </div>
-
-                            <div class="flex-1 mt-2">
-                                <label class="block text-gray-700 text-sm font-medium">Max Amount<span class="text-red-500">*</span></label>
-                                <input name="option-max-amount" type="number" id="option-max-amount" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1">
-                            </div>
-                        </div>
-
-                        <div class="flex space-x-4">
-                            <div class="flex-1 mt-2">
-                                <label class="block text-gray-700 text-sm font-medium">Options Sort &#40;Max: {{ $optionDistinctSortCount + 1 }}&#41;<span class="text-red-500">*</span></label>
-                                <input name="option-sort" type="number" id="option-sort" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ $optionDistinctSortCount + 1 }}">
-                            </div>
-
-                            <div class="flex-1 mt-2">
-                                <label class="block text-gray-700 text-sm font-medium">Option Status <span class="text-red-500">*</span></label>
-                                <select name="option-status" id="option-status" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
-                                    <option value="">Select Status</option>
-                                    <option value="available">Available</option>
-                                    <option value="not-available">Not Available</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="addCategoryButtonContainer" class="flex mt-4 flex-col">
-                            <button type="button" id="addCategoryButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
-                                Add Category
-                            </button>
-                        </div>
-
-                        <div id="categories-container" class="mt-4"></div>
                 </form>
             </div>
         </div>
@@ -293,28 +239,28 @@
     </x-admin.sidebar>
 </x-admin.layout>
 <script type="text/template" id="category-template">
-    <div class="category mt-4 border p-4 rounded-lg">
-        <h2 class="font-semibold text-lg category-title"></h2>
+    <div class="category mt-2 border p-4 rounded-lg">
+        <h2 class="font-semibold text-lg category-title">Category ${categoryIndex}</h2>
         <div class="flex space-x-4">
             <div class="flex-1 mt-2">
                 <label class="block text-gray-700 text-sm font-medium">Customizable Category<span class="text-red-500">*</span></label>
-                <input name="categories[${categoryId}][name]" type="text" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
+                <input name="customizableCategories[${categoryIndex}][name]" type="text" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
             </div>
 
             <div class="flex-1 mt-2">
                 <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ $categoryDistinctSortCount + 1 }}&#41;<span class="text-red-500">*</span></label>
-                <input name="sort[${categoryId}][name]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ $categoryDistinctSortCount + 1 }}">
+                <input name="customizableCategories[${categoryIndex}][sort]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ $categoryDistinctSortCount + 1 }}">
             </div>
         </div>
 
         <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
-        <select name="status[${categoryId}][name]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+        <select name="customizableCategories[${categoryIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
             <option value="">Select Status</option>
             <option value="Available">Available</option>
             <option value="Not Available">Not Available</option>
         </select>
 
-        <div class="mt-4" id="options-container-{{ 1 }}"></div>
+        <div class="mt-4" id="options-container-${categoryIndex}"></div>
 
         <div class="flex justify-between mt-4">
             <button type="button" class="add-option-btn bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
@@ -344,203 +290,182 @@
 </style>
 
 <script>
-    function openFilterModal() {
-        const modal = document.getElementById('userFilterModal');
-        const overlay = document.getElementById('modalOverlay');
+function openFilterModal() {
+    const modal = document.getElementById('userFilterModal');
+    const overlay = document.getElementById('modalOverlay');
 
-        modal.classList.remove('hidden');
-        overlay.classList.remove('hidden');
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
 
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
-    }
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+}
 
-    function closeUserFilterModal() {
-        const modal = document.getElementById('userFilterModal');
-        const overlay = document.getElementById('modalOverlay');
+function closeUserFilterModal() {
+    const modal = document.getElementById('userFilterModal');
+    const overlay = document.getElementById('modalOverlay');
 
-        modal.classList.remove('show');
+    modal.classList.remove('show');
 
-        setTimeout(() => {
-            modal.classList.add('hidden');
-            overlay.classList.add('hidden');
-        }, 300);
-    }
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        overlay.classList.add('hidden');
+    }, 300);
+}
 
-    function openModal() {
-        const modal = document.getElementById('userModal');
-        const overlay = document.getElementById('modalOverlay');
+function openModal() {
+    const modal = document.getElementById('userModal');
+    const overlay = document.getElementById('modalOverlay');
 
-        modal.classList.remove('hidden');
-        overlay.classList.remove('hidden');
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
 
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
-    }
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+}
 
-    function openCreateModal() {
-        const modal = document.getElementById('productAddModal');
-        const overlay = document.getElementById('modalOverlay');
+function openCreateModal() {
+    const modal = document.getElementById('productAddModal');
+    const overlay = document.getElementById('modalOverlay');
 
-        modal.classList.remove('hidden');
-        overlay.classList.remove('hidden');
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
 
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
-    }
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+}
 
-    function closeCreateModal() {
-        const modal = document.getElementById('productAddModal');
-        const overlay = document.getElementById('modalOverlay');
+function closeCreateModal() {
+    const modal = document.getElementById('productAddModal');
+    const overlay = document.getElementById('modalOverlay');
 
-        modal.classList.remove('show');
+    modal.classList.remove('show');
 
-        setTimeout(() => {
-            modal.classList.add('hidden');
-            overlay.classList.add('hidden');
-        }, 300);
-    }
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        overlay.classList.add('hidden');
+    }, 300);
+}
 
-    function openEditModal(id, firstName, lastName, username, nickname, role, gender, dateOfBirth, email, phoneNo, password, status) {
-        const modal = document.getElementById('userEditModal');
-        const overlay = document.getElementById('modalOverlay');
+function openEditModal(id, firstName, lastName, username, nickname, role, gender, dateOfBirth, email, phoneNo, password, status) {
+    const modal = document.getElementById('userEditModal');
+    const overlay = document.getElementById('modalOverlay');
 
-        modal.classList.remove('hidden');
-        overlay.classList.remove('hidden');
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
 
-        document.getElementById('registeredUserID').value = id;
-        document.getElementById('editFirstName').value = firstName;
-        document.getElementById('editLastName').value = lastName;
-        document.getElementById('editUsername').value = username;
-        document.getElementById('editNickname').value = nickname;
-        document.getElementById('editEmail').value = email;
-        document.getElementById('editPhoneNo').value = phoneNo;
-        document.getElementById('editRole').value = role;
-        document.getElementById('editGender').value = gender;
-        document.getElementById('editDateOfBirth').value = dateOfBirth;
+    document.getElementById('registeredUserID').value = id;
+    document.getElementById('editFirstName').value = firstName;
+    document.getElementById('editLastName').value = lastName;
+    document.getElementById('editUsername').value = username;
+    document.getElementById('editNickname').value = nickname;
+    document.getElementById('editEmail').value = email;
+    document.getElementById('editPhoneNo').value = phoneNo;
+    document.getElementById('editRole').value = role;
+    document.getElementById('editGender').value = gender;
+    document.getElementById('editDateOfBirth').value = dateOfBirth;
 
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 10);
-    }
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+}
 
-    function closeEditModal() {
-        const modal = document.getElementById('userEditModal');
-        const overlay = document.getElementById('modalOverlay');
+function closeEditModal() {
+    const modal = document.getElementById('userEditModal');
+    const overlay = document.getElementById('modalOverlay');
 
-        modal.classList.remove('show');
+    modal.classList.remove('show');
 
-        setTimeout(() => {
-            modal.classList.add('hidden');
-            overlay.classList.add('hidden');
-            clearModalFields();
-        }, 300);
-    }
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        overlay.classList.add('hidden');
+        clearModalFields();
+    }, 300);
+}
 
-    function clearModalFields() {
-        document.getElementById('registeredUserID').value = '';
-        document.getElementById('firstName').value = '';
-        document.getElementById('lastName').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('phoneNo').value = '';
-        document.getElementById('gender').value = '';
-        document.getElementById('dateOfBirth').value = '';
-        document.getElementById('membershipStart').value = '';
-        document.getElementById('membershipEnd').value = '';
-    }
+function clearModalFields() {
+    document.getElementById('registeredUserID').value = '';
+    document.getElementById('firstName').value = '';
+    document.getElementById('lastName').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('phoneNo').value = '';
+    document.getElementById('gender').value = '';
+    document.getElementById('dateOfBirth').value = '';
+    document.getElementById('membershipStart').value = '';
+    document.getElementById('membershipEnd').value = '';
+}
 
-    function searchUsers() {
-        const query = document.getElementById('searchInput').value;
+function searchUsers() {
+    const query = document.getElementById('searchInput').value;
 
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'searchUsers.php?query=' + encodeURIComponent(query), true);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                document.getElementById('userTableBody').innerHTML = xhr.responseText;
-            }
-        };
-        xhr.send();
-    }
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'searchUsers.php?query=' + encodeURIComponent(query), true);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            document.getElementById('userTableBody').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+}
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const categorySelect = document.getElementById('category');
-        const otherCategoryField = document.getElementById('otherCategoryField');
-        const otherCategory = document.getElementById('otherCategory');
+document.addEventListener('DOMContentLoaded', function () {
+    const categorySelect = document.getElementById('category');
+    const otherCategoryField = document.getElementById('otherCategoryField');
+    const otherCategory = document.getElementById('otherCategory');
 
-        categorySelect.addEventListener('change', function () {
-            if (this.value === 'others') {
-                otherCategoryField.style.display = 'block';
-                otherCategory.setAttribute('required', '');
-            } else {
-                otherCategoryField.style.display = 'none';
-                otherCategory.removeAttribute('required');
-            }
-        });
-    });
-
-    document.getElementById('customizable').addEventListener('change', function() {
-        const customizableField = document.getElementById('customizableField');
-        const customizableCategoryName = document.getElementById('customizable-category');
-        const customizableStatus = document.getElementById('customizable-status');
-        const customizableSort = document.getElementById('customizable-sort');
-        const optionName = document.getElementById('option-name');
-        const optionMaxAmount = document.getElementById('option-max-amount');
-        const optionSort = document.getElementById('option-sort');
-        const optionStatus = document.getElementById('option-status');
-        const modalFooter = document.getElementById("modalFooter");
-        const categoriesContainer = document.getElementById("categories-container");
-        const addCategoryButtonContainer = document.getElementById('addCategoryButtonContainer');
-        const defaultButtonLocation = document.getElementById('defaultButtonLocation');
-
-        if (this.checked) {
-            customizableField.style.display = 'block';
-            customizableCategoryName.setAttribute('required', '');
-            customizableStatus.setAttribute('required', '');
-            customizableSort.setAttribute('required', '');
-            optionName.setAttribute('required', '');
-            optionMaxAmount.setAttribute('required', '');
-            optionSort.setAttribute('required', '');
-            optionStatus.setAttribute('required', '');
-            addCategoryButtonContainer.appendChild(modalFooter);
+    categorySelect.addEventListener('change', function () {
+        if (this.value === 'others') {
+            otherCategoryField.style.display = 'block';
+            otherCategory.setAttribute('required', '');
         } else {
-            customizableField.style.display = 'none';
-            customizableCategoryName.removeAttribute('required');
-            customizableStatus.removeAttribute('required');
-            customizableSort.removeAttribute('required');
-            optionName.removeAttribute('required', '');
-            optionMaxAmount.removeAttribute('required', '');
-            optionSort.removeAttribute('required', '');
-            optionStatus.removeAttribute('required', '');
-            defaultButtonLocation.appendChild(modalFooter);
+            otherCategoryField.style.display = 'none';
+            otherCategory.removeAttribute('required');
         }
     });
+});
+
+// Function to toggle header visibility
+function toggleCategoriesHeader() {
+    const categoriesContainer = document.getElementById('categories-container');
+    const categoriesContainerHeader = document.getElementById('categories-container-header');
+    const hasCategories = categoriesContainer.querySelectorAll('.category').length > 0;
+    if (hasCategories) {
+        categoriesContainerHeader.classList.remove('hidden');
+        categoriesContainerHeader.classList.add('flex');
+    } else {
+        categoriesContainerHeader.classList.add('hidden');
+        categoriesContainerHeader.classList.remove('flex');
+    }
+}
 
 let categoryIndex = 1;
 const maxCategories = 4;
 const maxOptionsPerCategory = 4;
 
-// Add Category button click
 document.getElementById('addCategoryButton').addEventListener('click', function () {
     const modalFooter = document.getElementById('modalFooter');
     const addCategoryButtonContainer = document.getElementById('addCategoryButtonContainer');
-    const defaultButtonLocation = document.getElementById('defaultButtonLocation');
+    const categoryTitles = document.getElementsByClassName('category-title');
+    const container = document.getElementById('categories-container');
+    const categoryTemplate = document.getElementById('category-template').innerHTML;
 
     if (categoryIndex <= maxCategories) {
-        categoryIndex++;
-        const categoryTemplate = document.getElementById('category-template').innerHTML;
-        const newCategory = categoryTemplate.replace(/{{ 1 }}/g, categoryIndex);
-        const categoryTitles = document.getElementsByClassName('category-title');
+        // Render the category with the correct index
+        const categoryHtml = categoryTemplate.replace(/\${categoryIndex}/g, categoryIndex);
 
         // Append the new category to the container
-        const container = document.getElementById('categories-container');
-        container.insertAdjacentHTML('beforeend', newCategory);
+        container.insertAdjacentHTML('beforeend', categoryHtml);
 
-        for (let i = 0; i < categoryTitles.length; i++) {
-            categoryTitles[i].innerHTML = 'Category #' + categoryIndex;
-        }
+        // Add 'required' to all inputs in the new category
+        const newCategoryElement = container.lastElementChild;
+        const inputs = newCategoryElement.querySelectorAll('input, select');
+        inputs.forEach(input => input.setAttribute('required', ''));
+
+        categoryIndex++;
+
         // Move the "Add Category" button to the bottom
         const addButton = document.getElementById('addCategoryButton');
         container.appendChild(addButton.parentElement);
@@ -558,13 +483,11 @@ document.getElementById('addCategoryButton').addEventListener('click', function 
 
 // Event delegation for dynamically added categories
 document.getElementById('categories-container').addEventListener('click', function (event) {
-    // Add Option Button
     if (event.target.classList.contains('add-option-btn')) {
         const categoryElement = event.target.closest('.category');
-        const categoryId = categoryElement.querySelector('h2').textContent.split('#')[1];
 
-        // Limit options to the maximum number
-        const optionsContainer = document.getElementById(`options-container-${categoryId}`);
+        const categoryIndex = Array.from(categoryElement.parentElement.children).indexOf(categoryElement);
+        const optionsContainer = document.getElementById(`options-container-${categoryIndex}`);
         const currentOptionsCount = optionsContainer.querySelectorAll('.option').length;
 
         if (currentOptionsCount < maxOptionsPerCategory) {
@@ -573,23 +496,23 @@ document.getElementById('categories-container').addEventListener('click', functi
                 <div class="flex space-x-4 mt-2">
                     <div class="flex-1 mt-2">
                         <label for="option-name" class="block text-sm font-medium text-gray-700">Option Name <span class="text-red-500">*</span></label>
-                        <input type="text" name="categories[${categoryId}][${currentOptionsCount}]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                        <input type="text" name="customizableCategories[${categoryIndex}][options][${currentOptionsCount}][name]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                     </div>
 
                     <div class="flex-1 mt-2">
                         <label class="block text-gray-700 text-sm font-medium">Max Amount<span class="text-red-500">*</span></label>
-                        <input name="option-max-amount[${categoryId}][${currentOptionsCount}]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1">
+                        <input name="customizableCategories[${categoryIndex}][options][` + currentOptionsCount + `][maxAmount]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" required>
                     </div>
                 </div>
                 <div class="flex space-x-4">
                     <div class="flex-1 mt-2">
                         <label class="block text-gray-700 text-sm font-medium">Options Sort (Max: 4)<span class="text-red-500">*</span></label>
-                        <input name="option-sort[${categoryId}][${currentOptionsCount}]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="4">
+                        <input name="customizableCategories[${categoryIndex}][options][` + currentOptionsCount + `][sort]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="4" required>
                     </div>
 
                     <div class="flex-1 mt-2">
                         <label class="block text-gray-700 text-sm font-medium">Option Status <span class="text-red-500">*</span></label>
-                        <select name="option-status[${categoryId}][${currentOptionsCount}]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+                        <select name="customizableCategories[${categoryIndex}][options][` + currentOptionsCount + `][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                             <option value="">Select Status</option>
                             <option value="available">Available</option>
                             <option value="not-available">Not Available</option>
@@ -629,6 +552,7 @@ document.getElementById('categories-container').addEventListener('click', functi
             const addButton = document.getElementById('addCategoryButton');
             const container = document.getElementById('categories-container');
             container.appendChild(addButton.parentElement);
+            toggleCategoriesHeader();
         }
     }
 });
