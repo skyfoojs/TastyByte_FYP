@@ -21,7 +21,7 @@ class CustomizeableCategory extends Model
     // Define the relationship with Customizable Options.
     public function options()
     {
-        return $this->hasMany(CustomizableOptions::class, 'customizeCategoryID', 'customizeCategoryID');
+        return $this->hasMany(CustomizableOptions::class, 'customizeCategoryID', 'customizeCategoryID')->distinct();
     }
 
     // Define the relationship with Product.
