@@ -38,24 +38,55 @@
                         </tr>
                         @endif
 
-                            @foreach ($products as $product)
-                            <tr class="">
-                                <td class="p-3 mt-4">{{ $product->productID }}</td>
-                                <td class="p-3 mt-4">
-                                    <span class="font-semibold">{{ $product->category->name  }}<br></span>
+                        @foreach ($products->unique('productID') as $product)
+                        <tr>
+                            <td class="p-3 mt-4">{{ $product->productID }}</td>
+                            <td class="p-3 mt-4">
+                                <span class="font-semibold">{{ $product->category->name }}<br></span>
+                            </td>
+                            <td class="p-3 mt-4">{{ $product->name }}</td>
+                            <td class="p-3 mt-4">{{ $product->category->sort }}</td>
+                            <td class="p-3 mt-4">{{ $product->status }}</td>
 
-                                </td>
-                                <td class="p-3 mt-4">{{ $product->name }}</td>
-                                <td class="p-3 mt-4">{{ $product->category->sort }}</td>
-                                <td class="p-3 mt-4">{{ $product->status }}</td>
+                                @foreach ($product->customizableCategory->unique('customizeCategoryID') as $customizableCategory)
+                                    @foreach ($customizableCategory->options->unique('customizeOptionsID') as $option)
 
-                               <td class="p-3 mt-4 flex justify-center space-x-2">
-                                    <button class="text-gray-500 hover:text-blue-600" onclick="openEditModal()">
-                                        <i class="bx bx-pencil"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
+                                    @endforeach
+                                @endforeach
+
+                            <td class="p-3 mt-4 flex justify-center space-x-2">
+                            <button
+                                class="text-gray-500 hover:text-blue-600"
+                                onclick="openEditModal(
+                                    {{ $product->productID }},
+                                    '{{ $product->name }}',
+                                    {{ $product->price }},
+                                    '{{ $product->description }}',
+                                    '{{ $product->status }}',
+                                    {{ $product->category->categoryID }},
+                                    '{{ $product->category->name }}',
+                                    '{{ $product->category->status }}',
+                                    {{ $product->category->sort }},
+                                    {{ json_encode($product->customizableCategory->map(function ($cat) {
+                                        return [
+                                            'name' => $cat->name,
+                                            'sort' => $cat->sort,
+                                            'status' => $cat->status,
+                                            'options' => $cat->options->map(function ($opt) {
+                                                return [
+                                                    'name' => $opt->name,
+                                                    'maxAmount' => $opt->maxAmount,
+                                                    'status' => $opt->status,
+                                                ];
+                                            }),
+                                        ];
+                                    })) }}
+                                )">
+                                <i class="bx bx-pencil"></i>
+                            </button>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -99,66 +130,68 @@
                 </form>
             </div>
         </div>
+        <div id="editCustomizableContainer" class="space-y-4"></div>
 
-        <div id="userEditModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
+        <div id="productEditModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit User</h2>
                 <hr class="py-2">
-                <form action="{{ route('editUser.post') }}" method="POST">
-                    <input type="hidden" id="registeredUserID" name="registeredUserID">
+                <form action="{{ route('editProduct.post') }}" method="POST">
+
                     @csrf
                     @method('PUT')
                     <div class="flex space-x-4">
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">First Name <span class="text-red-500">*</span></label>
-                            <input name="editFirstName" type="text" id="editFirstName" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium">Product Name <span class="text-red-500">*</span></label>
+                            <input name="editName" type="text" id="editName" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
+
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Last Name <span class="text-red-500">*</span></label>
-                            <input name="editLastName" type="text" id="editLastName" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium">Product Price <span class="text-red-500">*</span></label>
+                            <input name="editPrice" type="numeric" id="editPrice" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
                     </div>
 
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Username</label>
-                    <input name="editUsername" type="text" id="editUsername" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Nickname</label>
-                    <input name="editNickname" type="text" id="editNickname" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Role<span class="text-red-500">*</span></label>
-                    <select name="editRole" id="editRole" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                        <option value="">Select Role</option>
-                        <option value="waiter">Waiter</option>
-                        <option value="admin">Admin</option>
-                        <option value="kitchen">Kitchen</option>
-                        <option value="cashier">Cashier</option>
-                    </select>
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">E-mail</label>
-                    <input name="editEmail" type="email" id="editEmail" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Phone Number</label>
-                    <input name="editPhoneNo" type="text" id="editPhoneNo" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                    <div class="flex space-x-4 mt-4">
-                        <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Date of Birth <span class="text-red-500">*</span></label>
-                            <input name="editDateOfBirth" type="date" id="editDateOfBirth" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Gender <span class="text-red-500">*</span></label>
-                            <select name="editGender" id="editGender" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                                <option value="">Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+                    <div class="flex space-x-4">
+                        <div class="flex-1 mt-4">
+                            <label class="block text-gray-700 text-sm font-medium">Category<span class="text-red-500">*</span></label>
+                            <select name="editCategory" id="editCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Category</option>
+                                @foreach ($products->unique('category.name') as $product)
+                                    <option value="{{ $product->category->categoryID }}">{{ $product->category->name }}</option>
+                                @endforeach
+                                <option value="others">Others</option>
                             </select>
                         </div>
+
+                        <div class="flex-1 mt-4">
+                            <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ count($products->unique('category.name')) + 1 }}&#41;<span class="text-red-500">*</span></label>
+                            <input name="editCategorySort" type="number" id="editCategorySort" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ count($products->unique('category.name')) + 1 }}" required>
+                        </div>
                     </div>
 
-                    <div class="flex justify-end mt-10">
-                        <button type="button" onclick="closeEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                        <button type="submit" id="editUserButton" name="editUserButton" value="Edit User" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Save Changes</button>
+                    <!-- Hidden input field for "Others" -->
+                    <div id="editOtherCategoryField" class="mt-4" style="display: none;">
+                        <label for="otherCategory" class="block text-gray-700 text-sm font-medium mt-4">Specify Category</label>
+                        <input type="text" name="editOtherCategory" id="otherCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" placeholder="Enter Category">
+                    </div>
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Description</label>
+                    <input name="editDescription" type="text" id="editDescription" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Product Status <span class="text-red-500">*</span></label>
+                    <select name="editStatus" id="editStatus" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                        <option value="">Select Status</option>
+                        <option value="Available">Available</option>
+                        <option value="Not Available">Not Available</option>
+                    </select>
+
+
+                    <div id="editDefaultButtonLocation">
+                        <div id="edit-modalFooter" class="flex justify-end mt-10">
+                            <button type="button" onclick="closeEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                            <button type="submit" id="" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -350,31 +383,83 @@ function closeCreateModal() {
     }, 300);
 }
 
-function openEditModal(id, firstName, lastName, username, nickname, role, gender, dateOfBirth, email, phoneNo, password, status) {
-    const modal = document.getElementById('userEditModal');
-    const overlay = document.getElementById('modalOverlay');
+function openEditModal(
+    productID,
+    productName,
+    productPrice,
+    productDescription,
+    productStatus,
+    categoryID,
+    categoryName,
+    categoryStatus,
+    categorySort,
+    customizableCategories
+) {
+    const modal = document.getElementById("productEditModal");
+    const overlay = document.getElementById("modalOverlay");
 
-    modal.classList.remove('hidden');
-    overlay.classList.remove('hidden');
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
 
-    document.getElementById('registeredUserID').value = id;
-    document.getElementById('editFirstName').value = firstName;
-    document.getElementById('editLastName').value = lastName;
-    document.getElementById('editUsername').value = username;
-    document.getElementById('editNickname').value = nickname;
-    document.getElementById('editEmail').value = email;
-    document.getElementById('editPhoneNo').value = phoneNo;
-    document.getElementById('editRole').value = role;
-    document.getElementById('editGender').value = gender;
-    document.getElementById('editDateOfBirth').value = dateOfBirth;
+    document.getElementById("editName").value = productName || "";
+    document.getElementById("editPrice").value = productPrice || "";
+    document.getElementById("editDescription").value = productDescription || "";
+    document.getElementById("editStatus").value = productStatus || "";
+    document.getElementById("editCategory").value = categoryName || "";
+    document.getElementById("editCategorySort").value = categorySort || "";
 
-    setTimeout(() => {
-        modal.classList.add('show');
-    }, 10);
+    const container = document.getElementById("editCustomizableContainer");
+    container.innerHTML = ""; // Clear previous content
+
+    // Dynamically generate inputs for customizable categories
+    customizableCategories.forEach((category, index) => {
+        const categoryHTML = `
+            <div class="category mt-4 border p-4 rounded-lg">
+                <h2 class="font-semibold text-lg">Category ${index + 1}</h2>
+                <div class="flex space-x-4">
+                    <div class="flex-1">
+                        <label class="block text-gray-700 text-sm font-medium">Customizable Category Name</label>
+                        <input type="text" name="customizableCategories[${index}][name]" value="${category.name}" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-gray-700 text-sm font-medium">Category Sort</label>
+                        <input type="number" name="customizableCategories[${index}][sort]" value="${category.sort}" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                    </div>
+                </div>
+                <label class="block text-gray-700 text-sm font-medium mt-2">Category Status</label>
+                <select name="customizableCategories[${index}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                    <option value="Available" ${category.status === "Available" ? "selected" : ""}>Available</option>
+                    <option value="Not Available" ${category.status === "Not Available" ? "selected" : ""}>Not Available</option>
+                </select>
+
+                <div class="mt-4">
+                    <h3 class="text-sm font-semibold">Options</h3>
+                    <div id="edit-options-container-${index}" class="space-y-2">
+                        ${category.options
+                            .map(
+                                (option, optIndex) => `
+                                    <div class="option flex items-center space-x-2">
+                                        <input type="text" name="customizableCategories[${index}][options][${optIndex}][name]" value="${option.name}" placeholder="Option Name" class="border border-gray-300 rounded-lg py-1 px-2">
+                                        <input type="number" name="customizableCategories[${index}][options][${optIndex}][maxAmount]" value="${option.maxAmount}" placeholder="Max Amount" class="border border-gray-300 rounded-lg py-1 px-2">
+                                        <select name="customizableCategories[${index}][options][${optIndex}][status]" class="border border-gray-300 rounded-lg py-1 px-2">
+                                            <option value="Available" ${option.status === "Available" ? "selected" : ""}>Available</option>
+                                            <option value="Not Available" ${option.status === "Not Available" ? "selected" : ""}>Not Available</option>
+                                        </select>
+                                    </div>
+                                `
+                            )
+                            .join("")}
+                    </div>
+                </div>
+            </div>`;
+            container.innerHTML += categoryHTML;
+    });
 }
 
+
+
 function closeEditModal() {
-    const modal = document.getElementById('userEditModal');
+    const modal = document.getElementById('productEditModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('show');
