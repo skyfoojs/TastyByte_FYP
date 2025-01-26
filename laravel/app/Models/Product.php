@@ -31,6 +31,6 @@ class Product extends Model
     }
 
     public function customizableCategory() {
-        return $this->hasMany(CustomizeableCategory::class, 'productID', 'productID');
+        return $this->hasMany(CustomizeableCategory::class, 'productID', 'productID')->with('options');
     }
 }
