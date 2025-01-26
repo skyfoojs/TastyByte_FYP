@@ -5,8 +5,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MenuController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductDetailsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,3 +46,6 @@ Route::get('/admin/products', [AdminController::class, 'products'])->name('admin
 
 // Get the Create Product Data from the View.
 Route::post('/admin/products', [AdminController::class, 'addProductPost'])->name('addProduct.post');
+
+// Get the Edit Product Data from the View.
+Route::put('/admin/products', [AdminController::class, 'editProductPost'])->name('editProduct.post');
