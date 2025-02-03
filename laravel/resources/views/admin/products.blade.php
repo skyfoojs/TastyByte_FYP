@@ -130,7 +130,6 @@
                 </form>
             </div>
         </div>
-        <div id="editCustomizableContainer" class="space-y-4"></div>
 
         <div id="productEditModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
@@ -186,6 +185,7 @@
                         <option value="Not Available">Not Available</option>
                     </select>
 
+                    <div id="editCustomizableContainer" class="space-y-4"></div>
 
                     <div id="editDefaultButtonLocation">
                         <div id="edit-modalFooter" class="flex justify-end mt-10">
@@ -409,8 +409,18 @@ function openEditModal(
     document.getElementById("editCategorySort").value = categorySort || "";
 
     const container = document.getElementById("editCustomizableContainer");
+
+    if (!container) {
+        console.error("Element #editCustomizableContainer not found");
+        return;
+    }
+
     container.innerHTML = ""; // Clear previous content
 
+    if (!Array.isArray(customizableCategories)) {
+        console.error("customizableCategories is not an array:", customizableCategories);
+        return;
+    }
     // Dynamically generate inputs for customizable categories
     customizableCategories.forEach((category, index) => {
         const categoryHTML = `
@@ -452,8 +462,12 @@ function openEditModal(
                     </div>
                 </div>
             </div>`;
-            container.innerHTML += categoryHTML;
+            container.insertAdjacentHTML("beforeend", categoryHTML);
     });
+
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
 }
 
 
