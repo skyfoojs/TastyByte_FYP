@@ -35,8 +35,10 @@ class AdminController extends Controller
 
     public function inventory() {
         $inventory = Inventory::with(['product'])->get();
-        return view('admin.inventory', compact('inventory'));
+        $product = Product::all();
+        return view('admin.inventory', compact('inventory'), compact('product'));
     }
+    
     public function addUserPost(Request $request) {
         $request->validate([
             'firstName' => 'required',
@@ -205,5 +207,27 @@ class AdminController extends Controller
         // Fetch products with their categories and customizable categories
         $products = Product::with(['category', 'customizableCategory'])->find($request->productID);
 
+    }
+
+    public function addInventoryPost(Request $request) {
+        $request->validate([
+            'inventory' => 'required',
+            'product' => 'required',
+            'stockLevel' => 'required',
+            'minLevel' => 'required',
+        ]);
+
+        $inventory = Inventory::create([
+            'name' => $request->inventory,
+            'productID' => $request->product,
+            'stockLevel' => $request->stockLevel,
+            'minLevel' => $request->minLevel,
+        ]);
+
+        if (!$inventory) {
+            return redirect()->route('admin-inventory')->with('error', 'Error adding inventory.');
+        }
+
+        return redirect()->route('admin-inventory')->with('success', 'Inventory added successfully!');
     }
 }
