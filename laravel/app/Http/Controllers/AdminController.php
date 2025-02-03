@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\CustomizableOptions;
 use App\Models\CustomizeableCategory;
+use App\Models\Inventory;
 use Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -31,6 +32,11 @@ class AdminController extends Controller
         return view('admin.products', compact('products', 'categoryDistinctSortCount', 'optionDistinctSortCount'));
     }
 
+
+    public function inventory() {
+        $inventory = Inventory::with(['product'])->get();
+        return view('admin.inventory', compact('inventory'));
+    }
     public function addUserPost(Request $request) {
         $request->validate([
             'firstName' => 'required',
