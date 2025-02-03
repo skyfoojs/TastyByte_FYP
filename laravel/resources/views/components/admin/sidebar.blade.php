@@ -35,11 +35,11 @@
                 </a>
             </li>
             <li>
-                <!--Nutritionists-->
-                <a href="../admin/nutritionists.php"
-                   class="flex items-center space-x-5 py-3 px-5 <?php echo $current_page == 'nutritionists.php' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100'; ?> rounded-md">
+                <!--Inventory-->
+                <a href="../admin/inventory"
+                   class="flex items-center space-x-5 py-3 px-5 {{ $current_page == 'inventory' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100' }} rounded-md">
                     <i class="bx bx-food-menu text-base"></i>
-                    <span class="font-medium">Nutritionists</span>
+                    <span class="font-medium">Inventory</span>
                 </a>
             </li>
             <li>
