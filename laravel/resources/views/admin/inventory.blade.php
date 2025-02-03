@@ -44,7 +44,7 @@
                                 <td class="p-3 mt-4">{{ $inventories->stockLevel }}</td>
                                 <td class="p-3 mt-4">{{ $inventories->minLevel }}</td>
                                 <td class="p-3 mt-4 flex justify-center space-x-2">
-                                    <button class="text-gray-500 hover:text-blue-600" onclick="openEditModal()">
+                                    <button class="text-gray-500 hover:text-blue-600" onclick="openInventoryEditModal({{ $inventories->inventoryID }}, '{{ $inventories->name }}', '{{ $inventories->product->name }}', {{ $inventories->stockLevel }}, {{ $inventories->minLevel }})">
                                         <i class="bx bx-pencil"></i>
                                     </button>
                                 </td>
@@ -99,60 +99,34 @@
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit Inventory</h2>
                 <hr class="py-2">
                 <form action="{{ route('editUser.post') }}" method="POST">
-                    <input type="hidden" id="registeredUserID" name="registeredUserID">
+                    <input type="hidden" id="inventoryID" name="inventoryID">
                     @csrf
-                    @method('PUT')
-                    <div class="flex space-x-4">
-                        <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">First Name <span class="text-red-500">*</span></label>
-                            <input name="editFirstName" type="text" id="editFirstName" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Last Name <span class="text-red-500">*</span></label>
-                            <input name="editLastName" type="text" id="editLastName" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-                        </div>
-                    </div>
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Inventory Name <span class="text-red-500">*</span></label>
+                    <input name="edit-inventory" type="text" id="edit-inventory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
 
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Username</label>
-                    <input name="editUsername" type="text" id="editUsername" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Nickname</label>
-                    <input name="editNickname" type="text" id="editNickname" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Role<span class="text-red-500">*</span></label>
-                    <select name="editRole" id="editRole" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                        <option value="">Select Role</option>
-                        <option value="waiter">Waiter</option>
-                        <option value="admin">Admin</option>
-                        <option value="kitchen">Kitchen</option>
-                        <option value="cashier">Cashier</option>
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Product <span class="text-red-500">*</span></label>
+                    <select name="edit-product" id="edit-product" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                        <option value="">Select Product</option>
+                        @foreach ($product as $products)
+                        <option value="{{ $products->productID }}">{{ $products->name }}</option>
+                        @endforeach
                     </select>
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">E-mail</label>
-                    <input name="editEmail" type="email" id="editEmail" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Phone Number</label>
-                    <input name="editPhoneNo" type="text" id="editPhoneNo" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
                     <div class="flex space-x-4 mt-4">
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Date of Birth <span class="text-red-500">*</span></label>
-                            <input name="editDateOfBirth" type="date" id="editDateOfBirth" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium">Stock Level <span class="text-red-500">*</span></label>
+                            <input min="0" name="editStockLevel" type="number" id="editStockLevel" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
+
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Gender <span class="text-red-500">*</span></label>
-                            <select name="editGender" id="editGender" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                                <option value="">Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
+                            <label class="block text-gray-700 text-sm font-medium">Minimum Stock Level <span class="text-red-500">*</span></label>
+                            <input name="editMinLevel" type="number" id="editMinLevel" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
                     </div>
 
                     <div class="flex justify-end mt-10">
-                        <button type="button" onclick="closeEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                        <button type="submit" id="editUserButton" name="editUserButton" value="Edit User" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Save Changes</button>
+                        <button type="button" onclick="closeInventoryEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                        <button type="submit" id="editInventoryButton" name="addInventoryButton" value="Edit Inventory" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Update Inventory</button>
                     </div>
                 </form>
             </div>
@@ -274,31 +248,26 @@ function closeInventoryAddModal() {
     }, 300);
 }
 
-function openEditModal(id, firstName, lastName, username, nickname, role, gender, dateOfBirth, email, phoneNo, password, status) {
-    const modal = document.getElementById('userEditModal');
+function openInventoryEditModal(id, name, product, stockLevel, minLevel) {
+    const modal = document.getElementById('inventoryEditModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('hidden');
     overlay.classList.remove('hidden');
 
-    document.getElementById('registeredUserID').value = id;
-    document.getElementById('editFirstName').value = firstName;
-    document.getElementById('editLastName').value = lastName;
-    document.getElementById('editUsername').value = username;
-    document.getElementById('editNickname').value = nickname;
-    document.getElementById('editEmail').value = email;
-    document.getElementById('editPhoneNo').value = phoneNo;
-    document.getElementById('editRole').value = role;
-    document.getElementById('editGender').value = gender;
-    document.getElementById('editDateOfBirth').value = dateOfBirth;
+    document.getElementById('inventoryID').value = id;
+    document.getElementById('edit-inventory').value = name;
+    document.getElementById('edit-product').value = product;
+    document.getElementById('editStockLevel').value = stockLevel;
+    document.getElementById('editMinLevel').value = minLevel;
 
     setTimeout(() => {
         modal.classList.add('show');
     }, 10);
 }
 
-function closeEditModal() {
-    const modal = document.getElementById('userEditModal');
+function closeInventoryEditModal() {
+    const modal = document.getElementById('inventoryEditModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('show');
