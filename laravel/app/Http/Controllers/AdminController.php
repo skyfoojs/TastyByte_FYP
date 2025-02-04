@@ -38,7 +38,7 @@ class AdminController extends Controller
         $product = Product::all();
         return view('admin.inventory', compact('inventory'), compact('product'));
     }
-    
+
     public function addUserPost(Request $request) {
         $request->validate([
             'firstName' => 'required',
@@ -229,5 +229,34 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin-inventory')->with('success', 'Inventory added successfully!');
+    }
+
+    public function editInventoryPost(Request $request) {
+        $request->validate([
+            'inventoryID' => 'required',
+            'editInventory' => 'required',
+            'editProduct' => 'required',
+            'editStockLevel' => 'required',
+            'editMinLevel' => 'required',
+        ]);
+
+        // Retrieve the user record
+        $inventory = Inventory::find($request->inventoryID);
+
+        if (!$inventory) {
+            return redirect()->route('admin-inventory')->with('error', 'Inventory not found.');
+        }
+
+        // Update user details
+        $inventory->name = $request->editInventory;
+        $inventory->productID = $request->editProduct;
+        $inventory->stockLevel = $request->editStockLevel;
+        $inventory->minLevel = $request->editMinLevel;
+
+        if ($inventory->save()) {
+            return redirect()->route('admin-inventory')->with('success', 'Inventory updated successfully!');
+        } else {
+            return redirect()->route('admin-inventory')->with('error', 'Error updating inventory.');
+        }
     }
 }
