@@ -2,6 +2,27 @@
     <header class="bg-[#CFCFCF] shadow p-4 mx-6 mt-5 rounded-3xl flex justify-between items-center">
         <div class="flex justify-end w-full items-center space-x-4 relative">
             <div class="relative">
+                @if ($errors->any())
+                    <div x-data="{ show: false }"
+                        x-init="setTimeout(() => show = true, 300); setTimeout(() => show = false, 4000)"
+                        x-show="show"
+                        x-cloak
+                        x-transition:enter="transition transform opacity ease-out duration-500"
+                        x-transition:enter-start="translate-x-full opacity-0"
+                        x-transition:enter-end="translate-x-0 opacity-100"
+                        x-transition:leave="transition transform opacity ease-in duration-500"
+                        x-transition:leave-start="translate-x-0 opacity-100"
+                        x-transition:leave-end="translate-x-full opacity-0"
+                        class="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-md">
+                        <strong>Error:</strong>
+                        <ul class="list-disc list-inside">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <button id="dropdownToggle" class="flex items-center space-x-2 mr-2">
                     <!--Show username according the login username-->
                     <span class="font-semibold text-gray-700 mr-3">{{ session('username') ?? 'Admin' }}</span>
