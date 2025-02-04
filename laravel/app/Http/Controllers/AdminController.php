@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\CustomizableOptions;
 use App\Models\CustomizeableCategory;
 use App\Models\Inventory;
+use App\Models\Vouchers;
 use Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -37,6 +38,11 @@ class AdminController extends Controller
         $inventory = Inventory::with(['product'])->get();
         $product = Product::all();
         return view('admin.inventory', compact('inventory'), compact('product'));
+    }
+
+    public function vouchers() {
+        $vouchers = Vouchers::all();
+        return view('admin.vouchers', compact('vouchers'));
     }
 
     public function addUserPost(Request $request) {
