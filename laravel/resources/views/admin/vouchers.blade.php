@@ -141,30 +141,48 @@
             </div>
         </div>
 
-        <div id="inventoryAddModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
+        <div id="voucherAddModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
-                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Inventory</h2>
+                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Voucher</h2>
                 <hr class="py-2">
                 <form action="{{ route('addInventory.post') }}" method="POST">
                     @csrf
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Inventory Name <span class="text-red-500">*</span></label>
-                    <input name="inventory" type="text" id="inventory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Product <span class="text-red-500">*</span></label>
-                    <select name="product" id="product" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                        <option value="">Select Product</option>
-
-                    </select>
-
-                    <div class="flex space-x-4 mt-4">
+                    <div class="flex space-x-4">
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Stock Level <span class="text-red-500">*</span></label>
-                            <input min="0" name="stockLevel" type="number" id="stockLevel" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium mt-4">Voucher Code <span class="text-red-500">*</span></label>
+                            <input name="code" type="text" id="code" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
 
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Minimum Stock Level <span class="text-red-500">*</span></label>
-                            <input name="minLevel" type="number" id="minLevel" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium mt-4">Voucher Type <span class="text-red-500">*</span></label>
+                            <input name="type" type="text" id="type" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4 mt-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Voucher Value <span class="text-red-500">*</span></label>
+                            <input min="0" name="voucherValue" type="number" id="voucherValue" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Single Use <span class="text-red-500">*</span></label>
+                            <select name="singleUse" id="singleUse" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="false">False</option>
+                                <option value="true">True</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4 mt-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Start Date <span class="text-red-500">*</span></label>
+                            <input name="startDate" type="date" id="startDate" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Expired Date <span class="text-red-500">*</span></label>
+                            <input name="expiredDate" type="date" id="expiredDate" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
                     </div>
 
@@ -231,8 +249,8 @@ function openModal() {
     }, 10);
 }
 
-function openInventoryAddModal() {
-    const modal = document.getElementById('inventoryAddModal');
+function openVoucherAddModal() {
+    const modal = document.getElementById('voucherAddModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('hidden');
@@ -244,7 +262,7 @@ function openInventoryAddModal() {
 }
 
 function closeInventoryAddModal() {
-    const modal = document.getElementById('inventoryAddModal');
+    const modal = document.getElementById('voucherAddModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('show');
@@ -255,7 +273,7 @@ function closeInventoryAddModal() {
     }, 300);
 }
 
-function openInventoryEditModal(id, name, product, stockLevel, minLevel) {
+function openInventoryEditModal() {
     const modal = document.getElementById('inventoryEditModal');
     const overlay = document.getElementById('modalOverlay');
 
