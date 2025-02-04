@@ -47,16 +47,24 @@ class AdminController extends Controller
 
     public function addUserPost(Request $request) {
         $request->validate([
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'username' => 'required',
-            'nickname' => 'required',
-            'role' => 'required',
-            'gender' => 'required',
-            'dateOfBirth' => 'required',
-            'email' => 'required|email|unique:users',
-            'phoneNo' => 'required',
-            'password' => 'required',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
+            'nickname' => 'required|string|max:255',
+            'role' => 'required|string',
+            'gender' => 'required|in:Male,Female,Other',
+            'dateOfBirth' => 'required|date|before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
+            'email' => 'required|email|unique:users,email',
+            'phoneNo' => 'required|numeric|digits_between:10,11',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/'
+            ],
+        ], [
+            'dateOfBirth.before_or_equal' => 'User must be at least 18 years old.',
+            'password.regex' => 'Password must have at least one uppercase letter, one lowercase letter, one number, and one special character.',
         ]);
 
         $user = User::create([
@@ -81,28 +89,27 @@ class AdminController extends Controller
     }
 
     public function editUserPost(Request $request) {
-        // Validate input data
         $request->validate([
             'registeredUserID' => 'required|exists:users,userID',
             'editFirstName' => 'required|string|max:255',
             'editLastName' => 'required|string|max:255',
-            'editUsername' => 'required|string|max:255',
+            'editUsername' => 'required|string|max:255|unique:users,username,' . $request->registeredUserID . ',userID',
             'editNickname' => 'required|string|max:255',
             'editRole' => 'required|string',
-            'editGender' => 'required',
-            'editDateOfBirth' => 'required|date',
-            'editEmail' => 'required' ,
-            'editPhoneNo' => 'required|string|max:15',
+            'editGender' => 'required|in:Male,Female,Other',
+            'editDateOfBirth' => 'required|date|before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
+            'editEmail' => 'required|email|unique:users,email,' . $request->registeredUserID . ',userID',
+            'editPhoneNo' => 'required|numeric|digits_between:10,15',
+        ], [
+            'editDateOfBirth.before_or_equal' => 'User must be at least 18 years old.',
         ]);
 
-        // Retrieve the user record
         $user = User::find($request->registeredUserID);
 
         if (!$user) {
             return redirect()->route('admin-users')->with('error', 'User not found.');
         }
 
-        // Update user details
         $user->firstName = $request->editFirstName;
         $user->lastName = $request->editLastName;
         $user->username = $request->editUsername;
