@@ -44,10 +44,10 @@
             </li>
             <li>
                 <!--Voucher-->
-                <a href="../admin/voucher"
-                   class="flex items-center space-x-5 py-3 px-5 {{ $current_page == 'voucher' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100' }} rounded-md">
+                <a href="../admin/vouchers"
+                   class="flex items-center space-x-5 py-3 px-5 {{ $current_page == 'vouchers' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100' }} rounded-md">
                     <i class="bx bx-run text-base"></i>
-                    <span class="font-medium">Voucher</span>
+                    <span class="font-medium">Vouchers</span>
                 </a>
             </li>
         </ul>
