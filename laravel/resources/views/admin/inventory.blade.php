@@ -98,14 +98,15 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit Inventory</h2>
                 <hr class="py-2">
-                <form action="{{ route('editUser.post') }}" method="POST">
+                <form action="{{ route('editInventory.post') }}" method="POST">
                     <input type="hidden" id="inventoryID" name="inventoryID">
                     @csrf
+                    @method('PUT')
                     <label class="block text-gray-700 text-sm font-medium mt-4">Inventory Name <span class="text-red-500">*</span></label>
-                    <input name="edit-inventory" type="text" id="edit-inventory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                    <input name="editInventory" type="text" id="edit-inventory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Product <span class="text-red-500">*</span></label>
-                    <select name="edit-product" id="edit-product" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                    <select name="editProduct" id="edit-product" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                         <option value="">Select Product</option>
                         @foreach ($product as $products)
                         <option value="{{ $products->productID }}">{{ $products->name }}</option>
