@@ -55,3 +55,6 @@ Route::get('/admin/inventory', [AdminController::class, 'inventory'])->name('adm
 
 // Get the Create Inventory Data from the View.
 Route::post('admin/inventory', [AdminController::class, 'addInventoryPost'])->name('addInventory.post');
+
+// Get the Edit Inventory Data from the View.
+Route::put('admin/inventory', [AdminController::class, 'editInventoryPost'])->name('editInventory.post');
