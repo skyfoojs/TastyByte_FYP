@@ -43,19 +43,11 @@
                 </a>
             </li>
             <li>
-                <!--Instructors-->
-                <a href="../admin/instructors.php"
-                   class="flex items-center space-x-5 py-3 px-5 <?php echo $current_page == 'instructors.php' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100'; ?> rounded-md">
+                <!--Voucher-->
+                <a href="../admin/voucher"
+                   class="flex items-center space-x-5 py-3 px-5 {{ $current_page == 'voucher' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100' }} rounded-md">
                     <i class="bx bx-run text-base"></i>
-                    <span class="font-medium">Instructors</span>
-                </a>
-            </li>
-            <li>
-                <!--Payments-->
-                <a href="../admin/payments.php"
-                   class="flex items-center space-x-6 py-3 px-5 <?php echo $current_page == 'payments.php' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100'; ?> rounded-md">
-                    <i class="bx bx-credit-card text-base"></i>
-                    <span class="font-medium">Payments</span>
+                    <span class="font-medium">Voucher</span>
                 </a>
             </li>
         </ul>
