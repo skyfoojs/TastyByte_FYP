@@ -253,14 +253,14 @@ class AdminController extends Controller
             'editMinLevel' => 'required',
         ]);
 
-        // Retrieve the user record
+        // Retrieve the inventory record
         $inventory = Inventory::find($request->inventoryID);
 
         if (!$inventory) {
             return redirect()->route('admin-inventory')->with('error', 'Inventory not found.');
         }
 
-        // Update user details
+        // Update inventory details
         $inventory->name = $request->editInventory;
         $inventory->productID = $request->editProduct;
         $inventory->stockLevel = $request->editStockLevel;
@@ -300,5 +300,41 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin-vouchers')->with('success', 'Voucher added successfully!');
+    }
+
+    public function editVoucherPost(Request $request) {
+        $request->validate([
+            'voucherID' => 'required',
+            'editCode' => 'required|string|min:6|max:12',
+            'editType' => 'required|string|max:20|in:Percentage,Amount',
+            'editVoucherValue' => 'required|numeric',
+            'editSingleUse' => 'required',
+            'editStartDate' => 'required|date|after_or_equal:today',
+            'editExpiredDate' => 'required|date|after:startDate',
+            'editUsage' => 'required'
+        ]);
+
+        // Retrieve the voucher record
+        $vouchers = Vouchers::find($request->voucherID);
+
+        if (!$vouchers) {
+            return redirect()->route('admin-vouchers')->with('error', 'Voucher not found.');
+        }
+
+        // Update voucher details
+        $vouchers->code = $request->editCode;
+        $vouchers->type = $request->editType;
+        $vouchers->singleUse = $request->editSingleUse;
+        $vouchers->usage = $request->editUsage;
+        $vouchers->value = $request->editVoucherValue;
+        $vouchers->startedOn = $request->editStartDate;
+        $vouchers->expiredOn = $request->editExpiredDate;
+        $vouchers->usedCount = 0;
+
+        if ($vouchers->save()) {
+            return redirect()->route('admin-vouchers')->with('success', 'Voucher updated successfully!');
+        } else {
+            return redirect()->route('admin-vouchers')->with('error', 'Error updating voucher.');
+        }
     }
 }
