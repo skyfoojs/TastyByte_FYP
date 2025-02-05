@@ -272,4 +272,33 @@ class AdminController extends Controller
             return redirect()->route('admin-inventory')->with('error', 'Error updating inventory.');
         }
     }
+
+    public function addVoucherPost(Request $request) {
+        $request->validate([
+            'code' => 'required|string|min:6|max:12|unique:vouchers,code',
+            'type' => 'required|string|max:20|in:Percentage,Amount',
+            'voucherValue' => 'required|numeric',
+            'singleUse' => 'required',
+            'startDate' => 'required|date|after_or_equal:today',
+            'expiredDate' => 'required|date|after:startDate',
+            'usage' => 'required'
+        ]);
+
+        $vouchers = Vouchers::create([
+            'code' => $request->code,
+            'type' => $request->type,
+            'singleUse' => $request->singleUse ?? 'False',
+            'usage' => $request->usage ?? 0,
+            'value' => $request->voucherValue,
+            'startedOn' => $request->startDate,
+            'expiredOn' => $request->expiredDate,
+            'usedCount' => 0,
+        ]);
+
+        if (!$vouchers) {
+            return redirect()->route('admin-vouchers')->with('error', 'Error adding voucher.');
+        }
+
+        return redirect()->route('admin-vouchers')->with('success', 'Voucher added successfully!');
+    }
 }
