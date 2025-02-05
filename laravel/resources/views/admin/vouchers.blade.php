@@ -145,31 +145,39 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Voucher</h2>
                 <hr class="py-2">
-                <form action="{{ route('addInventory.post') }}" method="POST">
+                <form action="{{ route('addVoucher.post') }}" method="POST">
                     @csrf
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Voucher Code (6-12 characters) <span class="text-red-500">*</span></label>
+                    <input minlength="6" maxlength="12" name="code" type="text" id="code" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+
                     <div class="flex space-x-4">
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium mt-4">Voucher Code <span class="text-red-500">*</span></label>
-                            <input name="code" type="text" id="code" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium mt-4">Number of Usage <span class="text-red-500">*</span></label>
+                            <input name="usage" type="number" id="usage" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
 
                         <div class="flex-1">
                             <label class="block text-gray-700 text-sm font-medium mt-4">Voucher Type <span class="text-red-500">*</span></label>
-                            <input name="type" type="text" id="type" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <select name="type" id="type" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Type</option>
+                                <option value="Percentage">Percentage</option>
+                                <option value="Amount">Amount</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="flex space-x-4 mt-4">
                         <div class="flex-1">
                             <label class="block text-gray-700 text-sm font-medium">Voucher Value <span class="text-red-500">*</span></label>
-                            <input min="0" name="voucherValue" type="number" id="voucherValue" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <input min="0" name="voucherValue" type="numeric" id="voucherValue" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
 
                         <div class="flex-1">
                             <label class="block text-gray-700 text-sm font-medium">Single Use <span class="text-red-500">*</span></label>
                             <select name="singleUse" id="singleUse" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                                <option value="false">False</option>
-                                <option value="true">True</option>
+                                <option value="">Select True or False</option>
+                                <option value="False">False</option>
+                                <option value="True">True</option>
                             </select>
                         </div>
                     </div>
@@ -187,8 +195,8 @@
                     </div>
 
                     <div class="flex justify-end mt-10">
-                        <button type="button" onclick="closeInventoryAddModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                        <button type="submit" id="addInventoryButton" name="addInventoryButton" value="Add Inventory" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Inventory</button>
+                        <button type="button" onclick="closeVoucherAddModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                        <button type="submit" id="addVoucherButton" name="addVoucherButton" value="Add Voucher" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Inventory</button>
                     </div>
                 </form>
             </div>
@@ -261,7 +269,7 @@ function openVoucherAddModal() {
     }, 10);
 }
 
-function closeInventoryAddModal() {
+function closeVoucherAddModal() {
     const modal = document.getElementById('voucherAddModal');
     const overlay = document.getElementById('modalOverlay');
 
@@ -273,8 +281,8 @@ function closeInventoryAddModal() {
     }, 300);
 }
 
-function openInventoryEditModal() {
-    const modal = document.getElementById('inventoryEditModal');
+function openVoucherEditModal() {
+    const modal = document.getElementById('voucherEditModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('hidden');
@@ -291,8 +299,8 @@ function openInventoryEditModal() {
     }, 10);
 }
 
-function closeInventoryEditModal() {
-    const modal = document.getElementById('inventoryEditModal');
+function closeVoucherEditModal() {
+    const modal = document.getElementById('voucherEditModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('show');
