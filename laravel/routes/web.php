@@ -64,3 +64,6 @@ Route::get('admin/vouchers', [AdminController::class, 'vouchers'])->name('admin-
 
 // Get the Create Vouchers Data from the View.
 Route::post('admin/vouchers', [AdminController::class, 'addVoucherPost'])->name('addVoucher.post');
+
+// Get the Edit Voucher Data from the View.
+Route::put('admin/vouchers', [AdminController::class, 'editVoucherPost'])->name('editVoucher.post');
