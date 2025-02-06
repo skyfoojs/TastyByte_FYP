@@ -239,6 +239,7 @@ class AdminController extends Controller
             'editOtherCategory' => 'nullable|string|max:255',
             'editDescription' => 'nullable|string|max:1000',
             'editStatus' => 'required|in:Available,Not Available',
+            'editImage' => 'nullable|image|mimes:PNG,JPG,JPEG,WEBP,png,jpg,jpeg,webp',
             'editCustomizableCategories' => '',
             'editCustomizableCategories.*.name' => 'nullable|string|max:255',
             'editCustomizableCategories.*.sort' => 'nullable|integer|min:1',
@@ -283,6 +284,26 @@ class AdminController extends Controller
         $product->categoryID = $categoryID;
         $product->description = $validatedData['editDescription'];
         $product->status = $validatedData['editStatus'];
+
+        // Handle image update
+        if (isset($validatedData['editImage'])) {
+            $file = $validatedData['editImage'];
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $path = 'uploads';
+
+            // Delete old image if exists
+            if ($product->image && file_exists(public_path($product->image))) {
+                unlink(public_path($product->image));
+            }
+
+            // Save new image
+            $file->move(public_path($path), $filename);
+            $product->image = $path . '/' . $filename;
+        } else {
+            $product->image = $product->image;
+        }
+
         $product->save();
 
         // Update customizable categories and options
