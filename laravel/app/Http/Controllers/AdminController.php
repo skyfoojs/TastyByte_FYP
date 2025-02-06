@@ -134,9 +134,10 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'category' => 'required|string|max:255',
-            'otherCategory' => 'nullable|string|max:255', // Only required if "others" is selected
+            'otherCategory' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
             'status' => 'required|in:Available,Not Available',
+            'image' => 'nullable|image|mimes:PNG,JPG,JPEG,WEBP,png,jpg,jpeg,webp',
             'customizableCategories' => 'nullable|array',
             'customizableCategories.*.name' => 'nullable|string|max:255',
             'customizableCategories.*.sort' => 'nullable|integer|min:1',
@@ -147,6 +148,7 @@ class AdminController extends Controller
             'customizableCategories.*.options.*.sort' => 'nullable|integer|min:1|max:4',
             'customizableCategories.*.options.*.status' => 'nullable|in:available,not-available',
         ]);
+
         // Handle dynamic category logic
         $categoryID = null;
 
@@ -180,6 +182,17 @@ class AdminController extends Controller
         $product->categoryID = $categoryID;
         $product->description = $validatedData['description'];
         $product->status = $validatedData['status'];
+
+        // Get the input image file
+        if($validatedData['image']) {
+            $file = $validatedData['image'];
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $path = 'uploads';
+            // Move the image to /public/uploads
+            $file->move(public_path($path ), $filename);
+            $product->image = $path. '/' . $filename;
+        }
         $product->save();
 
         // Save customizable categories and options (only if provided)
@@ -217,9 +230,120 @@ class AdminController extends Controller
     }
 
     public function editProductPost(Request $request) {
-        // Fetch products with their categories and customizable categories
-        $products = Product::with(['category', 'customizableCategory'])->find($request->productID);
+        // Validate request inputs
+        $validatedData = $request->validate([
+            'productID' => 'required|exists:product,productID',
+            'editName' => 'required|string|max:255',
+            'editPrice' => 'required|numeric|min:0',
+            'editCategory' => 'required|string|max:255',
+            'editOtherCategory' => 'nullable|string|max:255',
+            'editDescription' => 'nullable|string|max:1000',
+            'editStatus' => 'required|in:Available,Not Available',
+            'editCustomizableCategories' => '',
+            'editCustomizableCategories.*.name' => 'nullable|string|max:255',
+            'editCustomizableCategories.*.sort' => 'nullable|integer|min:1',
+            'editCustomizableCategories.*.status' => 'nullable|in:Available,Not Available',
+            'editCustomizableCategories.*.options' => 'nullable|array',
+            'editCustomizableCategories.*.options.*.name' => 'nullable|string|max:255',
+            'editCustomizableCategories.*.options.*.maxAmount' => 'nullable|integer|min:1',
+            'editCustomizableCategories.*.options.*.sort' => 'nullable|integer|min:1',
+            'editCustomizableCategories.*.options.*.status' => 'nullable|in:Available,Not Available',
+        ]);
 
+        // Handle dynamic category logic
+        $categoryID = null;
+        if ($validatedData['editCategory'] === 'others') {
+            if (empty($validatedData['editOtherCategory'])) {
+                return back()->withErrors(['editOtherCategory' => 'Please specify the category if "Others" is selected.'])->withInput();
+            }
+            $existingCategory = Category::where('name', $validatedData['editOtherCategory'])->first();
+            if ($existingCategory) {
+                $categoryID = $existingCategory->categoryID;
+            } else {
+                $newCategory = new Category();
+                $newCategory->name = $validatedData['editOtherCategory'];
+                $newCategory->status = 'Available';
+                $newCategory->sort = $validatedData['editCategorySort'];
+                $newCategory->save();
+                $categoryID = $newCategory->categoryID;
+            }
+        } else {
+            $categoryID = $validatedData['editCategory'];
+        }
+
+        // Find the product
+        $product = Product::find($request->productID);
+        if (!$product) {
+            return redirect()->route('admin-products')->with('error', 'Product not found.');
+        }
+
+        // Update product details
+        $product->name = $validatedData['editName'];
+        $product->price = $validatedData['editPrice'];
+        $product->categoryID = $categoryID;
+        $product->description = $validatedData['editDescription'];
+        $product->status = $validatedData['editStatus'];
+        $product->save();
+
+        // Update customizable categories and options
+        if (!empty($validatedData['editCustomizableCategories'])) {
+            foreach ($validatedData['editCustomizableCategories'] as $categoryData) {
+                if (isset($categoryData['name'], $categoryData['sort'], $categoryData['status'])) {
+                    $customizableCategory = CustomizeableCategory::where('productID', $product->productID)
+                    ->where('name', $categoryData['oldName'] ?? $categoryData['name']) // Check for old name if exists
+                    ->first();
+
+                    if ($customizableCategory) {
+                        // Update existing category
+                        $customizableCategory->name = $categoryData['name'];
+                        $customizableCategory->sort = $categoryData['sort'];
+                        $customizableCategory->status = $categoryData['status'];
+                        $customizableCategory->singleChoose = $categoryData['singleChoose'] ?? false;
+                        $customizableCategory->save();
+                    } else {
+                        // Create a new category if not found
+                        $customizableCategory = new CustomizeableCategory();
+                        $customizableCategory->productID = $product->productID;
+                        $customizableCategory->name = $categoryData['name'];
+                        $customizableCategory->sort = $categoryData['sort'];
+                        $customizableCategory->status = $categoryData['status'];
+                        $customizableCategory->singleChoose = $categoryData['singleChoose'] ?? false;
+                        $customizableCategory->save();
+                    }
+
+                    if (!empty($categoryData['options'])) {
+                        foreach ($categoryData['options'] as $optionData) {
+                            if (isset($optionData['name'], $optionData['maxAmount'], $optionData['status'])) {
+                                $customizableOption = CustomizableOptions::where('customizeCategoryID', $customizableCategory->customizeCategoryID)
+                            ->where('name', $optionData['oldName'] ?? $optionData['name']) // Check for old name if exists
+                            ->first();
+
+                        if ($customizableOption) {
+                            // Update existing option
+                            $customizableOption->name = $optionData['name'];
+                            $customizableOption->maxAmount = $optionData['maxAmount'];
+                            $customizableOption->status = $optionData['status'];
+                            $customizableOption->sort = $optionData['sort'] ?? 2;
+                            $customizableOption->save();
+                        } else {
+                            // Create new option if not found
+                            $customizableOption = new CustomizableOptions();
+                            $customizableOption->customizeCategoryID = $customizableCategory->customizeCategoryID;
+                            $customizableOption->name = $optionData['name'];
+                            $customizableOption->maxAmount = $optionData['maxAmount'];
+                            $customizableOption->status = $optionData['status'];
+                            $customizableOption->sort = $optionData['sort'] ?? 2;
+                            $customizableOption->save();
+                        }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return redirect()->route('admin-products')->with('success', 'Product updated successfully!');
     }
 
     public function addInventoryPost(Request $request) {
