@@ -145,7 +145,7 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit User</h2>
                 <hr class="py-2">
-                <form action="{{ route('editProduct.post') }}" method="POST">
+                <form action="{{ route('editProduct.post') }}" method="POST" enctype="multipart/form-data">
                 <input type="hidden" id="productID" name="productID">
                 <input type="hidden" id="editCustomizableCategoriesInput" name="editCustomizableCategories">
                     @csrf
@@ -196,12 +196,15 @@
                         <option value="Not Available">Not Available</option>
                     </select>
 
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Product Image</label>
+                    <input name="editImage" type="file" id="image" accept="image/png, image/jpg, image/jpeg, image/webp" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+
                     <div id="editCustomizableContainer" class="space-y-4"></div>
 
                     <div id="editDefaultButtonLocation">
                         <div id="edit-modalFooter" class="flex justify-end mt-10">
                             <button type="button" onclick="closeEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                            <button type="submit" id="" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
+                            <button type="submit" id="" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Update Product</button>
                         </div>
                     </div>
                 </form>
