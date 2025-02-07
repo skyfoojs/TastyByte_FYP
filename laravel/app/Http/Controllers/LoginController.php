@@ -35,9 +35,9 @@ class LoginController extends Controller
             ]);
 
             // Check the user's role and redirect accordingly
-            if ($user->role === 'waiter') {
+            if ($user->role === 'Waiter') {
                 return redirect()->intended(route('menu'));
-            } elseif ($user->role === 'admin') {
+            } elseif ($user->role === 'Admin') {
                 return redirect()->route('admin-users');
             } else {
                 // Logout the user if their role is not valid for redirection
