@@ -67,3 +67,9 @@ Route::post('admin/vouchers', [AdminController::class, 'addVoucherPost'])->name(
 
 // Get the Edit Voucher Data from the View.
 Route::put('admin/vouchers', [AdminController::class, 'editVoucherPost'])->name('editVoucher.post');
+
+// Get the Add To Cart Datas from the View.
+Route::post('order', [OrdersController::class, 'addToCartPost'])->name('addToCart.post');
+
+// Get the Summary Page view from Order Controller.
+Route::get('/summary', [OrdersController::class, 'orderSummary'])->name('orderSummary');
