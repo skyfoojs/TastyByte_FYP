@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrderItems;
+use App\Models\Orders;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
@@ -68,4 +72,54 @@ class OrdersController extends Controller
         $cart = session()->get('cart', []);
         return view('waiter.order', compact('cart'));
     }
+
+    public function addOrderPost(Request $request) {
+        if (!session()->has('cart') || empty(session('cart'))) {
+            return redirect()->route('order')->with('error', 'Cart is empty!');
+        }
+
+        $cartItems = session('cart');
+        $userID = session('userID'); // Assuming the user is logged in
+        $tableNo = session('tableNo') ?? null;
+        //$remark = $request->input('remark', ''); // Get any remarks from the request
+        $totalAmount = array_reduce($cartItems, function($carry, $item) {
+            return $carry + ($item['price'] * $item['quantity']);
+        }, 0);
+
+        try {
+            DB::beginTransaction();
+
+            // Create a new order
+            $order = Orders::create([
+                'userID' => $userID,
+                'tableNo' => $tableNo,
+                'remark' => 'Test',
+                'status' => 'Pending', // Default status
+                'totalAmount' => $totalAmount,
+            ]);
+
+            // Insert order items
+            foreach ($cartItems as $cartItem) {
+                $optionsJson = json_encode($cartItem['options']); // Store options as JSON
+
+                OrderItems::create([
+                    'productID' => Product::where('name', $cartItem['name'])->value('productID'),
+                    'orderID' => $order->orderID,
+                    'quantity' => $cartItem['quantity'],
+                    'remark' => $optionsJson, // Save options as remarks
+                ]);
+            }
+
+            DB::commit();
+
+            // Clear cart session after placing order
+            session()->forget('cart');
+            session()->forget('tableNo');
+            return redirect()->route('order')->with('success', 'Order placed successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('order')->with('error', 'Failed to place order: ' . $e->getMessage());
+        }
+    }
+
 }
