@@ -41,7 +41,7 @@
                                         <div class="flex gap-x-10 items-center py-4 pl-8">
                                             <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
                                                 @if (!empty($product->image))
-                                                    <img class="w-full" src="{{ asset($product->image) }}" alt="Image Not Available">
+                                                    <img class="w-full h-full rounded-lg" src="{{ asset($product->image) }}" alt="Image Not Available">
                                                 @else
                                                     <p>No Image</p>
                                                 @endif
@@ -57,6 +57,27 @@
                             @endforeach
                         </div>
                     @endforeach
+                     @php
+                        //session()->forget('cart');
+                    @endphp
+                    @if(session('cart'))
+                        <div class="w-full bg-[#F3F3F3] p-6 sticky bottom-0">
+                            <div class="bg-blue-button rounded-lg text-white flex items-center justify-center py-4 gap-x-2">
+                                <i class='bx bx-cart'></i>
+                                <a href="{{ route('orderSummary') }}">
+                                    Total Items:
+                                    {{ array_reduce(session('cart'), function($carry, $item) {
+                                        return $carry + $item['quantity'];
+                                    }, 0) }} -
+                                    RM {{ number_format(array_reduce(session('cart'), function($carry, $item) {
+                                        return $carry + ($item['price'] * $item['quantity']);
+                                    }, 0), 2) }} - Checkout
+                                </a>
+                            </div>
+                        </div>
+                    @endif
+
+
                 </div>
             </x-waiter.table-header>
         </div>
