@@ -23,7 +23,7 @@
                                     <div class="flex gap-x-10 items-center py-4 pl-8 bg-gray-400 opacity-70">
                                         <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
                                             @if (!empty($product->image))
-                                                <img class="w-full h-full rounded-lg" src="{{ asset($product->image) }}" alt="Image Not Available">
+                                                <img class="w-full h-full rounded-lg object-cover" src="{{ asset($product->image) }}" alt="Image Not Available">
                                             @else
                                                 <p class="text-white">No Image</p>
                                             @endif
@@ -41,7 +41,7 @@
                                         <div class="flex gap-x-10 items-center py-4 pl-8">
                                             <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
                                                 @if (!empty($product->image))
-                                                    <img class="w-full h-full rounded-lg" src="{{ asset($product->image) }}" alt="Image Not Available">
+                                                    <img class="w-full h-full rounded-lg object-cover" src="{{ asset($product->image) }}" alt="Image Not Available">
                                                 @else
                                                     <p>No Image</p>
                                                 @endif
