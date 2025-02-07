@@ -2,9 +2,9 @@
     <x-waiter.navbar>
             <x-waiter.table-header :table="session('tableNo') . ' Summary'">
                 @php
-                //session()->forget('cart');
+                //ession()->forget('cart');
                 @endphp
-                <div class="relative min-h-screen flex flex-col">
+                <div class="relative flex flex-col">
                     <div class="mt-6 mb-2">
                         <hr class="mt-3">
                         <!-- Loop through products under the category -->
@@ -13,25 +13,32 @@
                                 <div class="flex gap-x-10 items-center py-4 pl-8">
                                     <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
                                         @if (!empty($cartItem['image']))
-                                            <img class="w-full h-full rounded-lg" src="{{ asset($cartItem['image']) }}" alt="Image Not Available">
+                                            <img class="w-full h-full rounded-lg object-cover" src="{{ asset($cartItem['image']) }}" alt="Image Not Available">
                                         @else
                                             <p>No Image</p>
                                         @endif
                                     </div>
 
-                                    <div>
-                                        <p>{{ $cartItem['name'] }}</p>
-                                        <p>{{ 'RM ' . $cartItem['price'] }}</p>
+                                    <div class="flex items-center w-1/2 justify-between">
+                                        <div class="space-y-2 text-sm">
+                                            <p>{{ $cartItem['name'] }}</p>
+                                            <p>{{ 'RM ' . $cartItem['price'] }}</p>
 
-                                        <!-- Loop through options -->
-                                        @foreach ($cartItem['options'] as $optionName => $optionValues)
-                                            <p>{{ $optionName }}: {{ implode(', ', $optionValues) }}</p>
-                                        @endforeach
+                                            <!-- Loop through options -->
+                                            @foreach ($cartItem['options'] as $optionName => $optionValues)
+                                                <p>{{ $optionName }}:<br> {{ implode(', ', $optionValues) }}</p>
+                                            @endforeach
+                                        </div>
+
+                                        <div class="ml-2 flex border py-1 px-2 rounded-lg bg-[#efefef] text-center items-center">
+                                            <small>x</small>
+                                            <p class="ml-1">{{ $cartItem['quantity'] }}</p>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
 
-                            <div class="w-full fixed bottom-0 flex flex-col px-6 font-pop pb-6">
+                            <div class="w-full sticky bottom-0 flex flex-col px-6 font-pop pb-6 bg-white">
                                 <hr>
                                 <div class="mt-12">
                                     <p class="font-semibold">Payment Summary</p>
