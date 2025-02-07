@@ -73,3 +73,6 @@ Route::post('order', [OrdersController::class, 'addToCartPost'])->name('addToCar
 
 // Get the Summary Page view from Order Controller.
 Route::get('/summary', [OrdersController::class, 'orderSummary'])->name('orderSummary');
+
+// Get the Order Items Datas from the View.
+Route::post('/summary', [OrdersController::class, 'addOrderPost'])->name('addOrder.post');
