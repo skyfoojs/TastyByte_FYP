@@ -2,10 +2,10 @@
     <x-waiter.navbar>
             <x-waiter.table-header :table="session('tableNo') . ' Summary'">
                 @php
-                //ession()->forget('cart');
+                //session()->forget('cart');
                 @endphp
                 <div class="relative flex flex-col">
-                    <div class="mt-6 mb-2">
+                    <div class="mb-2">
                         <hr class="mt-3">
                         <!-- Loop through products under the category -->
                         @if (session('cart'))
@@ -73,7 +73,10 @@
                                 </div>
 
                                 <div class="bg-blue-button rounded-lg text-white flex items-center justify-center py-4 gap-x-2 mt-8">
-                                    <button>Place Order</button>
+                                    <form action="{{ route('addOrder.post') }}" method="POST">
+                                        @csrf
+                                        <button type="submit">Place Order</button>
+                                    </form>
                                 </div>
                             </div>
                         @endif
