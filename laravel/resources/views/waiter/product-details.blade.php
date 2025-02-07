@@ -4,7 +4,13 @@
 
         <div class="flex flex-col justify-center items-center">
             <div class="flex flex-col w-full">
-                <form action="" class="font-pop">
+                <form action="{{ route('addToCart.post') }}" method="POST" class="font-pop">
+                    @csrf
+                    <input type="hidden" name="productID" value="{{ $productDetails->productID }}">
+                    <input type="hidden" name="name" value="{{ $productDetails->name }}">
+                    <input type="hidden" name="price" value="{{ $productDetails->price }}">
+                    <input type="hidden" name="image" value="{{ $productDetails->image }}">
+
                     <div class="px-7">
                         <div class="w-full bg-[#E1E1E1] h-56 rounded-lg mt-7"></div>
                         <div class="flex justify-between text-xl font-bold mt-4">
@@ -21,7 +27,7 @@
                     <div class="px-7 pb-28">
                         <div class="flex bg-[#EEEEEE] items-center mt-4 justify-between px-8 py-4 rounded-lg">
                             <label class="font-bold" for="takeaway">Takeaway</label>
-                            <input class="custom-radio bg-white" type="radio" value="takeaway">
+                            <input name="takeaway" class="custom-radio bg-white" type="checkbox" value="Takeaway">
                         </div>
 
                         <!-- Loop through the categories with their options -->
@@ -37,8 +43,8 @@
                                 @foreach ($category->options as $option)
                                     <hr class="mt-2">
                                     <div class="flex justify-between w-full items-center my-4">
-                                        <label for="option-{{ $option->id }}" class="text-gray-600">{{ $option->name }}</label>
-                                        <input required id="option-{{ $option->id }}" type="radio" name="{{ $category->name }}_option" value="{{ $option->id }}" class="custom-radio bg-gray-200 appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
+                                        <label for="option-{{ $option->customizeOptionsID }}" class="text-gray-600">{{ $option->name }}</label>
+                                        <input id="option-{{ $option->customizeOptionsID }}" type="checkbox" name="options[{{ $category->name }}][]" value="{{ $option->name }}" class="custom-radio bg-gray-200 appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
                                     </div>
                                 @endforeach
                             @endif
