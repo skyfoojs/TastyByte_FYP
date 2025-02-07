@@ -32,26 +32,30 @@ class OrdersController extends Controller
             'takeaway' => 'nullable',
         ]);
 
-        // Retrieve selected options properly
-        $selectedOptions = $request->input('options', []); // Gets all selected options by category
+        // Retrieve selected options and sort to avoid mismatch due to order
+        $selectedOptions = $request->input('options', []);
+        ksort($selectedOptions); // Sort to ensure order consistency
+
+        // Generate a unique hash key based on product ID, takeaway status, and options
+        $cartKey = md5($request->productID . json_encode($selectedOptions) . ($request->has('takeaway') ? '1' : '0'));
 
         // Retrieve the current cart from the session or initialize it
         $cart = session()->get('cart', []);
 
-        // Check if the product already exists in the cart
-        if(isset($cart[$request->productID])) {
-            // Increment the quantity if it already exists
-            $cart[$request->productID]['quantity']++;
+        $newCartItem = [
+            'name' => $request->input('name'),
+            'price' => $request->input('price'),
+            'quantity' => 1,
+            'image' => $request->input('image'),
+            'takeaway' => $request->has('takeaway') ? true : false,
+            'options' => $selectedOptions,
+        ];
+
+        // If the product with the same options exists, increase the quantity
+        if (isset($cart[$cartKey])) {
+            $cart[$cartKey]['quantity']++;
         } else {
-            // Add the product to the cart with a quantity of 1
-            $cart[$request->productID] = [
-                'name' => $request->input('name'),
-                'price' => $request->input('price'),
-                'quantity' => 1,
-                'image' => $request->input('image'),
-                'takeaway' => $request->has('takeaway') ? true : false,
-                'options' => $selectedOptions, // Store selected options properly
-            ];
+            $cart[$cartKey] = $newCartItem;
         }
 
         // Save the updated cart back to the session
