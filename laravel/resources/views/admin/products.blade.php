@@ -146,10 +146,10 @@
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit User</h2>
                 <hr class="py-2">
                 <form action="{{ route('editProduct.post') }}" method="POST" enctype="multipart/form-data">
-                <input type="hidden" id="productID" name="productID">
-                <input type="hidden" id="editCustomizableCategoriesInput" name="editCustomizableCategories">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" id="productID" name="productID">
+                    <input type="hidden" id="editCustomizableCategoriesInput" name="editCustomizableCategories">
                     <div class="flex space-x-4">
                         <div class="flex-1">
                             <label class="block text-gray-700 text-sm font-medium">Product Name <span class="text-red-500">*</span></label>
@@ -471,6 +471,7 @@ function openEditModal(
         const categoryHTML = `
             <div class="category mt-4 border p-4 rounded-lg">
                 <h2 class="font-semibold text-lg">Category ${index + 1}</h2>
+                <input type="hidden" name="editCustomizableCategories[${index}][oldName]" value="${category.name}">
                 <div class="flex space-x-4">
                     <div class="flex-1">
                         <label class="block text-gray-700 text-sm font-medium">Customizable Category Name</label>
@@ -494,6 +495,7 @@ function openEditModal(
                             .map(
                                 (option, optIndex) => `
                                 <h3 class="text-md font-semibold mt-4">Option ${optIndex + 1}</h3>
+                                <input type="hidden" name="editCustomizableCategories[${index}][options][${optIndex}][oldOptionName]" value="${option.name}">
                                     <div class="flex space-x-4">
                                         <div class="option flex-1">
                                             <label class="block text-gray-700 text-sm font-medium">Option Name</label>
