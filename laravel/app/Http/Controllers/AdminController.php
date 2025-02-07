@@ -184,7 +184,7 @@ class AdminController extends Controller
         $product->status = $validatedData['status'];
 
         // Get the input image file
-        if($validatedData['image']) {
+        if(isset($validatedData['image'])) {
             $file = $validatedData['image'];
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extension;
@@ -193,6 +193,7 @@ class AdminController extends Controller
             $file->move(public_path($path ), $filename);
             $product->image = $path. '/' . $filename;
         }
+
         $product->save();
 
         // Save customizable categories and options (only if provided)
