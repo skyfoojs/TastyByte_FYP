@@ -82,3 +82,5 @@ Route::get('/track-order', [OrdersController::class, 'trackOrder'])->name('track
 
 // Ge the Order History View from the Order Controller.
 Route::get('/order-history', [OrdersController::class, 'orderHistory'])->name('orderHistory');
+
+Route::get('/cashier/order', [OrdersController::class, 'cashierIndex'])->name('cashierIndex');
