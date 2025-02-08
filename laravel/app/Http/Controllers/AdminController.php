@@ -47,16 +47,24 @@ class AdminController extends Controller
 
     public function addUserPost(Request $request) {
         $request->validate([
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'username' => 'required',
-            'nickname' => 'required',
-            'role' => 'required',
-            'gender' => 'required',
-            'dateOfBirth' => 'required',
-            'email' => 'required|email|unique:users',
-            'phoneNo' => 'required',
-            'password' => 'required',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username',
+            'nickname' => 'required|string|max:255',
+            'role' => 'required|string',
+            'gender' => 'required|in:Male,Female,Other',
+            'dateOfBirth' => 'required|date|before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
+            'email' => 'required|email|unique:users,email',
+            'phoneNo' => 'required|numeric|digits_between:10,11',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/'
+            ],
+        ], [
+            'dateOfBirth.before_or_equal' => 'User must be at least 18 years old.',
+            'password.regex' => 'Password must have at least one uppercase letter, one lowercase letter, one number, and one special character.',
         ]);
 
         $user = User::create([
@@ -81,28 +89,27 @@ class AdminController extends Controller
     }
 
     public function editUserPost(Request $request) {
-        // Validate input data
         $request->validate([
             'registeredUserID' => 'required|exists:users,userID',
             'editFirstName' => 'required|string|max:255',
             'editLastName' => 'required|string|max:255',
-            'editUsername' => 'required|string|max:255',
+            'editUsername' => 'required|string|max:255|unique:users,username,' . $request->registeredUserID . ',userID',
             'editNickname' => 'required|string|max:255',
             'editRole' => 'required|string',
-            'editGender' => 'required',
-            'editDateOfBirth' => 'required|date',
-            'editEmail' => 'required' ,
-            'editPhoneNo' => 'required|string|max:15',
+            'editGender' => 'required|in:Male,Female,Other',
+            'editDateOfBirth' => 'required|date|before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
+            'editEmail' => 'required|email|unique:users,email,' . $request->registeredUserID . ',userID',
+            'editPhoneNo' => 'required|numeric|digits_between:10,15',
+        ], [
+            'editDateOfBirth.before_or_equal' => 'User must be at least 18 years old.',
         ]);
 
-        // Retrieve the user record
         $user = User::find($request->registeredUserID);
 
         if (!$user) {
             return redirect()->route('admin-users')->with('error', 'User not found.');
         }
 
-        // Update user details
         $user->firstName = $request->editFirstName;
         $user->lastName = $request->editLastName;
         $user->username = $request->editUsername;
@@ -127,9 +134,10 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'category' => 'required|string|max:255',
-            'otherCategory' => 'nullable|string|max:255', // Only required if "others" is selected
+            'otherCategory' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
             'status' => 'required|in:Available,Not Available',
+            'image' => 'nullable|image|mimes:PNG,JPG,JPEG,WEBP,png,jpg,jpeg,webp',
             'customizableCategories' => 'nullable|array',
             'customizableCategories.*.name' => 'nullable|string|max:255',
             'customizableCategories.*.sort' => 'nullable|integer|min:1',
@@ -140,6 +148,7 @@ class AdminController extends Controller
             'customizableCategories.*.options.*.sort' => 'nullable|integer|min:1|max:4',
             'customizableCategories.*.options.*.status' => 'nullable|in:available,not-available',
         ]);
+
         // Handle dynamic category logic
         $categoryID = null;
 
@@ -173,6 +182,18 @@ class AdminController extends Controller
         $product->categoryID = $categoryID;
         $product->description = $validatedData['description'];
         $product->status = $validatedData['status'];
+
+        // Get the input image file
+        if(isset($validatedData['image'])) {
+            $file = $validatedData['image'];
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $path = 'uploads';
+            // Move the image to /public/uploads
+            $file->move(public_path($path ), $filename);
+            $product->image = $path. '/' . $filename;
+        }
+
         $product->save();
 
         // Save customizable categories and options (only if provided)
@@ -210,9 +231,154 @@ class AdminController extends Controller
     }
 
     public function editProductPost(Request $request) {
-        // Fetch products with their categories and customizable categories
-        $products = Product::with(['category', 'customizableCategory'])->find($request->productID);
+        // Validate request inputs
+        $validatedData = $request->validate([
+            'productID' => 'required|exists:product,productID',
+            'editName' => 'required|string|max:255',
+            'editPrice' => 'required|numeric|min:0',
+            'editCategory' => 'required|string|max:255',
+            'editOtherCategory' => 'nullable|string|max:255',
+            'editDescription' => 'nullable|string|max:1000',
+            'editStatus' => 'required|in:Available,Not Available',
+            'editImage' => 'nullable|image|mimes:PNG,JPG,JPEG,WEBP,png,jpg,jpeg,webp',
+            'editCustomizableCategories' => '',
+            'editCustomizableCategories.*.name' => 'nullable|string|max:255',
+            'editCustomizableCategories.*.sort' => 'nullable|integer|min:1',
+            'editCustomizableCategories.*.status' => 'nullable|in:Available,Not Available',
+            'editCustomizableCategories.*.options' => 'nullable|array',
+            'editCustomizableCategories.*.options.*.name' => 'nullable|string|max:255',
+            'editCustomizableCategories.*.options.*.maxAmount' => 'nullable|integer|min:1',
+            'editCustomizableCategories.*.options.*.sort' => 'nullable|integer|min:1',
+            'editCustomizableCategories.*.options.*.status' => 'nullable|in:Available,Not Available',
+        ]);
 
+        // Handle dynamic category logic
+        $categoryID = null;
+        if ($validatedData['editCategory'] === 'others') {
+            if (empty($validatedData['editOtherCategory'])) {
+                return back()->withErrors(['editOtherCategory' => 'Please specify the category if "Others" is selected.'])->withInput();
+            }
+            $existingCategory = Category::where('name', $validatedData['editOtherCategory'])->first();
+            if ($existingCategory) {
+                $categoryID = $existingCategory->categoryID;
+            } else {
+                $newCategory = new Category();
+                $newCategory->name = $validatedData['editOtherCategory'];
+                $newCategory->status = 'Available';
+                $newCategory->sort = $validatedData['editCategorySort'];
+                $newCategory->save();
+                $categoryID = $newCategory->categoryID;
+            }
+        } else {
+            $categoryID = $validatedData['editCategory'];
+        }
+
+        // Find the product
+        $product = Product::find($request->productID);
+        if (!$product) {
+            return redirect()->route('admin-products')->with('error', 'Product not found.');
+        }
+
+        // Update product details
+        $product->name = $validatedData['editName'];
+        $product->price = $validatedData['editPrice'];
+        $product->categoryID = $categoryID;
+        $product->description = $validatedData['editDescription'];
+        $product->status = $validatedData['editStatus'];
+
+        // Handle image update
+        if (isset($validatedData['editImage'])) {
+            $file = $validatedData['editImage'];
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $path = 'uploads';
+
+            // Delete old image if exists
+            if ($product->image && file_exists(public_path($product->image))) {
+                unlink(public_path($product->image));
+            }
+
+            // Save new image
+            $file->move(public_path($path), $filename);
+            $product->image = $path . '/' . $filename;
+        } else {
+            $product->image = $product->image;
+        }
+
+        $product->save();
+
+        // Update customizable categories and options
+        // Update customizable categories and options
+if (!empty($validatedData['editCustomizableCategories'])) {
+    foreach ($validatedData['editCustomizableCategories'] as $categoryData) {
+        // Check if an old name is provided to find the existing category
+        $customizableCategory = CustomizeableCategory::where('productID', $product->productID)
+            ->where('name', $categoryData['oldName'] ?? null) // Use oldName if provided
+            ->first();
+
+        // If no old name was found, check for the new name
+        if (!$customizableCategory && isset($categoryData['name'])) {
+            $customizableCategory = CustomizeableCategory::where('productID', $product->productID)
+                ->where('name', $categoryData['name'])
+                ->first();
+        }
+
+        if ($customizableCategory) {
+            // Update existing category
+            $customizableCategory->name = $categoryData['name'];
+            $customizableCategory->sort = $categoryData['sort'];
+            $customizableCategory->status = $categoryData['status'];
+            $customizableCategory->singleChoose = $categoryData['singleChoose'] ?? false;
+            $customizableCategory->save();
+        } else {
+            // Create a new category if not found
+            $customizableCategory = new CustomizeableCategory();
+            $customizableCategory->productID = $product->productID;
+            $customizableCategory->name = $categoryData['name'];
+            $customizableCategory->sort = $categoryData['sort'];
+            $customizableCategory->status = $categoryData['status'];
+            $customizableCategory->singleChoose = $categoryData['singleChoose'] ?? false;
+            $customizableCategory->save();
+        }
+
+        // Handle options similarly
+        if (!empty($categoryData['options'])) {
+            foreach ($categoryData['options'] as $optionData) {
+                $customizableOption = CustomizableOptions::where('customizeCategoryID', $customizableCategory->customizeCategoryID)
+                    ->where('name', $optionData['oldOptionName'] ?? null) // Check for old name if exists
+                    ->first();
+
+                // If no old name was found, check for the new name
+                if (!$customizableOption && isset($optionData['name'])) {
+                    $customizableOption = CustomizableOptions::where('customizeCategoryID', $customizableCategory->customizeCategoryID)
+                        ->where('name', $optionData['name'])
+                        ->first();
+                }
+
+                if ($customizableOption) {
+                    // Update existing option
+                    $customizableOption->name = $optionData['name'];
+                    $customizableOption->maxAmount = $optionData['maxAmount'];
+                    $customizableOption->status = $optionData['status'];
+                    $customizableOption->sort = $optionData['sort'] ?? 2;
+                    $customizableOption->save();
+                } else {
+                    // Create new option if not found
+                    $customizableOption = new CustomizableOptions();
+                    $customizableOption->customizeCategoryID = $customizableCategory->customizeCategoryID;
+                    $customizableOption->name = $optionData['name'];
+                    $customizableOption->maxAmount = $optionData['maxAmount'];
+                    $customizableOption->status = $optionData['status'];
+                    $customizableOption->sort = $optionData['sort'] ?? 2;
+                    $customizableOption->save();
+                }
+            }
+        }
+    }
+}
+
+
+        return redirect()->route('admin-products')->with('success', 'Product updated successfully!');
     }
 
     public function addInventoryPost(Request $request) {
@@ -246,14 +412,14 @@ class AdminController extends Controller
             'editMinLevel' => 'required',
         ]);
 
-        // Retrieve the user record
+        // Retrieve the inventory record
         $inventory = Inventory::find($request->inventoryID);
 
         if (!$inventory) {
             return redirect()->route('admin-inventory')->with('error', 'Inventory not found.');
         }
 
-        // Update user details
+        // Update inventory details
         $inventory->name = $request->editInventory;
         $inventory->productID = $request->editProduct;
         $inventory->stockLevel = $request->editStockLevel;
@@ -263,6 +429,71 @@ class AdminController extends Controller
             return redirect()->route('admin-inventory')->with('success', 'Inventory updated successfully!');
         } else {
             return redirect()->route('admin-inventory')->with('error', 'Error updating inventory.');
+        }
+    }
+
+    public function addVoucherPost(Request $request) {
+        $request->validate([
+            'code' => 'required|string|min:6|max:12|unique:vouchers,code',
+            'type' => 'required|string|max:20|in:Percentage,Amount',
+            'voucherValue' => 'required|numeric',
+            'singleUse' => 'required',
+            'startDate' => 'required|date|after_or_equal:today',
+            'expiredDate' => 'required|date|after:startDate',
+            'usage' => 'required'
+        ]);
+
+        $vouchers = Vouchers::create([
+            'code' => $request->code,
+            'type' => $request->type,
+            'singleUse' => $request->singleUse ?? 'False',
+            'usage' => $request->usage ?? 0,
+            'value' => $request->voucherValue,
+            'startedOn' => $request->startDate,
+            'expiredOn' => $request->expiredDate,
+            'usedCount' => 0,
+        ]);
+
+        if (!$vouchers) {
+            return redirect()->route('admin-vouchers')->with('error', 'Error adding voucher.');
+        }
+
+        return redirect()->route('admin-vouchers')->with('success', 'Voucher added successfully!');
+    }
+
+    public function editVoucherPost(Request $request) {
+        $request->validate([
+            'voucherID' => 'required',
+            'editCode' => 'required|string|min:6|max:12',
+            'editType' => 'required|string|max:20|in:Percentage,Amount',
+            'editVoucherValue' => 'required|numeric',
+            'editSingleUse' => 'required',
+            'editStartDate' => 'required|date|after_or_equal:today',
+            'editExpiredDate' => 'required|date|after:startDate',
+            'editUsage' => 'required'
+        ]);
+
+        // Retrieve the voucher record
+        $vouchers = Vouchers::find($request->voucherID);
+
+        if (!$vouchers) {
+            return redirect()->route('admin-vouchers')->with('error', 'Voucher not found.');
+        }
+
+        // Update voucher details
+        $vouchers->code = $request->editCode;
+        $vouchers->type = $request->editType;
+        $vouchers->singleUse = $request->editSingleUse;
+        $vouchers->usage = $request->editUsage;
+        $vouchers->value = $request->editVoucherValue;
+        $vouchers->startedOn = $request->editStartDate;
+        $vouchers->expiredOn = $request->editExpiredDate;
+        $vouchers->usedCount = 0;
+
+        if ($vouchers->save()) {
+            return redirect()->route('admin-vouchers')->with('success', 'Voucher updated successfully!');
+        } else {
+            return redirect()->route('admin-vouchers')->with('error', 'Error updating voucher.');
         }
     }
 }

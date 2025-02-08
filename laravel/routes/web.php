@@ -62,5 +62,23 @@ Route::put('admin/inventory', [AdminController::class, 'editInventoryPost'])->na
 // Get the Voucher Page view from Admin Controller.
 Route::get('admin/vouchers', [AdminController::class, 'vouchers'])->name('admin-vouchers');
 
-// Get the view from Table Controller.
-Route::get('cashier/table', [OrdersController::class, 'index'])->name('table');
+// Get the Create Vouchers Data from the View.
+Route::post('admin/vouchers', [AdminController::class, 'addVoucherPost'])->name('addVoucher.post');
+
+// Get the Edit Voucher Data from the View.
+Route::put('admin/vouchers', [AdminController::class, 'editVoucherPost'])->name('editVoucher.post');
+
+// Get the Add To Cart Datas from the View.
+Route::post('order', [OrdersController::class, 'addToCartPost'])->name('addToCart.post');
+
+// Get the Summary Page view from Order Controller.
+Route::get('/summary', [OrdersController::class, 'orderSummary'])->name('orderSummary');
+
+// Get the Order Items Datas from the View.
+Route::post('/summary', [OrdersController::class, 'addOrderPost'])->name('addOrder.post');
+
+// Get the Track Order View from Order Controller.
+Route::get('/track-order', [OrdersController::class, 'trackOrder'])->name('trackOrder');
+
+// Ge the Order History View from the Order Controller.
+Route::get('/order-history', [OrdersController::class, 'orderHistory'])->name('orderHistory');

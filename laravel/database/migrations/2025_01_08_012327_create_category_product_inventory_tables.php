@@ -28,6 +28,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->text('description')->nullable();
             $table->string('status');
+            $table->string('image')->nullable();
             $table->timestamps();
 
             // Foreign key constraint

@@ -2,10 +2,11 @@ INSERT INTO `category` (`categoryID`, `name`, `status`, `sort`, `created_at`, `u
 (1, 'Food', 'oimqwdoim', '2', '2025-01-08 04:27:43', '2025-01-08 04:27:43'),
 (2, 'Beverage', '1', '123', NULL, NULL);
 
-INSERT INTO `product` (`productID`, `categoryID`, `name`, `price`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Curry Mee', 8.80, 'Tasty Curry Mee', 'Available', '2025-01-08 04:28:10', '2025-01-08 04:28:10'),
-(2, 2, 'Ice Lemon Tea', 5.99, 'Refreshing Ice Lemon Tea!', '1', NULL, NULL),
-(3, 1, 'Fried Chicken', 20.00, 'Yu Xiang Favourite', '1', NULL, NULL);
+INSERT INTO `product` (`productID`, `categoryID`, `name`, `price`, `description`, `status`, `image`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Curry Mee', 8.80, 'Tasty Curry Mee with chicken.', 'Available', 'uploads/1738911518.jpg', '2025-01-07 20:28:10', '2025-02-07 00:32:05'),
+(2, 2, 'Ice Lemon Tea', 5.99, 'Refreshing Ice Lemon Tea!', '1', NULL, NULL, NULL),
+(3, 1, 'Fried Chicken', 20.00, 'Yu Xiang Favourite', '1', NULL, NULL, NULL),
+(6, 1, 'Burger', 16.80, 'Beef burger', 'Available', 'uploads/1738853954.jpg', '2025-02-06 05:09:06', '2025-02-06 06:59:14');
 
 INSERT INTO `customizablecategory` (`customizeCategoryID`, `productID`, `name`, `status`, `sort`, `singleChoose`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Noodle Type', '1', '1', 0, '2025-01-10 07:10:46', '2025-01-10 07:10:46'),
@@ -26,3 +27,6 @@ INSERT INTO `customizableoptions` (`customizeOptionsID`, `customizeCategoryID`, 
 INSERT INTO `inventory` (`inventoryID`, `productID`, `stockLevel`, `minLevel`, `name`, `created_at`, `updated_at`) VALUES
 (NULL, '1', '20', '10', 'Yellow Noodles', '2025-02-03 12:00:45', '2025-02-03 12:00:45'),
 (NULL, '2', '30', '5', 'Lemon', '2025-02-03 12:02:45', '2025-02-03 12:02:45');
+
+INSERT INTO `users` (`userID`, `firstName`, `lastName`, `username`, `nickname`, `role`, `gender`, `dateOfBirth`, `email`, `phoneNo`, `password`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Foo', 'Jia Seng', 'skyfoojs', 'Sky', 'Admin', 'Male', '2005-11-05', 'skyfoojs@gmail.com', '0172681225', '$2y$12$/SAYJpKLJUmjRTgauH1dNuiT2mAocLjWtl61Jdje/IdGnAGmdOR.y', 'Active', '2025-02-07 06:38:49', '2025-02-07 06:38:49');

@@ -1,6 +1,6 @@
 <x-waiter.layout>
     <x-waiter.navbar>
-        <x-waiter.table-header :table="'Number'">
+        <x-waiter.table-header :table="'Table Number' . session('tableNo')" :trackOrder="''">
         <div class="flex flex-col justify-center items-center">
             <div class="mt-20">
                 <p class="text-xl">Please Enter the Table Number</p>

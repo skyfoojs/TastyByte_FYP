@@ -55,6 +55,9 @@
                                 @endforeach
 
                             <td class="p-3 mt-4 flex justify-center space-x-2">
+                            <button class="text-gray-500 hover:text-blue-600" onclick="openPhotoModal('{{ asset($product->image) }}')">
+                                <i class="bx bx-image"></i>
+                            </button>
                             <button
                                 class="text-gray-500 hover:text-blue-600"
                                 onclick="openEditModal(
@@ -102,6 +105,13 @@
 
         <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
+        <div id="photoModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
+            <div class="bg-white rounded-xl p-6">
+                <img id="photoModalImage" src="" alt="Photo Not Available" class="max-w-full max-h-96 rounded-lg">
+                <button onclick="closePhotoModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mt-4">Close</button>
+            </div>
+        </div>
+
         <div id="userFilterModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4">
                 <h2 class="text-2xl font-semibold mb-4">Filter Users</h2>
@@ -135,10 +145,11 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit User</h2>
                 <hr class="py-2">
-                <form action="{{ route('editProduct.post') }}" method="POST">
-
+                <form action="{{ route('editProduct.post') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" id="productID" name="productID">
+                    <input type="hidden" id="editCustomizableCategoriesInput" name="editCustomizableCategories">
                     <div class="flex space-x-4">
                         <div class="flex-1">
                             <label class="block text-gray-700 text-sm font-medium">Product Name <span class="text-red-500">*</span></label>
@@ -185,12 +196,15 @@
                         <option value="Not Available">Not Available</option>
                     </select>
 
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Product Image</label>
+                    <input name="editImage" type="file" id="image" accept="image/png, image/jpg, image/jpeg, image/webp" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+
                     <div id="editCustomizableContainer" class="space-y-4"></div>
 
                     <div id="editDefaultButtonLocation">
                         <div id="edit-modalFooter" class="flex justify-end mt-10">
                             <button type="button" onclick="closeEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                            <button type="submit" id="" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
+                            <button type="submit" id="" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Update Product</button>
                         </div>
                     </div>
                 </form>
@@ -201,7 +215,7 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Product</h2>
                 <hr class="py-2">
-                <form action="{{ route('addProduct.post') }}" method="POST">
+                <form action="{{ route('addProduct.post') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="flex space-x-4">
                         <div class="flex-1">
@@ -248,6 +262,9 @@
                         <option value="Available">Available</option>
                         <option value="Not Available">Not Available</option>
                     </select>
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Product Image</label>
+                    <input name="image" type="file" id="image" accept="image/png, image/jpg, image/jpeg, image/webp" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
                     <div id="addCategoryButtonContainer" class="flex mt-4 flex-col">
                         <button type="button" id="addCategoryButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
@@ -323,6 +340,32 @@
 </style>
 
 <script>
+function openPhotoModal(imagePath) {
+    document.getElementById('photoModalImage').src = imagePath;
+    const modal = document.getElementById('photoModal');
+    const overlay = document.getElementById('modalOverlay');
+
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+
+    // Trigger the transition
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+}
+
+function closePhotoModal() {
+    const modal = document.getElementById('photoModal');
+    const overlay = document.getElementById('modalOverlay');
+
+    modal.classList.remove('show');
+
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        overlay.classList.add('hidden');
+    }, 300);
+}
+
 function openFilterModal() {
     const modal = document.getElementById('userFilterModal');
     const overlay = document.getElementById('modalOverlay');
@@ -401,13 +444,15 @@ function openEditModal(
     modal.classList.remove("hidden");
     overlay.classList.remove("hidden");
 
+    document.getElementById("editCustomizableCategoriesInput").value = customizableCategories || "";
+    document.getElementById("productID").value = productID || "";
     document.getElementById("editName").value = productName || "";
     document.getElementById("editPrice").value = productPrice || "";
     document.getElementById("editDescription").value = productDescription || "";
     document.getElementById("editStatus").value = productStatus || "";
     document.getElementById("editCategory").value = categoryName || "";
     document.getElementById("editCategorySort").value = categorySort || "";
-
+    console.log(customizableCategories)
     const container = document.getElementById("editCustomizableContainer");
 
     if (!container) {
@@ -426,36 +471,48 @@ function openEditModal(
         const categoryHTML = `
             <div class="category mt-4 border p-4 rounded-lg">
                 <h2 class="font-semibold text-lg">Category ${index + 1}</h2>
+                <input type="hidden" name="editCustomizableCategories[${index}][oldName]" value="${category.name}">
                 <div class="flex space-x-4">
                     <div class="flex-1">
                         <label class="block text-gray-700 text-sm font-medium">Customizable Category Name</label>
-                        <input type="text" name="customizableCategories[${index}][name]" value="${category.name}" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        <input type="text" name="editCustomizableCategories[${index}][name]" value="${category.name}" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                     </div>
                     <div class="flex-1">
                         <label class="block text-gray-700 text-sm font-medium">Category Sort</label>
-                        <input type="number" name="customizableCategories[${index}][sort]" value="${category.sort}" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        <input type="number" name="editCustomizableCategories[${index}][sort]" value="${category.sort}" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                     </div>
                 </div>
                 <label class="block text-gray-700 text-sm font-medium mt-2">Category Status</label>
-                <select name="customizableCategories[${index}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                <select name="editCustomizableCategories[${index}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                     <option value="Available" ${category.status === "Available" ? "selected" : ""}>Available</option>
                     <option value="Not Available" ${category.status === "Not Available" ? "selected" : ""}>Not Available</option>
                 </select>
 
                 <div class="mt-4">
-                    <h3 class="text-sm font-semibold">Options</h3>
+                    <hr>
                     <div id="edit-options-container-${index}" class="space-y-2">
                         ${category.options
                             .map(
                                 (option, optIndex) => `
-                                    <div class="option flex items-center space-x-2">
-                                        <input type="text" name="customizableCategories[${index}][options][${optIndex}][name]" value="${option.name}" placeholder="Option Name" class="border border-gray-300 rounded-lg py-1 px-2">
-                                        <input type="number" name="customizableCategories[${index}][options][${optIndex}][maxAmount]" value="${option.maxAmount}" placeholder="Max Amount" class="border border-gray-300 rounded-lg py-1 px-2">
-                                        <select name="customizableCategories[${index}][options][${optIndex}][status]" class="border border-gray-300 rounded-lg py-1 px-2">
-                                            <option value="Available" ${option.status === "Available" ? "selected" : ""}>Available</option>
-                                            <option value="Not Available" ${option.status === "Not Available" ? "selected" : ""}>Not Available</option>
-                                        </select>
+                                <h3 class="text-md font-semibold mt-4">Option ${optIndex + 1}</h3>
+                                <input type="hidden" name="editCustomizableCategories[${index}][options][${optIndex}][oldOptionName]" value="${option.name}">
+                                    <div class="flex space-x-4">
+                                        <div class="option flex-1">
+                                            <label class="block text-gray-700 text-sm font-medium">Option Name</label>
+                                            <input type="text" name="editCustomizableCategories[${index}][options][${optIndex}][name]" value="${option.name}" placeholder="Option Name" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+                                        </div>
+
+                                        <div class="flex-1">
+                                            <label class="block text-gray-700 text-sm font-medium">Max Amount</label>
+                                            <input type="number" name="editCustomizableCategories[${index}][options][${optIndex}][maxAmount]" value="${option.maxAmount}" placeholder="Max Amount" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+                                        </div>
                                     </div>
+
+                                    <label class="block text-gray-700 text-sm font-medium mt-2">Option Status</label>
+                                    <select name="editCustomizableCategories[${index}][options][${optIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+                                        <option value="Available" ${option.status === "Available" ? "selected" : ""}>Available</option>
+                                        <option value="Not Available" ${option.status === "Not Available" ? "selected" : ""}>Not Available</option>
+                                    </select>
                                 `
                             )
                             .join("")}

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreignId('productID')->constrained('product', 'productID')->onDelete('cascade');
             $table->foreignId('orderID')->constrained('orders', 'orderID')->onDelete('cascade');
             $table->integer('quantity');
-            $table->string('remark');
+            $table->json('remark');
             $table->timestamps();
         });
     }

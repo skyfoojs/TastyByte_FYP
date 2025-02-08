@@ -54,7 +54,7 @@
                                     <span class="text-gray-500">{{ date('H:i:s', strtotime($voucher->expiredOn)) }}</span>
                                 </td>
                                 <td class="p-3 mt-4 flex justify-center space-x-2">
-                                    <button class="text-gray-500 hover:text-blue-600" onclick="">
+                                    <button class="text-gray-500 hover:text-blue-600" onclick="openVoucherEditModal({{ $voucher->voucherID }}, '{{ $voucher->code }}', '{{ $voucher->type }}', '{{ $voucher->singleUse }}', {{ $voucher->usage }}, {{ $voucher->value }}, '{{ $voucher->startedOn }}', '{{ $voucher->expiredOn }}')">
                                         <i class="bx bx-pencil"></i>
                                     </button>
                                 </td>
@@ -108,69 +108,121 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit Voucher</h2>
                 <hr class="py-2">
-                <form action="{{ route('editInventory.post') }}" method="POST">
-                    <input type="hidden" id="inventoryID" name="inventoryID">
+                <form action="{{ route('editVoucher.post') }}" method="POST">
+                    <input type="hidden" id="voucherID" name="voucherID">
                     @csrf
                     @method('PUT')
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Inventory Name <span class="text-red-500">*</span></label>
-                    <input name="editInventory" type="text" id="edit-inventory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Voucher Code (6-12 characters) <span class="text-red-500">*</span></label>
+                    <input minlength="6" maxlength="12" name="editCode" type="text" id="editCode" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
 
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Product <span class="text-red-500">*</span></label>
-                    <select name="editProduct" id="edit-product" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                        <option value="">Select Product</option>
-
-                    </select>
-
-                    <div class="flex space-x-4 mt-4">
+                    <div class="flex space-x-4">
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Stock Level <span class="text-red-500">*</span></label>
-                            <input min="0" name="editStockLevel" type="number" id="editStockLevel" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium mt-4">Number of Usage <span class="text-red-500">*</span></label>
+                            <input name="editUsage" type="number" id="editUsage" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
 
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Minimum Stock Level <span class="text-red-500">*</span></label>
-                            <input name="editMinLevel" type="number" id="editMinLevel" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium mt-4">Voucher Type <span class="text-red-500">*</span></label>
+                            <select name="editType" id="editType" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Type</option>
+                                <option value="Percentage">Percentage</option>
+                                <option value="Amount">Amount</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4 mt-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Voucher Value <span class="text-red-500">*</span></label>
+                            <input min="0" name="editVoucherValue" type="numeric" id="editVoucherValue" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Single Use <span class="text-red-500">*</span></label>
+                            <select name="editSingleUse" id="editSingleUse" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select True or False</option>
+                                <option value="False">False</option>
+                                <option value="True">True</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4 mt-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Start Date <span class="text-red-500">*</span></label>
+                            <input name="editStartDate" type="datetime-local" id="editStartDate" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Expired Date <span class="text-red-500">*</span></label>
+                            <input name="editExpiredDate" type="datetime-local" id="editExpiredDate" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
                     </div>
 
                     <div class="flex justify-end mt-10">
-                        <button type="button" onclick="closeInventoryEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                        <button type="submit" id="editInventoryButton" name="addInventoryButton" value="Edit Inventory" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Update Inventory</button>
+                        <button type="button" onclick="closeVoucherEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                        <button type="submit" id="editVoucherButton" name="editVoucherButton" value="Edit Voucher" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Update Voucher</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div id="inventoryAddModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
+        <div id="voucherAddModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
-                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Inventory</h2>
+                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Voucher</h2>
                 <hr class="py-2">
-                <form action="{{ route('addInventory.post') }}" method="POST">
+                <form action="{{ route('addVoucher.post') }}" method="POST">
                     @csrf
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Inventory Name <span class="text-red-500">*</span></label>
-                    <input name="inventory" type="text" id="inventory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Voucher Code (6-12 characters) <span class="text-red-500">*</span></label>
+                    <input minlength="6" maxlength="12" name="code" type="text" id="code" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
 
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Product <span class="text-red-500">*</span></label>
-                    <select name="product" id="product" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                        <option value="">Select Product</option>
-
-                    </select>
-
-                    <div class="flex space-x-4 mt-4">
+                    <div class="flex space-x-4">
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Stock Level <span class="text-red-500">*</span></label>
-                            <input min="0" name="stockLevel" type="number" id="stockLevel" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium mt-4">Number of Usage <span class="text-red-500">*</span></label>
+                            <input name="usage" type="number" id="usage" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
 
                         <div class="flex-1">
-                            <label class="block text-gray-700 text-sm font-medium">Minimum Stock Level <span class="text-red-500">*</span></label>
-                            <input name="minLevel" type="number" id="minLevel" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <label class="block text-gray-700 text-sm font-medium mt-4">Voucher Type <span class="text-red-500">*</span></label>
+                            <select name="type" id="type" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Type</option>
+                                <option value="Percentage">Percentage</option>
+                                <option value="Amount">Amount</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4 mt-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Voucher Value <span class="text-red-500">*</span></label>
+                            <input min="0" name="voucherValue" type="numeric" id="voucherValue" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Single Use <span class="text-red-500">*</span></label>
+                            <select name="singleUse" id="singleUse" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select True or False</option>
+                                <option value="False">False</option>
+                                <option value="True">True</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4 mt-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Start Date <span class="text-red-500">*</span></label>
+                            <input name="startDate" type="datetime-local" id="startDate" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Expired Date <span class="text-red-500">*</span></label>
+                            <input name="expiredDate" type="datetime-local" id="expiredDate" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         </div>
                     </div>
 
                     <div class="flex justify-end mt-10">
-                        <button type="button" onclick="closeInventoryAddModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                        <button type="submit" id="addInventoryButton" name="addInventoryButton" value="Add Inventory" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Inventory</button>
+                        <button type="button" onclick="closeVoucherAddModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                        <button type="submit" id="addVoucherButton" name="addVoucherButton" value="Add Voucher" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Voucher</button>
                     </div>
                 </form>
             </div>
@@ -231,8 +283,8 @@ function openModal() {
     }, 10);
 }
 
-function openInventoryAddModal() {
-    const modal = document.getElementById('inventoryAddModal');
+function openVoucherAddModal() {
+    const modal = document.getElementById('voucherAddModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('hidden');
@@ -243,8 +295,8 @@ function openInventoryAddModal() {
     }, 10);
 }
 
-function closeInventoryAddModal() {
-    const modal = document.getElementById('inventoryAddModal');
+function closeVoucherAddModal() {
+    const modal = document.getElementById('voucherAddModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('show');
@@ -255,26 +307,29 @@ function closeInventoryAddModal() {
     }, 300);
 }
 
-function openInventoryEditModal(id, name, product, stockLevel, minLevel) {
-    const modal = document.getElementById('inventoryEditModal');
+function openVoucherEditModal(id, code, type, singleUse, usage, value, startDate, expiredDate) {
+    const modal = document.getElementById('voucherEditModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('hidden');
     overlay.classList.remove('hidden');
 
-    document.getElementById('inventoryID').value = id;
-    document.getElementById('edit-inventory').value = name;
-    document.getElementById('edit-product').value = product;
-    document.getElementById('editStockLevel').value = stockLevel;
-    document.getElementById('editMinLevel').value = minLevel;
+    document.getElementById('voucherID').value = id;
+    document.getElementById('editCode').value = code;
+    document.getElementById('editType').value = type;
+    document.getElementById('editSingleUse').value = singleUse;
+    document.getElementById('editUsage').value = usage;
+    document.getElementById('editVoucherValue').value = value;
+    document.getElementById('editStartDate').value = startDate;
+    document.getElementById('editExpiredDate').value = expiredDate;
 
     setTimeout(() => {
         modal.classList.add('show');
     }, 10);
 }
 
-function closeInventoryEditModal() {
-    const modal = document.getElementById('inventoryEditModal');
+function closeVoucherEditModal() {
+    const modal = document.getElementById('voucherEditModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('show');
@@ -287,15 +342,14 @@ function closeInventoryEditModal() {
 }
 
 function clearModalFields() {
-    document.getElementById('registeredUserID').value = '';
-    document.getElementById('firstName').value = '';
-    document.getElementById('lastName').value = '';
-    document.getElementById('email').value = '';
-    document.getElementById('phoneNo').value = '';
-    document.getElementById('gender').value = '';
-    document.getElementById('dateOfBirth').value = '';
-    document.getElementById('membershipStart').value = '';
-    document.getElementById('membershipEnd').value = '';
+    document.getElementById('voucherID').value = '';
+    document.getElementById('editCode').value = '';
+    document.getElementById('editType').value = '';
+    document.getElementById('editSingleUse').value = '';
+    document.getElementById('editUsage').value = '';
+    document.getElementById('editVoucherValue').value = '';
+    document.getElementById('editStartDate').value = '';
+    document.getElementById('editExpiredDate').value = '';
 }
 
 function searchUsers() {

@@ -130,10 +130,10 @@
                     <label class="block text-gray-700 text-sm font-medium mt-4">Role<span class="text-red-500">*</span></label>
                     <select name="editRole" id="editRole" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                         <option value="">Select Role</option>
-                        <option value="waiter">Waiter</option>
-                        <option value="admin">Admin</option>
-                        <option value="kitchen">Kitchen</option>
-                        <option value="cashier">Cashier</option>
+                        <option value="Waiter">Waiter</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Kitchen">Kitchen</option>
+                        <option value="Cashier">Cashier</option>
                     </select>
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">E-mail</label>
@@ -193,17 +193,18 @@
                     <label class="block text-gray-700 text-sm font-medium mt-4">Role<span class="text-red-500">*</span></label>
                     <select name="role" id="role" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                         <option value="">Select Role</option>
-                        <option value="waiter">Waiter</option>
-                        <option value="admin">Admin</option>
-                        <option value="kitchen">Kitchen</option>
-                        <option value="cashier">Cashier</option>
+                        <option value="Waiter">Waiter</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Kitchen">Kitchen</option>
+                        <option value="Cashier">Cashier</option>
                     </select>
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Password</label>
                     <input name="password" type="password" id="password" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Confirm Password</label>
-                    <input name="confirm-password" type="password" id="confirm-password" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+                    <input name="confirm-password" type="password" id="confirm_password" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+                    <span id='message'></span>
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">E-mail</label>
                     <input name="email" type="email" id="email" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
@@ -253,7 +254,25 @@
             }
         </style>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script>
+        $(document).ready(function () {
+            $('#password, #confirm_password').on('keyup', function () {
+                if ($('#password').val() == $('#confirm_password').val()) {
+                    $('#message').html('Matching').css('color', 'green');
+                } else {
+                    $('#message').html('Not Matching').css('color', 'red');
+                }
+            });
+
+            $('form').on('submit', function (e) {
+                if ($('#password').val() !== $('#confirm_password').val()) {
+                    e.preventDefault(); // Prevent form submission
+                    alert("Passwords do not match!"); // Alert the user
+                }
+            });
+        });
+
             function openFilterModal() {
                 const modal = document.getElementById('userFilterModal');
                 const overlay = document.getElementById('modalOverlay');

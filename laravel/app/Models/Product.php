@@ -15,7 +15,7 @@ class Product extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'name', 'price', 'description', 'status', 'categoryID',
+        'name', 'price', 'description', 'status', 'categoryID', 'image',
     ];
 
     // Define the relationship with Category
