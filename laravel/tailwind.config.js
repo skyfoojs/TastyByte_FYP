@@ -17,6 +17,8 @@ export default {
             },
 
             colors: {
+                'text-primary' : '#3B82F6',
+                'text-secondary' : '#6c757d',
                 'blue-button' : '#3B82F6',
                 'light-gray' : '#CFCFCF',
             }
