@@ -18,6 +18,25 @@ class OrdersController extends Controller
         return view('waiter.order-summary');
     }
 
+    public function trackOrder() {
+        $orders = Orders::with('orderItems')->get();
+
+        return view('waiter.track-order', compact('orders'));
+    }
+
+    public function orderHistory(Request $request) {
+        $query = Orders::with('orderItems.products');
+
+        if ($request->has('orderID')) {
+            $query->where('orderID', $request->orderID);
+        }
+
+        $orders = $query->get();
+
+        return view('waiter.order-history', compact('orders'));
+    }
+
+
     public function storeTable(Request $request) {
         $request->validate([
             'table' => 'required|integer|min:1|max:20',
@@ -79,17 +98,18 @@ class OrdersController extends Controller
         }
 
         $cartItems = session('cart');
-        $userID = session('userID'); // Assuming the user is logged in
+        $userID = session('userID'); // Assuming user is logged in
         $tableNo = session('tableNo') ?? null;
-        //$remark = $request->input('remark', ''); // Get any remarks from the request
-        $totalAmount = array_reduce($cartItems, function($carry, $item) {
+
+        // Calculate total amount
+        $totalAmount = array_reduce($cartItems, function ($carry, $item) {
             return $carry + ($item['price'] * $item['quantity']);
         }, 0);
 
         try {
             DB::beginTransaction();
 
-            // Create a new order
+            // Create order
             $order = Orders::create([
                 'userID' => $userID,
                 'tableNo' => $tableNo,
@@ -100,26 +120,32 @@ class OrdersController extends Controller
 
             // Insert order items
             foreach ($cartItems as $cartItem) {
-                $optionsJson = json_encode($cartItem['options']); // Store options as JSON
+                $productID = Product::where('name', $cartItem['name'])->value('productID');
+
+                if (!$productID) {
+                    throw new \Exception("Product not found: " . $cartItem['name']);
+                }
 
                 OrderItems::create([
-                    'productID' => Product::where('name', $cartItem['name'])->value('productID'),
+                    'productID' => $productID,
                     'orderID' => $order->orderID,
                     'quantity' => $cartItem['quantity'],
-                    'remark' => $optionsJson, // Save options as remarks
+                    'remark' => json_encode($cartItem['options']), // Store options as JSON
                 ]);
             }
 
             DB::commit();
 
-            // Clear cart session after placing order
+            // Clear cart session
             session()->forget('cart');
-            session()->forget('tableNo');
-            return redirect()->route('order')->with('success', 'Order placed successfully!');
+
+            return redirect()->route('orderHistory', ['orderID' => $order->orderID])
+                ->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('order')->with('error', 'Failed to place order: ' . $e->getMessage());
         }
     }
+
 
 }
