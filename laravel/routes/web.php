@@ -76,3 +76,9 @@ Route::get('/summary', [OrdersController::class, 'orderSummary'])->name('orderSu
 
 // Get the Order Items Datas from the View.
 Route::post('/summary', [OrdersController::class, 'addOrderPost'])->name('addOrder.post');
+
+// Get the Track Order View from Order Controller.
+Route::get('/track-order', [OrdersController::class, 'trackOrder'])->name('trackOrder');
+
+// Ge the Order History View from the Order Controller.
+Route::get('/order-history', [OrdersController::class, 'orderHistory'])->name('orderHistory');
