@@ -4,8 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
-        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <title>Cashier Order Page</title>
         <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 
         <!-- Styles / Scripts -->
@@ -13,10 +12,7 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body>
-
-    <main class="font-valera">
+    <body class="font-valera bg-slate-200">
         {{ $slot }}
-    </main>
     </body>
 </html>
