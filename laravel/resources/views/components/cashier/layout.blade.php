@@ -6,6 +6,7 @@
 
         <title>Laravel</title>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -14,7 +15,7 @@
     </head>
     <body>
 
-    <main class="font-mont">
+    <main class="font-valera">
         {{ $slot }}
     </main>
     </body>
