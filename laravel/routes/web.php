@@ -61,3 +61,6 @@ Route::put('admin/inventory', [AdminController::class, 'editInventoryPost'])->na
 
 // Get the Voucher Page view from Admin Controller.
 Route::get('admin/vouchers', [AdminController::class, 'vouchers'])->name('admin-vouchers');
+
+// Get the view from Table Controller.
+Route::get('cashier/table', [OrdersController::class, 'index'])->name('table');
