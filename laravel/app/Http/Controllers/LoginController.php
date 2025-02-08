@@ -39,6 +39,8 @@ class LoginController extends Controller
                 return redirect()->intended(route('menu'));
             } elseif ($user->role === 'admin') {
                 return redirect()->route('admin-users');
+            } elseif ($user->role === 'cashier') {
+                return redirect()->route('cashier-menu');
             } else {
                 // Logout the user if their role is not valid for redirection
                 Auth::logout();
