@@ -1,6 +1,6 @@
 <x-waiter.layout>
     <x-waiter.navbar>
-            <x-waiter.table-header :table="session('tableNo') . ' Summary'">
+            <x-waiter.table-header :table="'Table ' . session('tableNo')" :trackOrder="'Summary'">
                 @php
                 //session()->forget('cart');
                 @endphp
@@ -36,10 +36,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr class="mx-6">
                             @endforeach
 
                             <div class="w-full sticky bottom-0 flex flex-col px-6 font-pop pb-6 bg-white">
-                                <hr>
                                 <div class="mt-12">
                                     <p class="font-semibold">Payment Summary</p>
                                 </div>
