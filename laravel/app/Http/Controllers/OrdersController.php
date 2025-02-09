@@ -15,6 +15,10 @@ class OrdersController extends Controller
     }
 
     public function cashierIndex() {
+        return view('cashier.table');
+    }
+
+    public function cashierOrders() {
         return view('cashier.order');
     }
 
