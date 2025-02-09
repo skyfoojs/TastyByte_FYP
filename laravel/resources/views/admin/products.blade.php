@@ -75,11 +75,13 @@
                                             'name' => $cat->name,
                                             'sort' => $cat->sort,
                                             'status' => $cat->status,
+                                            'singleChoose' => $cat->singleChoose,
                                             'options' => $cat->options->map(function ($opt) {
                                                 return [
                                                     'name' => $opt->name,
                                                     'maxAmount' => $opt->maxAmount,
                                                     'status' => $opt->status,
+                                                    'sort' => $opt->sort,
                                                 ];
                                             }),
                                         ];
@@ -167,8 +169,8 @@
                             <label class="block text-gray-700 text-sm font-medium">Category<span class="text-red-500">*</span></label>
                             <select name="editCategory" id="editCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                                 <option value="">Select Category</option>
-                                @foreach ($products->unique('category.name') as $product)
-                                    <option value="{{ $product->category->categoryID }}">{{ $product->category->name }}</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->categoryID }}">{{ $category->name }}</option>
                                 @endforeach
                                 <option value="others">Others</option>
                             </select>
@@ -234,8 +236,8 @@
                             <label class="block text-gray-700 text-sm font-medium">Category<span class="text-red-500">*</span></label>
                             <select name="category" id="category" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                                 <option value="">Select Category</option>
-                                @foreach ($products->unique('category.name') as $product)
-                                    <option value="{{ $product->category->categoryID }}">{{ $product->category->name }}</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->categoryID }}">{{ $category->name }}</option>
                                 @endforeach
                                 <option value="others">Others</option>
                             </select>
@@ -303,12 +305,24 @@
             </div>
         </div>
 
-        <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
-        <select name="customizableCategories[${categoryIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
-            <option value="">Select Status</option>
-            <option value="Available">Available</option>
-            <option value="Not Available">Not Available</option>
-        </select>
+        <div class="flex space-x-4">
+            <div class="flex-1">
+            <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
+            <select name="customizableCategories[${categoryIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+                <option value="">Select Status</option>
+                <option value="Available">Available</option>
+                <option value="Not Available">Not Available</option>
+            </select>
+            </div>
+            <div class="flex-1">
+                <label class="block text-gray-700 text-sm font-medium mt-2">Single Choose</label>
+                <select name="customizableCategories[${categoryIndex}][singleChoose]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+                    <option value="">Select Yes or No</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+        </div>
 
         <div class="mt-4" id="options-container-${categoryIndex}"></div>
 
@@ -452,7 +466,7 @@ function openEditModal(
     document.getElementById("editStatus").value = productStatus || "";
     document.getElementById("editCategory").value = categoryName || "";
     document.getElementById("editCategorySort").value = categorySort || "";
-    console.log(customizableCategories)
+
     const container = document.getElementById("editCustomizableContainer");
 
     if (!container) {
@@ -482,11 +496,23 @@ function openEditModal(
                         <input type="number" name="editCustomizableCategories[${index}][sort]" value="${category.sort}" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                     </div>
                 </div>
-                <label class="block text-gray-700 text-sm font-medium mt-2">Category Status</label>
-                <select name="editCustomizableCategories[${index}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-                    <option value="Available" ${category.status === "Available" ? "selected" : ""}>Available</option>
-                    <option value="Not Available" ${category.status === "Not Available" ? "selected" : ""}>Not Available</option>
-                </select>
+
+                <div class="flex space-x-4">
+                    <div class="flex-1">
+                        <label class="block text-gray-700 text-sm font-medium mt-2">Category Status</label>
+                        <select name="editCustomizableCategories[${index}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 " required>
+                            <option value="Available" ${category.status === "Available" ? "selected" : ""}>Available</option>
+                            <option value="Not Available" ${category.status === "Not Available" ? "selected" : ""}>Not Available</option>
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-gray-700 text-sm font-medium mt-2">Single Choose</label>
+                        <select name="editCustomizableCategories[${index}][singleChoose]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                            <option value="1" ${category.singleChoose == "1" || category.singleChoose === true ? "selected" : ""}>Yes</option>
+                            <option value="0" ${category.singleChoose == "0" || category.singleChoose === false ? "selected" : ""}>No</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="mt-4">
                     <hr>
@@ -508,11 +534,20 @@ function openEditModal(
                                         </div>
                                     </div>
 
-                                    <label class="block text-gray-700 text-sm font-medium mt-2">Option Status</label>
-                                    <select name="editCustomizableCategories[${index}][options][${optIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-                                        <option value="Available" ${option.status === "Available" ? "selected" : ""}>Available</option>
-                                        <option value="Not Available" ${option.status === "Not Available" ? "selected" : ""}>Not Available</option>
-                                    </select>
+                                    <div class="flex space-x-4">
+                                        <div class="flex-1">
+                                            <label class="block text-gray-700 text-sm font-medium">Option Status</label>
+                                            <select name="editCustomizableCategories[${index}][options][${optIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+                                                <option value="Available" ${option.status === "Available" ? "selected" : ""}>Available</option>
+                                                <option value="Not Available" ${option.status === "Not Available" ? "selected" : ""}>Not Available</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="flex-1">
+                                            <label class="block text-gray-700 text-sm font-medium">Option Sort</label>
+                                            <input type="number" name="editCustomizableCategories[${index}][options][${optIndex}][sort]" value="${option.sort}" placeholder="Sort" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+                                        </div>
+                                    </div>
                                 `
                             )
                             .join("")}
@@ -670,8 +705,8 @@ document.getElementById('categories-container').addEventListener('click', functi
                         <label class="block text-gray-700 text-sm font-medium">Option Status <span class="text-red-500">*</span></label>
                         <select name="customizableCategories[${categoryIndex}][options][` + currentOptionsCount + `][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
                             <option value="">Select Status</option>
-                            <option value="available">Available</option>
-                            <option value="not-available">Not Available</option>
+                            <option value="Available">Available</option>
+                            <option value="Not available">Not Available</option>
                         </select>
                     </div>
                 </div>
