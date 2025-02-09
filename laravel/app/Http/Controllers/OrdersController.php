@@ -51,7 +51,7 @@ class OrdersController extends Controller
 
         // Determine redirection based on the source
         if ($request->input('source') === 'cashier') {
-            return redirect()->route('cashierOrders')->with('success', 'Table number stored in session!');
+            return redirect()->route('cashier.order')->with('success', 'Table number stored in session!');
         }
 
         return redirect()->route('order')->with('success', 'Table number stored in session!');
