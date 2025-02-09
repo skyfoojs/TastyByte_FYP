@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                     @else
-                        <p class="text-center text-gray-500">Order not found.</p>
+                        <p class="text-center text-gray-500 mt-20">Order not found.</p>
                     @endif
                 </div>
             </div>
