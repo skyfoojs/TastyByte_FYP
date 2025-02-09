@@ -5,7 +5,7 @@
     <!--TODO: Order Product -->
     </div>
 
-    <div class="border-t pt-4">
+    <div class="pt-4">
 
         <div class="flex justify-between text-gray-600">
             <span>Subtotal</span>
@@ -19,11 +19,13 @@
             <span>Service Charge 10%</span>
             <span>2.00</span>
         </div>
+        <hr class="border-t-4 mt-4 mb-4 border-dotted border-gray-200">
         <div class="flex justify-between font-semibold">
             <span>Total</span>
             <span>23.20</span>
         </div>
-        <button class="w-full bg-indigo-400 text-white py-2 mt-4 mb-4 rounded">Place Order</button>
+        <hr class="border-t-4 mt-4 border-dotted border-gray-200">
+        <button class="w-full bg-indigo-400 text-white py-2 mt-4 rounded">Place Order</button>
     </div>
 </div>
 
