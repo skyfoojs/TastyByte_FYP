@@ -3,7 +3,7 @@
         <div class="flex h-screen">
             <div class="w-3/4 p-6 mt-25">
                 <!-- Select and search bar -->
-                <div class="flex items-center space-x-4 mb-6">
+                <div class="flex items-center space-x-4 mt-2">
                     <select class="p-2 bg-white px-10 rounded-full">
                         <option>All Categories</option>
                         @foreach ($groupedProducts as $categoryName => $products)
@@ -14,7 +14,7 @@
                 </div>
 
                 @foreach ($groupedProducts as $categoryName => $products)
-                    <h2 class="text-xl font-bold mb-4 p-2">{{ $categoryName }}</h2>
+                    <h2 class="text-xl font-bold mb-4 p-2 mt-6">{{ $categoryName }}</h2>
 
                     <div class="overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($products as $product)
