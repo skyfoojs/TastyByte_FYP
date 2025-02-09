@@ -2,7 +2,7 @@
     <x-cashier.navbar>
         <div class="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto">
             <div class="relative w-full max-w-md mx-auto">
-                <div class="bg-white rounded-lg shadow-lg">
+                <div class="bg-white rounded-lg shagit dow-lg">
                     <div class="p-6">
                         <h2 class="text-lg font-semibold text-gray-900 mb-6">Enter Table Number</h2>
 
