@@ -11,6 +11,8 @@
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
+
+        <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     </head>
     <body class="font-valera bg-slate-200">
         {{ $slot }}
