@@ -8,16 +8,20 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function index(){
+    public function index(Request $request) {
         // Fetch products with their categories
         $products = Product::with('category')->get();
 
         // Group products by category
-        $groupedProducts = $products->groupBy(function ($product) {
-            return $product->category->name ?? 'Uncategorized'; // Default if category is null
-        });
+        $groupedProducts = $products->groupBy(fn($product) => $product->category->name ?? 'Uncategorized');
 
-        return view('waiter.order', compact('groupedProducts'));
+        $view = match ($request->route()->getName()) {
+            'order' => 'waiter.order',
+            'cashier.order' => 'cashier.order',
+            default => '404'
+        };
+
+        return view($view, compact('groupedProducts'));
     }
 
     public function edit($id) {
