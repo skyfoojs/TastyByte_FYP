@@ -53,7 +53,11 @@ class OrdersController extends Controller
         // Store the table number into a session global variable.
         session(['tableNo' => $request->input('table')]);
 
-        // Redirect to order page.
+        // Determine redirection based on the source
+        if ($request->input('source') === 'cashier') {
+            return redirect()->route('cashierOrders')->with('success', 'Table number stored in session!');
+        }
+
         return redirect()->route('order')->with('success', 'Table number stored in session!');
     }
 
