@@ -18,10 +18,6 @@ class OrdersController extends Controller
         return view('cashier.table');
     }
 
-    public function cashierOrders() {
-        return view('cashier.order');
-    }
-
     public function orderSummary() {
         return view('waiter.order-summary');
     }
