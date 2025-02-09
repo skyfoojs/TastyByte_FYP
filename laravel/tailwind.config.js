@@ -14,7 +14,7 @@ export default {
             fontFamily: {
                 mont: ['Montserrat', 'sans-serif'],
                 pop: ['Poppins', 'sans-serif'],
-                valera: ['Valera Round', 'sans-serif'],
+                varela: ['Varela Round', 'sans-serif'],
             },
 
             colors: {
