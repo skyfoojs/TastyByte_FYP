@@ -1,6 +1,6 @@
 <x-waiter.layout>
     <x-waiter.navbar>
-            <x-waiter.table-header :table="''" :trackOrder="'Choose '">
+            <x-waiter.table-header :table="'Table'" :trackOrder="'Choose '">
                 <div class="flex flex-col pb-8">
                     <div class="flex justify-center items-center mt-4">
                         <select class="w-72 rounded-2xl py-1 px-4 bg-[#E6E6E6] border-r-[12px]" name="" id="">
@@ -10,28 +10,32 @@
                     </div>
 
                     <div class="px-8">
-                        @foreach ($orders as $order)
-                            @foreach ($order->orderItems as $item)
-                            @endforeach
-                            <a href="{{ route('orderHistory', ['orderID' => $order->orderID]) }}">
-                                <div class="bg-[#EDEDED] w-full p-5 rounded-xl mt-10">
-                                    <div class="flex">
-                                        <div class="space-y-3 ml-3">
-                                            <div>
-                                                <p><span class="font-semibold">Table:</span>&nbsp&nbsp{{ $order->tableNo }}</p>
-                                                <p><span class="font-semibold">Status:</span>&nbsp&nbsp{{ $order->status }}</p>
-                                                <p><span class="font-semibold">Total Amount:</span>&nbsp&nbsp{{ $order->totalAmount }}</p>
-                                                <p><span class="font-semibold">Remark:</span>&nbsp&nbsp{{ $order->remark }}</p>
-                                            </div>
-                                            <div>
-                                                <p class="text-[#919191] text-sm"><span>Last Order:</span>&nbsp&nbsp{{ $order->created_at }}</p>
+                        @if ($orders->isNotEmpty())
+                            @foreach ($orders as $order)
+                                @foreach ($order->orderItems as $item)
+                                @endforeach
+                                <a href="{{ route('orderHistory', ['orderID' => $order->orderID]) }}">
+                                    <div class="bg-[#EDEDED] w-full p-5 rounded-xl mt-10">
+                                        <div class="flex">
+                                            <div class="space-y-3 ml-3">
+                                                <div>
+                                                    <p><span class="font-semibold">Table:</span>&nbsp&nbsp{{ $order->tableNo }}</p>
+                                                    <p><span class="font-semibold">Status:</span>&nbsp&nbsp{{ $order->status }}</p>
+                                                    <p><span class="font-semibold">Total Amount:</span>&nbsp&nbsp{{ $order->totalAmount }}</p>
+                                                    <p><span class="font-semibold">Remark:</span>&nbsp&nbsp{{ $order->remark }}</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-[#919191] text-sm"><span>Last Order:</span>&nbsp&nbsp{{ $order->created_at }}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
 
-                        @endforeach
+                            @endforeach
+                        @else
+                            <p class="text-center text-gray-500 mt-20">Currently No Orders</p>
+                        @endif
                     </div>
                 </div>
             </x-waiter.table-header>
