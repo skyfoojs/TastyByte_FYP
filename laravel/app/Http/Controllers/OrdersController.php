@@ -7,6 +7,7 @@ use App\Models\Orders;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class OrdersController extends Controller
 {
@@ -19,8 +20,21 @@ class OrdersController extends Controller
     }
 
     public function orderSummary() {
-        return view('waiter.order-summary');
+        if (Auth::check()) {
+            $role = session('role', Auth::user()->role); // Get role from session or authenticated user
+
+            if ($role === 'Cashier') {
+                return view('cashier.order-summary');
+            } elseif ($role === 'Waiter') {
+                return view('waiter.order-summary');
+            }
+        }
+
+        // Redirect to login if not authenticated
+        return redirect()->route('login')->with('error', 'Unauthorized access.');
     }
+
+
 
     public function trackOrder() {
         $orders = Orders::with('orderItems')->get();
