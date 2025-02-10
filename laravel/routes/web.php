@@ -53,6 +53,9 @@ Route::post('/admin/products', [AdminController::class, 'addProductPost'])->name
 // Get the Edit Product Data from the View.
 Route::put('/admin/products', [AdminController::class, 'editProductPost'])->name('editProduct.post');
 
+// Get the filtered products from the Controller.
+Route::get('/filteredProducts', [AdminController::class, 'getFilteredProducts'])->name('filterProducts.get');
+
 // Get the Inventory Page view from Admin Controller.
 Route::get('/admin/inventory', [AdminController::class, 'inventory'])->name('admin-inventory');
 
