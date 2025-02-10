@@ -144,6 +144,7 @@ class AdminController extends Controller
             'customizableCategories.*.sort' => 'nullable|integer|min:1',
             'customizableCategories.*.status' => 'nullable|in:Available,Not Available',
             'customizableCategories.*.singleChoose' => 'nullable|boolean',
+            'customizableCategories.*.isRequired' => 'nullable|boolean',
             'customizableCategories.*.options' => 'nullable|array',
             'customizableCategories.*.options.*.name' => 'nullable|string|max:255',
             'customizableCategories.*.options.*.maxAmount' => 'nullable|integer|min:1',
@@ -208,7 +209,8 @@ class AdminController extends Controller
                     $customizableCategory->name = $categoryData['name'];
                     $customizableCategory->sort = $categoryData['sort'];
                     $customizableCategory->status = $categoryData['status'];
-                    $customizableCategory->singleChoose = isset($categoryData['singleChoose']) ? $categoryData['singleChoose'] : false;
+                    $customizableCategory->isRequired = $categoryData['isRequired'] ?? false;
+                    $customizableCategory->singleChoose = $categoryData['singleChoose'] ?? false;
                     $customizableCategory->save();
 
                     if (!empty($categoryData['options'])) {
@@ -249,6 +251,7 @@ class AdminController extends Controller
             'editCustomizableCategories.*.sort' => 'nullable|integer|min:1',
             'editCustomizableCategories.*.status' => 'nullable|in:Available,Not Available',
             'editCustomizableCategories.*.singleChoose' => 'nullable|boolean',
+            'editCustomizableCategories.*.isRequired' => 'nullable|boolean',
             'editCustomizableCategories.*.options' => 'nullable|array',
             'editCustomizableCategories.*.options.*.name' => 'nullable|string|max:255',
             'editCustomizableCategories.*.options.*.maxAmount' => 'nullable|integer|min:1',
@@ -333,6 +336,7 @@ class AdminController extends Controller
                     $customizableCategory->sort = $categoryData['sort'];
                     $customizableCategory->status = $categoryData['status'];
                     $customizableCategory->singleChoose = $categoryData['singleChoose'] ?? false;
+                    $customizableCategory->isRequired = $categoryData['isRequired'] ?? false;
                     $customizableCategory->save();
                 } else {
                     // Create a new category if not found
