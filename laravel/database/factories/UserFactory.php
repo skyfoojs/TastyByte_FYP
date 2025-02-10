@@ -24,13 +24,17 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'userID' => 1,
-            'firstName' => fake()->name(),
-            'lastName' => fake()->name(),
+            'firstName' => fake()->firstName(),
+            'lastName' => fake()->lastName(),
+            'username' => fake()->userName(),
+            'nickname' => fake()->word(),
+            'role' => fake()->randomElement(['Admin', 'Cashier', 'Waiter', 'Kitchen']),
+            'gender' => fake()->randomElement(['Male', 'Female']),
+            'dateOfBirth' => fake()->date(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'phoneNo' => fake()->phoneNumber(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'status' => fake()->randomElement(['Active', 'Inactive']),
         ];
     }
 
@@ -41,6 +45,26 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Define an Admin User state.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'firstName' => 'Admin',
+            'lastName' => 'Admin',
+            'username' => 'Admin',
+            'nickname' => 'Admin',
+            'role' => 'Admin',
+            'gender' => 'Male',
+            'dateOfBirth' => '1990-01-01',
+            'email' => 'admin@example.com',
+            'phoneNo' => '0123456789',
+            'password' => Hash::make('admin'), // Secure password
+            'status' => 'Active',
         ]);
     }
 }

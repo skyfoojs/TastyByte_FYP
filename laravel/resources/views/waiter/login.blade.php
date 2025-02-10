@@ -20,8 +20,8 @@
             @endif
         <form action="{{ route('login.post') }}" method="POST" class="pt-2 flex flex-col">
             @csrf
-            <label for="email">Email</label>
-            <input required name="email" class="mt-1 border border-[#D8D8D8] rounded-md py-2 px-2 w-60" placeholder="Enter Your Email Address" type="email">
+            <label for="email_or_username">Email or Username:</label>
+            <input required name="email_or_username" class="mt-1 border border-[#D8D8D8] rounded-md py-2 px-2 w-60" placeholder="Enter Your Email or Username" type="text">
 
             <label class="mt-3" for="password">Password</label>
             <input required name="password" class="mt-1 border border-[#D8D8D8] rounded-md py-2 px-2 w-60" placeholder="Enter Your Password" type="password">

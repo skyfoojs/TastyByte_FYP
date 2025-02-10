@@ -76,6 +76,7 @@
                                             'sort' => $cat->sort,
                                             'status' => $cat->status,
                                             'singleChoose' => $cat->singleChoose,
+                                            'isRequired' => $cat->isRequired,
                                             'options' => $cat->options->map(function ($opt) {
                                                 return [
                                                     'name' => $opt->name,
@@ -307,12 +308,12 @@
 
         <div class="flex space-x-4">
             <div class="flex-1">
-            <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
-            <select name="customizableCategories[${categoryIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
-                <option value="">Select Status</option>
-                <option value="Available">Available</option>
-                <option value="Not Available">Not Available</option>
-            </select>
+                <label class="block text-gray-700 text-sm font-medium mt-2">Is Category Required <span class="text-red-500">*</span></label>
+                <select name="customizableCategories[${categoryIndex}][isRequired]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+                    <option value="">Select Required or Optional</option>
+                    <option value="1">Required</option>
+                    <option value="0">Optional</option>
+                </select>
             </div>
             <div class="flex-1">
                 <label class="block text-gray-700 text-sm font-medium mt-2">Single Choose</label>
@@ -323,6 +324,13 @@
                 </select>
             </div>
         </div>
+
+        <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
+        <select name="customizableCategories[${categoryIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+            <option value="">Select Status</option>
+            <option value="Available">Available</option>
+            <option value="Not Available">Not Available</option>
+        </select>
 
         <div class="mt-4" id="options-container-${categoryIndex}"></div>
 
@@ -499,10 +507,11 @@ function openEditModal(
 
                 <div class="flex space-x-4">
                     <div class="flex-1">
-                        <label class="block text-gray-700 text-sm font-medium mt-2">Category Status</label>
-                        <select name="editCustomizableCategories[${index}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 " required>
-                            <option value="Available" ${category.status === "Available" ? "selected" : ""}>Available</option>
-                            <option value="Not Available" ${category.status === "Not Available" ? "selected" : ""}>Not Available</option>
+                        <label class="block text-gray-700 text-sm font-medium mt-2">Is Category Required <span class="text-red-500">*</span></label>
+                        <select name="editCustomizableCategories[${index}][isRequired]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+                            <option value="">Select Required or Optional</option>
+                            <option value="1" ${category.isRequired == "1" || category.isRequired === true ? "selected" : ""}>Required</option>
+                            <option value="0" ${category.isRequired == "0" || category.isRequired === false ? "selected" : ""}>Optional</option>
                         </select>
                     </div>
                     <div class="flex-1">
@@ -513,6 +522,12 @@ function openEditModal(
                         </select>
                     </div>
                 </div>
+
+                <label class="block text-gray-700 text-sm font-medium mt-2">Category Status</label>
+                <select name="editCustomizableCategories[${index}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 " required>
+                    <option value="Available" ${category.status === "Available" ? "selected" : ""}>Available</option>
+                    <option value="Not Available" ${category.status === "Not Available" ? "selected" : ""}>Not Available</option>
+                </select>
 
                 <div class="mt-4">
                     <hr>
