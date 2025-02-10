@@ -15,6 +15,21 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+    public function dashboard() {
+        // Get pages count
+        $usersCount = User::count();
+        $productsCount = Product::count();
+        $inventoriesCount = Inventory::count();
+        $vouchersCount = Vouchers::count();
+
+        // Count inventory items where stockLevel is less than 20
+        $lowStock = Inventory::where('stockLevel', '<', 100)->get();
+
+        return view('admin.dashboard', compact(
+            'usersCount', 'productsCount', 'inventoriesCount', 'vouchersCount', 'lowStock'
+        ));
+    }
+
     public function users() {
         $users = User::get();
         $totalUsers = User::count();
