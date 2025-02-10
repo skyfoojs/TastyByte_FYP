@@ -32,6 +32,9 @@ Route::post('/table', [OrdersController::class, 'storeTable'])->name('storeTable
 // Get the view from Product Details Controller.
 Route::get('/product-details/{id}', [ProductController::class, 'edit'])->name('product-details');
 
+// Get the Dashboard Page view from Admin Controller.
+Route::get('/admin/', [AdminController::class, 'dashboard'])->name('admin-dashboard');
+
 // Get the User Page view from Admin Controller.
 Route::get('/admin/users', [AdminController::class, 'users'])->name('admin-users');
 
