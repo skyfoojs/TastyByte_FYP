@@ -24,6 +24,9 @@ class AdminController extends Controller
     }
 
     public function products() {
+        $totalProducts = Product::count();
+        $limit = 6;
+        $totalPages = ceil($totalProducts / $limit);
         // Get the count of distinct sort values from customizableCategory
         $categoryDistinctSortCount = DB::table('customizablecategory')->distinct('sort')->count('sort');
 
@@ -33,7 +36,7 @@ class AdminController extends Controller
         // Fetch products with their categories, customizable categories, and options
         $products = Product::with(['category', 'customizableCategory.options'])->distinct()->get();
         $categories = Category::all();
-        return view('admin.products', compact('products', 'categoryDistinctSortCount', 'optionDistinctSortCount', 'categories'));
+        return view('admin.products', compact('products', 'categoryDistinctSortCount', 'optionDistinctSortCount', 'categories', 'totalPages'));
     }
 
 
@@ -138,7 +141,7 @@ class AdminController extends Controller
             'keywords' => 'required|string',
         ]);
 
-        $query = User::query(); // Assuming you have a User model
+        $query = User::query();
 
         $filterType = $request->input('filterType');
         $keywords = $request->input('keywords');
@@ -434,6 +437,50 @@ class AdminController extends Controller
 
 
         return redirect()->route('admin-products')->with('success', 'Product updated successfully!');
+    }
+
+    public function getFilteredProducts(Request $request)
+    {
+        $request->validate([
+            'filterType' => 'required|string|in:filterProductID,filterCategory,filterProductName,filterStatus',
+            'keywords' => 'required|string',
+        ]);
+
+        $query = Product::query();
+
+        $filterType = $request->input('filterType');
+        $keywords = $request->input('keywords');
+
+        // Apply filtering based on filter type
+        switch ($filterType) {
+            case 'filterProductID':
+                $query->where('productID', $keywords);
+                break;
+            case 'filterCategory':
+                // Filter by category name using a join
+                $query->whereHas('category', function ($q) use ($keywords) {
+                    $q->where('name', 'LIKE', "%$keywords%");
+                });
+                break;
+            case 'filterProductName':
+                $query->where('name', 'LIKE', "%$keywords%");
+                break;
+            case 'filterStatus':
+                $query->where('status', $keywords);
+                break;
+        }
+
+        $totalProducts = Product::count();
+        $limit = 6;
+        $totalPages = ceil($totalProducts / $limit);
+        $products = $query->paginate($limit);
+
+        $categories = Category::all();
+        $categoryDistinctSortCount = DB::table('customizablecategory')->distinct('sort')->count('sort');
+        $optionDistinctSortCount = DB::table('customizableoptions')->distinct('sort')->count('sort');
+
+
+        return view('admin.products', compact('products', 'totalPages', 'categories', 'categoryDistinctSortCount', 'optionDistinctSortCount'));
     }
 
     public function addInventoryPost(Request $request) {
