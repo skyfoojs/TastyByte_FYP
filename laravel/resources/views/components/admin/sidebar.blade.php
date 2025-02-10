@@ -22,7 +22,7 @@
                 <!--Users-->
                 <a href="../admin/users"
                    class="flex items-center space-x-5 py-3 px-5 {{ $current_page == 'users' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100' }} rounded-md">
-                    <i class="bx bx-user text-base"></i>
+                    <i class="bi bi-people-fill"></i>
                     <span class="font-medium">Users</span>
                 </a>
             </li>
@@ -38,7 +38,7 @@
                 <!--Inventory-->
                 <a href="../admin/inventory"
                    class="flex items-center space-x-5 py-3 px-5 {{ $current_page == 'inventory' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100' }} rounded-md">
-                    <i class="bx bx-food-menu text-base"></i>
+                    <i class="bi bi-kanban"></i>
                     <span class="font-medium">Inventory</span>
                 </a>
             </li>
@@ -46,7 +46,7 @@
                 <!--Voucher-->
                 <a href="../admin/vouchers"
                    class="flex items-center space-x-5 py-3 px-5 {{ $current_page == 'vouchers' ? 'bg-indigo-500 text-white' : 'hover:bg-gray-100' }} rounded-md">
-                    <i class="bx bx-run text-base"></i>
+                    <i class="bi bi-ticket-detailed-fill"></i>
                     <span class="font-medium">Vouchers</span>
                 </a>
             </li>
