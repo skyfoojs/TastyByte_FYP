@@ -51,7 +51,10 @@ class AdminController extends Controller
 
     public function vouchers() {
         $vouchers = Vouchers::all();
-        return view('admin.vouchers', compact('vouchers'));
+        $totalVouchers = Vouchers::count();
+        $limit = 6;
+        $totalPages = ceil($totalVouchers / $limit);
+        return view('admin.vouchers', compact('vouchers', 'totalPages'));
     }
 
     public function addUserPost(Request $request) {
