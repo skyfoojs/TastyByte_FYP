@@ -41,6 +41,9 @@ Route::post('/admin/users', [AdminController::class, 'addUserPost'])->name('addU
 // Get the Edit Users Data from the View.
 Route::put('/admin/users', [AdminController::class, 'editUserPost'])->name('editUser.post');
 
+// Get the filtered users from the Controller.
+Route::get('/filteredUser', [AdminController::class, 'getFilteredUsers'])->name('filterUser.get');
+
 // Get the Product Page view from Admin Controller.
 Route::get('/admin/products', [AdminController::class, 'products'])->name('admin-products');
 
