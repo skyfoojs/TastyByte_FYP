@@ -18,10 +18,6 @@ class OrdersController extends Controller
         return view('cashier.table');
     }
 
-    public function cashierOrders() {
-        return view('cashier.order');
-    }
-
     public function orderSummary() {
         return view('waiter.order-summary');
     }
@@ -55,7 +51,7 @@ class OrdersController extends Controller
 
         // Determine redirection based on the source
         if ($request->input('source') === 'cashier') {
-            return redirect()->route('cashierOrders')->with('success', 'Table number stored in session!');
+            return redirect()->route('cashier.order')->with('success', 'Table number stored in session!');
         }
 
         return redirect()->route('order')->with('success', 'Table number stored in session!');
