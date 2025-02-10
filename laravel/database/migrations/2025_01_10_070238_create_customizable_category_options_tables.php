@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('sort');
             $table->boolean('singleChoose');
+            $table->boolean('isRequired');
             $table->timestamps();
         });
 
