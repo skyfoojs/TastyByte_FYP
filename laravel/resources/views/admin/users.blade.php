@@ -65,7 +65,13 @@
             <div class="flex justify-end mt-4">
                 <nav aria-label="Page navigation">
                     <ul class="flex space-x-2 mr-4">
-
+                        @for ($i = 1; $i <= $totalPages; $i++)
+                            <li>
+                                <a href="{{ request()->fullUrlWithQuery(['page' => $i]) }}" class="px-4 py-2 border rounded-md {{ $i == request()->get('page', 1) ? 'bg-indigo-500 text-white' : 'bg-white text-indigo-500' }} hover:bg-indigo-600 hover:text-white transition">
+                                    {{ $i }}
+                                </a>
+                            </li>
+                        @endfor
                     </ul>
                 </nav>
             </div>
@@ -77,17 +83,17 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4">
                 <h2 class="text-2xl font-semibold mb-4">Filter Users</h2>
                 <hr class="py-2">
-                <form action="" method="GET">
+                <form action="{{ route('filterUser.get') }}" method="GET">
                     <label class="block text-gray-700 text-sm font-medium">Filter By <span class="text-red-500">*</span></label>
                     <select name="filterType" id="filterType" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         <option value="">Please Select a Type</option>
-                        <option value="userID">User ID</option>
-                        <option value="username">Username</option>
-                        <option value="fullName">Full Name</option>
-                        <option value="phone">Phone</option>
-                        <option value="email">Email</option>
-                        <option value="gender">Gender</option>
-                        <option value="membership">Membership Status</option>
+                        <option value="filterUserID">User ID</option>
+                        <option value="filterUsername">Username</option>
+                        <option value="filterFullName">Full Name</option>
+                        <option value="filterRole">Role</option>
+                        <option value="filterPhone">Phone</option>
+                        <option value="filterEmail">Email</option>
+                        <option value="filterGender">Gender</option>
                     </select>
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Keyword <span class="text-red-500">*</span></label>
@@ -95,7 +101,7 @@
 
                     <div class="flex justify-end mt-10">
                         <button type="button" onclick="closeUserFilterModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mr-2">Close</button>
-                        <a href="../admin/users.php" class="text-white bg-red-500 hover:bg-red-600 font-bold py-2 px-6 rounded-lg mr-2">Reset</a>
+                        <a href="{{ route('admin-users') }}" class="text-white bg-red-500 hover:bg-red-600 font-bold py-2 px-6 rounded-lg mr-2">Reset</a>
                         <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">Filter</button>
                     </div>
                 </form>
@@ -240,157 +246,144 @@
 </x-admin.layout>
 
 <style>
-            .modal {
-                transition: opacity 0.3s ease, transform 0.3s ease;
-                opacity: 0;
-                transform: scale(0.9);
-                pointer-events: none;
-            }
+.modal {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+}
 
-            .modal.show {
-                opacity: 1;
-                transform: scale(1);
-                pointer-events: auto;
-            }
-        </style>
+.modal.show {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+</style>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script>
-        $(document).ready(function () {
-            $('#password, #confirm_password').on('keyup', function () {
-                if ($('#password').val() == $('#confirm_password').val()) {
-                    $('#message').html('Matching').css('color', 'green');
-                } else {
-                    $('#message').html('Not Matching').css('color', 'red');
-                }
-            });
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#password, #confirm_password').on('keyup', function () {
+        if ($('#password').val() == $('#confirm_password').val()) {
+            $('#message').html('Matching').css('color', 'green');
+        } else {
+            $('#message').html('Not Matching').css('color', 'red');
+        }
+    });
 
-            $('form').on('submit', function (e) {
-                if ($('#password').val() !== $('#confirm_password').val()) {
-                    e.preventDefault(); // Prevent form submission
-                    alert("Passwords do not match!"); // Alert the user
-                }
-            });
-        });
+    $('form').on('submit', function (e) {
+        if ($('#password').val() !== $('#confirm_password').val()) {
+            e.preventDefault(); // Prevent form submission
+            alert("Passwords do not match!"); // Alert the user
+        }
+    });
+});
 
-            function openFilterModal() {
-                const modal = document.getElementById('userFilterModal');
-                const overlay = document.getElementById('modalOverlay');
+    function openFilterModal() {
+        const modal = document.getElementById('userFilterModal');
+        const overlay = document.getElementById('modalOverlay');
 
-                modal.classList.remove('hidden');
-                overlay.classList.remove('hidden');
+        modal.classList.remove('hidden');
+        overlay.classList.remove('hidden');
 
-                setTimeout(() => {
-                    modal.classList.add('show');
-                }, 10);
-            }
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 10);
+    }
 
-            function closeUserFilterModal() {
-                const modal = document.getElementById('userFilterModal');
-                const overlay = document.getElementById('modalOverlay');
+    function closeUserFilterModal() {
+        const modal = document.getElementById('userFilterModal');
+        const overlay = document.getElementById('modalOverlay');
 
-                modal.classList.remove('show');
+        modal.classList.remove('show');
 
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    overlay.classList.add('hidden');
-                }, 300);
-            }
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+        }, 300);
+    }
 
-            function openModal() {
-                const modal = document.getElementById('userModal');
-                const overlay = document.getElementById('modalOverlay');
+    function openModal() {
+        const modal = document.getElementById('userModal');
+        const overlay = document.getElementById('modalOverlay');
 
-                modal.classList.remove('hidden');
-                overlay.classList.remove('hidden');
+        modal.classList.remove('hidden');
+        overlay.classList.remove('hidden');
 
-                setTimeout(() => {
-                    modal.classList.add('show');
-                }, 10);
-            }
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 10);
+    }
 
-            function openCreateModal() {
-                const modal = document.getElementById('userAddModal');
-                const overlay = document.getElementById('modalOverlay');
+    function openCreateModal() {
+        const modal = document.getElementById('userAddModal');
+        const overlay = document.getElementById('modalOverlay');
 
-                modal.classList.remove('hidden');
-                overlay.classList.remove('hidden');
+        modal.classList.remove('hidden');
+        overlay.classList.remove('hidden');
 
-                setTimeout(() => {
-                    modal.classList.add('show');
-                }, 10);
-            }
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 10);
+    }
 
-            function closeUserAddModal() {
-                const modal = document.getElementById('userAddModal');
-                const overlay = document.getElementById('modalOverlay');
+    function closeUserAddModal() {
+        const modal = document.getElementById('userAddModal');
+        const overlay = document.getElementById('modalOverlay');
 
-                modal.classList.remove('show');
+        modal.classList.remove('show');
 
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    overlay.classList.add('hidden');
-                }, 300);
-            }
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+        }, 300);
+    }
 
-            function openEditModal(id, firstName, lastName, username, nickname, role, gender, dateOfBirth, email, phoneNo, password, status) {
-                const modal = document.getElementById('userEditModal');
-                const overlay = document.getElementById('modalOverlay');
+    function openEditModal(id, firstName, lastName, username, nickname, role, gender, dateOfBirth, email, phoneNo, password, status) {
+        const modal = document.getElementById('userEditModal');
+        const overlay = document.getElementById('modalOverlay');
 
-                modal.classList.remove('hidden');
-                overlay.classList.remove('hidden');
+        modal.classList.remove('hidden');
+        overlay.classList.remove('hidden');
 
-                document.getElementById('registeredUserID').value = id;
-                document.getElementById('editFirstName').value = firstName;
-                document.getElementById('editLastName').value = lastName;
-                document.getElementById('editUsername').value = username;
-                document.getElementById('editNickname').value = nickname;
-                document.getElementById('editEmail').value = email;
-                document.getElementById('editPhoneNo').value = phoneNo;
-                document.getElementById('editRole').value = role;
-                document.getElementById('editGender').value = gender;
-                document.getElementById('editDateOfBirth').value = dateOfBirth;
+        document.getElementById('registeredUserID').value = id;
+        document.getElementById('editFirstName').value = firstName;
+        document.getElementById('editLastName').value = lastName;
+        document.getElementById('editUsername').value = username;
+        document.getElementById('editNickname').value = nickname;
+        document.getElementById('editEmail').value = email;
+        document.getElementById('editPhoneNo').value = phoneNo;
+        document.getElementById('editRole').value = role;
+        document.getElementById('editGender').value = gender;
+        document.getElementById('editDateOfBirth').value = dateOfBirth;
 
-                setTimeout(() => {
-                    modal.classList.add('show');
-                }, 10);
-            }
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 10);
+    }
 
-            function closeEditModal() {
-                const modal = document.getElementById('userEditModal');
-                const overlay = document.getElementById('modalOverlay');
+    function closeEditModal() {
+        const modal = document.getElementById('userEditModal');
+        const overlay = document.getElementById('modalOverlay');
 
-                modal.classList.remove('show');
+        modal.classList.remove('show');
 
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    overlay.classList.add('hidden');
-                    clearModalFields();
-                }, 300);
-            }
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+            clearModalFields();
+        }, 300);
+    }
 
-            function clearModalFields() {
-                document.getElementById('registeredUserID').value = '';
-                document.getElementById('firstName').value = '';
-                document.getElementById('lastName').value = '';
-                document.getElementById('email').value = '';
-                document.getElementById('phoneNo').value = '';
-                document.getElementById('gender').value = '';
-                document.getElementById('dateOfBirth').value = '';
-                document.getElementById('membershipStart').value = '';
-                document.getElementById('membershipEnd').value = '';
-            }
-
-            function searchUsers() {
-                const query = document.getElementById('searchInput').value;
-
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', 'searchUsers.php?query=' + encodeURIComponent(query), true);
-                xhr.onload = function () {
-                    if (xhr.status === 200) {
-                        document.getElementById('userTableBody').innerHTML = xhr.responseText;
-                    }
-                };
-                xhr.send();
-            }
-        </script>
+    function clearModalFields() {
+        document.getElementById('registeredUserID').value = '';
+        document.getElementById('firstName').value = '';
+        document.getElementById('lastName').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('phoneNo').value = '';
+        document.getElementById('gender').value = '';
+        document.getElementById('dateOfBirth').value = '';
+        document.getElementById('membershipStart').value = '';
+        document.getElementById('membershipEnd').value = '';
+    }
+</script>
