@@ -16,13 +16,18 @@ class LoginController extends Controller
         return view('waiter.login');
     }
 
-    function loginPost(Request $request) {
+    public function loginPost(Request $request) {
         $request->validate([
-            "email" => "required",
+            "email_or_username" => "required", // Accepts email or username
             "password" => "required",
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $loginField = filter_var($request->input('email_or_username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        $credentials = [
+            $loginField => $request->input('email_or_username'),
+            'password' => $request->input('password'),
+        ];
 
         if (Auth::attempt($credentials)) {
             // Get the authenticated user
@@ -35,17 +40,12 @@ class LoginController extends Controller
             ]);
 
             // Check the user's role and redirect accordingly
-            if ($user->role === 'Waiter') {
-                return redirect()->intended(route('menu'));
-            } elseif ($user->role === 'Admin') {
-                return redirect()->route('admin-users');
-            } elseif ($user->role === 'cashier') {
-                return redirect()->route('cashier-menu');
-            } else {
-                // Logout the user if their role is not valid for redirection
-                Auth::logout();
-                return redirect()->route('login')->with('error', 'Unauthorized access.');
-            }
+            return match ($user->role) {
+                'Waiter' => redirect()->intended(route('menu')),
+                'Admin' => redirect()->route('admin-users'),
+                'cashier' => redirect()->route('cashier-menu'),
+                default => tap(Auth::logout(), fn () => redirect()->route('login')->with('error', 'Unauthorized access.')),
+            };
         }
 
         return redirect()->route('login')->with('error', 'Unsuccessful login. Incorrect credentials.');
