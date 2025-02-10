@@ -647,4 +647,38 @@ class AdminController extends Controller
             return redirect()->route('admin-vouchers')->with('error', 'Error updating voucher.');
         }
     }
+
+    public function getFilteredVouchers(Request $request)
+    {
+        $request->validate([
+            'filterType' => 'required|string|in:filterVoucherID,filterVoucherCode,filterType',
+            'keywords' => 'required|string',
+        ]);
+
+        $query = Vouchers::query();
+
+        $filterType = $request->input('filterType');
+        $keywords = $request->input('keywords');
+
+        // Apply filtering based on filter type
+        switch ($filterType) {
+            case 'filterVoucherID':
+                $query->where('voucherID', $keywords);
+                break;
+            case 'filterVoucherCode':
+                $query->where('code', 'LIKE', "%$keywords%");
+                break;
+            case 'filterType':
+                $query->where('type', $keywords);
+                break;
+        }
+
+        $totalVouchers = Vouchers::count();
+        $limit = 6;
+        $totalPages = ceil($totalVouchers / $limit);
+        $vouchers = $query->paginate($limit);
+
+        return view('admin.vouchers', compact('vouchers', 'totalPages'));
+    }
+
 }
