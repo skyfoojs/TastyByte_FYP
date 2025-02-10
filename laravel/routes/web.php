@@ -65,6 +65,9 @@ Route::post('admin/inventory', [AdminController::class, 'addInventoryPost'])->na
 // Get the Edit Inventory Data from the View.
 Route::put('admin/inventory', [AdminController::class, 'editInventoryPost'])->name('editInventory.post');
 
+// Get the filtered Inventory from the Controller.
+Route::get('/filteredInventory', [AdminController::class, 'getFilteredInventories'])->name('filterInventories.get');
+
 // Get the Voucher Page view from Admin Controller.
 Route::get('admin/vouchers', [AdminController::class, 'vouchers'])->name('admin-vouchers');
 
