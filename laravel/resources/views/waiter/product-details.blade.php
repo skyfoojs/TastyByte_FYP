@@ -44,7 +44,7 @@
                                     <hr class="mt-2">
                                     <div class="flex justify-between w-full items-center my-4">
                                         <label for="option-{{ $option->customizeOptionsID }}" class="text-gray-600">{{ $option->name }}</label>
-                                        <input id="option-{{ $option->customizeOptionsID }}" type="checkbox" name="options[{{ $category->name }}][]" value="{{ $option->name }}" class="custom-radio bg-gray-200 appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
+                                        <input {{ $category->isRequired ? 'required' : ''}} id="option-{{ $option->customizeOptionsID }}" type="{{ $category->singleChoose ? 'radio' : 'checkbox' }}" name="options[{{ $category->name }}][]" value="{{ $option->name }}" class="custom-radio bg-gray-200 appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
                                     </div>
                                 @endforeach
                             @endif
