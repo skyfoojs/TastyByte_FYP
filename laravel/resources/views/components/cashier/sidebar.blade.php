@@ -81,7 +81,7 @@
     <!-- Cashier Sidebar -->
     <div class="w-1/4 bg-white p-6 shadow-lg fixed right-0 top-26 h-[calc(100%-6rem)] flex flex-col justify-between">
         <div class="overflow-y-auto flex-1">
-            <h2 class="font-semibold text-lg">Table {{ session('tableNo') }} Summary</h2>
+            <h2 class="font-semibold text-lg">Table {{ session('tableNo') }} Order Summary</h2>
 
             <hr class="mt-4 mb-2">
 
@@ -134,7 +134,7 @@
             <hr class="border-t-4 mt-4 border-dotted border-gray-200">
 
             <a href="{{ route('orderSummary') }}">
-                <button class="w-full bg-indigo-500 text-white py-2 mt-4 rounded">Place Order</button>
+                <button class="w-full bg-indigo-500 text-white py-2 mt-4 rounded">Checkout</button>
             </a>
         </div>
     </div>
