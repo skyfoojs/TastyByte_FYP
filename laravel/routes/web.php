@@ -85,4 +85,4 @@ Route::get('/order-history', [OrdersController::class, 'orderHistory'])->name('o
 
 Route::get('/cashier/order', [ProductController::class, 'index'])->name('cashier.order');
 
-Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('cashierIndex');
+Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('cashier.table');
