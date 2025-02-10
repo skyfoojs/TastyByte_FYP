@@ -17,7 +17,10 @@ class AdminController extends Controller
 {
     public function users() {
         $users = User::get();
-        return view('admin.users', compact('users'));
+        $totalUsers = User::count();
+        $limit = 6;
+        $totalPages = ceil($totalUsers / $limit);
+        return view('admin.users', compact('users', 'totalPages'));
     }
 
     public function products() {
@@ -126,6 +129,50 @@ class AdminController extends Controller
         } else {
             return redirect()->route('admin-users')->with('error', 'Error updating user.');
         }
+    }
+
+    public function getFilteredUsers(Request $request)
+    {
+        $request->validate([
+            'filterType' => 'required|string|in:filterUserID,filterUsername,filterFullName,filterRole,filterPhone,filterEmail,filterGender',
+            'keywords' => 'required|string',
+        ]);
+
+        $query = User::query(); // Assuming you have a User model
+
+        $filterType = $request->input('filterType');
+        $keywords = $request->input('keywords');
+
+        // Apply filtering based on filter type
+        switch ($filterType) {
+            case 'filterUserID':
+                $query->where('userID', $keywords);
+                break;
+            case 'filterUsername':
+                $query->where('username', 'LIKE', "%$keywords%");
+                break;
+            case 'filterFullName':
+                $query->whereRaw("CONCAT(firstName, ' ', lastName) LIKE ?", ["%$keywords%"]);
+                break;
+            case 'filterRole':
+                $query->where('role', $keywords);
+                break;
+            case 'filterPhone':
+                $query->where('phoneNo', 'LIKE', "%$keywords%");
+                break;
+            case 'filterEmail':
+                $query->where('email', 'LIKE', "%$keywords%");
+                break;
+            case 'filterGender':
+                $query->where('gender', $keywords);
+                break;
+        }
+        $totalUsers = User::count();
+        $limit = 6;
+        $totalPages = ceil($totalUsers / $limit);
+        $users = $query->paginate(6);
+
+        return view('admin.users', compact('users', 'totalPages'));
     }
 
     public function addProductPost(Request $request) {
