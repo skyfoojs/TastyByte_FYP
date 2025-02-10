@@ -15,8 +15,8 @@ $is_users_page = Str::contains($current_route, 'users'); // Check if the route c
         <ul class="space-y-4">
             <li>
                 <!-- Dashboard -->
-                <a href=""
-                   class="hover:text-white flex items-center space-x-5 py-3 px-5 {{ $current_route == 'admin.dashboard' ? 'bg-gray-900 text-white' : 'hover:bg-gray-700' }} rounded-md">
+                <a href="{{ route('admin-dashboard') }}"
+                   class="hover:text-white flex items-center space-x-5 py-3 px-5 {{ $current_route == 'admin-dashboard' ? 'bg-gray-900 text-white' : 'hover:bg-gray-700' }} rounded-md">
                     <i class="bx bxs-dashboard text-base"></i>
                     <span class="font-medium">Dashboard</span>
                 </a>
