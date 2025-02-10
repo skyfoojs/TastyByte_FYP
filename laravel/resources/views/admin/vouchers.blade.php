@@ -23,6 +23,7 @@
                 <table class="min-w-full table-auto border-collapse w-full" id="voucherTable">
                     <thead>
                     <tr class="text-gray-500 font-medium text-center">
+                        <th class="py-4 px-6 border-b border-gray-200">Voucher ID</th>
                         <th class="py-4 px-6 border-b border-gray-200">Type</th>
                         <th class="py-4 px-6 border-b border-gray-200">Code</th>
                         <th class="py-4 px-6 border-b border-gray-200">Value</th>
@@ -41,6 +42,7 @@
 
                             @foreach ($vouchers as $voucher)
                             <tr class="">
+                                <td class="p-3 mt-4">{{ $voucher->voucherID }}</td>
                                 <td class="p-3 mt-4">{{ $voucher->type }}</td>
                                 <td class="p-3 mt-4">{{ $voucher->code }}</td>
                                 <td class="p-3 mt-4">{{ $voucher->value }}</td>
@@ -79,17 +81,13 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4">
                 <h2 class="text-2xl font-semibold mb-4">Filter Voucher</h2>
                 <hr class="py-2">
-                <form action="" method="GET">
+                <form action="{{ route('filterVouchers.get') }}" method="GET">
                     <label class="block text-gray-700 text-sm font-medium">Filter By <span class="text-red-500">*</span></label>
                     <select name="filterType" id="filterType" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         <option value="">Please Select a Type</option>
-                        <option value="userID">User ID</option>
-                        <option value="username">Username</option>
-                        <option value="fullName">Full Name</option>
-                        <option value="phone">Phone</option>
-                        <option value="email">Email</option>
-                        <option value="gender">Gender</option>
-                        <option value="membership">Membership Status</option>
+                        <option value="filterVoucherID">Voucher ID</option>
+                        <option value="filterVoucherCode">Voucher Code</option>
+                        <option value="filterType">Voucher Type</option>
                     </select>
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Keyword <span class="text-red-500">*</span></label>
@@ -97,7 +95,7 @@
 
                     <div class="flex justify-end mt-10">
                         <button type="button" onclick="closeVoucherFilterModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mr-2">Close</button>
-                        <a href="#" class="text-white bg-red-500 hover:bg-red-600 font-bold py-2 px-6 rounded-lg mr-2">Reset</a>
+                        <a href="{{ route('admin-vouchers') }}" class="text-white bg-red-500 hover:bg-red-600 font-bold py-2 px-6 rounded-lg mr-2">Reset</a>
                         <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">Filter</button>
                     </div>
                 </form>
@@ -248,7 +246,7 @@
 
 <script>
 function openFilterModal() {
-    const modal = document.getElementById('userFilterModal');
+    const modal = document.getElementById('voucherFilterModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('hidden');
@@ -259,8 +257,8 @@ function openFilterModal() {
     }, 10);
 }
 
-function closeUserFilterModal() {
-    const modal = document.getElementById('userFilterModal');
+function closeFilterModal() {
+    const modal = document.getElementById('voucherFilterModal');
     const overlay = document.getElementById('modalOverlay');
 
     modal.classList.remove('show');
@@ -350,18 +348,5 @@ function clearModalFields() {
     document.getElementById('editVoucherValue').value = '';
     document.getElementById('editStartDate').value = '';
     document.getElementById('editExpiredDate').value = '';
-}
-
-function searchUsers() {
-    const query = document.getElementById('searchInput').value;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'searchUsers.php?query=' + encodeURIComponent(query), true);
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            document.getElementById('userTableBody').innerHTML = xhr.responseText;
-        }
-    };
-    xhr.send();
 }
 </script>
