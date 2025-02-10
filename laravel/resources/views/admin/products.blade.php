@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <div id="userTableContainer" class="bg-[#E6E6E6] p-6 rounded-3xl shadow-lg overflow-x-auto" style="height: 540px;">
+            <div id="productTableContainer" class="bg-white p-6 rounded-3xl shadow-lg overflow-x-auto" style="height: 540px;">
                 <table class="min-w-full table-auto border-collapse w-full" id="productTable">
                     <thead>
                     <tr class="text-gray-500 font-medium text-center">
