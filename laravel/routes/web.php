@@ -106,6 +106,10 @@ Route::put('/orders/update-status', [OrdersController::class, 'updateOrderStatus
 
 Route::get('/cashier/order', [ProductController::class, 'index'])->name('cashier.order');
 
+Route::get('/cashier/order/edit/{id}', [ProductController::class, 'getProductDetails'])->name('cashier.order.edit');
+
 Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('cashier.table');
 
 Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInventories']);
+
+Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPost'])->name('cashier.addToCart.post');
