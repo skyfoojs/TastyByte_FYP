@@ -23,6 +23,7 @@
                                         <div class="space-y-2 text-sm">
                                             <p>{{ $cartItem['name'] }}</p>
                                             <p>{{ 'RM ' . $cartItem['price'] }}</p>
+                                            <p>{{ $cartItem['takeaway'] ? 'Takeaway' : 'Dine-In' }}</p>
 
                                             <!-- Loop through options -->
                                             @foreach ($cartItem['options'] as $optionName => $optionValues)
@@ -39,7 +40,7 @@
                                 <hr class="mx-6">
                             @endforeach
 
-                            <div class="w-full sticky bottom-0 flex flex-col px-6 font-pop pb-6 bg-white">
+                            <div class="w-full sticky bottom-0 flex flex-col px-6 font-pop pb-6 bg-white z-50">
                                 <div class="mt-12">
                                     <p class="font-semibold">Payment Summary</p>
                                 </div>
