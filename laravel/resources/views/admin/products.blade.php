@@ -189,7 +189,7 @@
                     <!-- Hidden input field for "Others" -->
                     <div id="editOtherCategoryField" class="mt-4" style="display: none;">
                         <label for="otherCategory" class="block text-gray-700 text-sm font-medium mt-4">Specify Category</label>
-                        <input type="text" name="editOtherCategory" id="otherCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" placeholder="Enter Category">
+                        <input type="text" name="editOtherCategory" id="editOtherCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" placeholder="Enter Category">
                     </div>
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Description</label>
@@ -470,13 +470,13 @@ function openEditModal(
     overlay.classList.remove("hidden");
 
     document.getElementById("editCustomizableCategoriesInput").value = customizableCategories || "";
-    document.getElementById("productID").value = productID || "";
-    document.getElementById("editName").value = productName || "";
-    document.getElementById("editPrice").value = productPrice || "";
-    document.getElementById("editDescription").value = productDescription || "";
-    document.getElementById("editStatus").value = productStatus || "";
-    document.getElementById("editCategory").value = categoryName || "";
-    document.getElementById("editCategorySort").value = categorySort || "";
+    document.getElementById("productID").value = productID;
+    document.getElementById("editName").value = productName;
+    document.getElementById("editPrice").value = productPrice;
+    document.getElementById("editDescription").value = productDescription;
+    document.getElementById("editStatus").value = productStatus;
+    document.getElementById("editCategory").value = categoryID;
+    document.getElementById("editCategorySort").value = categorySort;
 
     const container = document.getElementById("editCustomizableContainer");
 
@@ -613,6 +613,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const otherCategoryField = document.getElementById('otherCategoryField');
     const otherCategory = document.getElementById('otherCategory');
 
+    const editCategorySelect = document.getElementById('editCategory');
+    const editOtherCategoryField = document.getElementById('editOtherCategoryField');
+    const editOtherCategory = document.getElementById('editOtherCategory');
+
     categorySelect.addEventListener('change', function () {
         if (this.value === 'others') {
             otherCategoryField.style.display = 'block';
@@ -620,6 +624,16 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             otherCategoryField.style.display = 'none';
             otherCategory.removeAttribute('required');
+        }
+    });
+
+    editCategorySelect.addEventListener('change', function () {
+        if (this.value === 'others') {
+            editOtherCategoryField.style.display = 'block';
+            editOtherCategory.setAttribute('required', '');
+        } else {
+            editOtherCategory.style.display = 'none';
+            editOtherCategory.removeAttribute('required');
         }
     });
 });
