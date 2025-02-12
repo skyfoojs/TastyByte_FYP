@@ -48,51 +48,49 @@
             <x-cashier.sidebar></x-cashier.sidebar>
         </div>
         <!-- Bottom Sheet for Product Details -->
-        <div id="bottom-sheet" class="fixed bottom-0 left-0 w-full bg-white shadow-lg transform translate-y-full transition-transform duration-300 rounded-t-2xl">
-        <div class="flex flex-col justify-center items-center">
-                <div class="flex flex-col w-full">
-                    <form action="{{ route('cashier.addToCart.post') }}" method="POST" class="font-varela">
+        <div id="bottom-sheet" class="fixed bottom-0 left-0 w-full bg-white shadow-lg transform translate-y-full transition-transform duration-300 rounded-t-2xl h-3/4">
+            <div class="flex h-full">
+                <form action="{{ route('cashier.addToCart.post') }}" method="POST" class="font-varela flex w-full">
                     @csrf
-                        <input type="hidden" id="productID" name="productID">
-                        <input type="hidden" id="hidden-name" name="name">
-                        <input type="hidden" id="hidden-price" name="price">
-                        <input type="hidden" id="hidden-image" name="image">
+                    <input type="hidden" id="productID" name="productID">
+                    <input type="hidden" id="hidden-name" name="name">
+                    <input type="hidden" id="hidden-price" name="price">
+                    <input type="hidden" id="hidden-image" name="image">
 
-                        <div class="px-7">
-                            <!-- Product Image -->
-                            <img id="product-image" class="w-full h-56 rounded-lg mt-7" src="" alt="Product Image">
+                    <div class="px-14 w-1/4 flex flex-col">
+                        <!-- Product Image -->
+                        <img id="product-image" class="h-64 w-64 rounded-lg mt-8" src="" alt="Product Image">
 
-                            <!-- Product Name & Price -->
-                            <div class="flex justify-between text-xl font-bold mt-4">
-                                <p id="product-name"></p>
-                                <p class="text-red-700" id="product-price"></p>
-                            </div>
-
-                            <!-- Product Description -->
-                            <div>
-                                <p class="mt-4 text-lg">Description:</p>
-                                <p id="product-description"></p>
-                            </div>
+                        <!-- Product Name & Price -->
+                        <div class="mt-4 text-lg">
+                            <p id="product-name" class="font-bold"></p>
+                            <p class="text-red-700" id="product-price"></p>
                         </div>
 
-                        <div class="px-7 pb-28">
-                            <!-- Takeaway Option -->
-                            <div class="flex bg-[#EEEEEE] items-center mt-4 justify-between px-8 py-4 rounded-lg">
-                                <label class="font-bold" for="takeaway">Takeaway</label>
-                                <input name="takeaway" class="custom-radio bg-white" type="checkbox" value="Takeaway">
-                            </div>
-
-                            <!-- Customization Options -->
-                            <div id="customization-section"></div>
+                        <!-- Product Description -->
+                        <div class="text-base mt-4">
+                            <p class="text-slate-800">Description:</p>
+                            <p id="product-description" class="text-slate-600"></p>
                         </div>
+
+                        <!-- Takeaway Option -->
+                        <div class="flex bg-[#EEEEEE] items-center mt-8 justify-between px-8 py-4 rounded-lg">
+                            <label class="font-bold" for="takeaway">Takeaway</label>
+                            <input name="takeaway" class="custom-radio bg-white" type="checkbox" value="Takeaway">
+                        </div>
+                    </div>
+
+                    <div class="px-10 w-3/4 flex flex-col justify-between">
+                        <!-- Customization Options -->
+                        <div id="customization-section" class="mt-4"></div>
 
                         <!-- Add to Cart Section -->
-                        <div class="w-full bg-[#F3F3F3] py-6 fixed bottom-0 px-10 flex justify-between items-center">
+                        <div class="w-full bg-[#F3F3F3] py-6 px-10 flex justify-between items-center">
                             <p class="text-2xl font-varela font-bold" id="final-price"></p>
                             <button type="submit" class="bg-blue-button text-white py-3 px-12 rounded-2xl">Add to Cart</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </x-cashier.navbar>
