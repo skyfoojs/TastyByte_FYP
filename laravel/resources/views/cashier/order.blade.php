@@ -57,7 +57,7 @@
                     <input type="hidden" id="hidden-price" name="price">
                     <input type="hidden" id="hidden-image" name="image">
 
-                    <div class="px-14 w-1/4 flex flex-col">
+                    <div class="px-10 w-1/4 flex flex-col">
                         <!-- Product Image -->
                         <img id="product-image" class="h-64 w-64 rounded-lg mt-8" src="" alt="Product Image">
 
@@ -85,7 +85,7 @@
                         <div id="customization-section" class="mt-4"></div>
 
                         <!-- Add to Cart Section -->
-                        <div class="w-full bg-[#F3F3F3] py-6 px-10 flex justify-between items-center">
+                        <div class="w-full bg-[#F3F3F3] py-6 px-10 flex justify-between items-center mb-6">
                             <p class="text-2xl font-varela font-bold" id="final-price"></p>
                             <button type="submit" class="bg-blue-button text-white py-3 px-12 rounded-2xl">Add to Cart</button>
                         </div>
