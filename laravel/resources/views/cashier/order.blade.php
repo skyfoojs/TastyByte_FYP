@@ -85,9 +85,8 @@
                         <div id="customization-section" class="mt-4"></div>
 
                         <!-- Add to Cart Section -->
-                        <div class="w-full bg-[#F3F3F3] py-6 px-10 flex justify-between items-center mb-6">
-                            <p class="text-2xl font-varela font-bold" id="final-price"></p>
-                            <button type="submit" class="bg-blue-button text-white py-3 px-12 rounded-2xl">Add to Cart</button>
+                        <div class="py-6 px-10 flex justify-end mb-6">
+                            <button type="submit" class="bg-indigo-500 text-white font-medium py-3 px-12 rounded-2xl" id="final-price"></button>
                         </div>
                     </div>
                 </form>
@@ -130,7 +129,7 @@
             document.getElementById("hidden-name").value = data.product.name;
             document.getElementById("hidden-price").value = data.product.price;
             document.getElementById("hidden-image").value = data.product.image;
-            document.getElementById("final-price").textContent = "RM " + parseFloat(data.product.price).toFixed(2);
+            document.getElementById("final-price").textContent = "Add to Cart - RM " + parseFloat(data.product.price).toFixed(2);
 
             // Handle customization options
             const customizationSection = document.getElementById("customization-section");
