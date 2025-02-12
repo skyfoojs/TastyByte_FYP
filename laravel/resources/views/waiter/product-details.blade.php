@@ -40,13 +40,15 @@
                                 <p class="text-sm text-gray-500">No options available for this category.</p>
                             @else
                                 <!-- Loop through options for this category -->
-                                @foreach ($category->options as $option)
-                                    <hr class="mt-2">
-                                    <div class="flex justify-between w-full items-center my-4">
-                                        <label for="option-{{ $option->customizeOptionsID }}" class="text-gray-600">{{ $option->name }}</label>
-                                        <input {{ $category->isRequired ? 'required' : ''}} id="option-{{ $option->customizeOptionsID }}" type="{{ $category->singleChoose ? 'radio' : 'checkbox' }}" name="options[{{ $category->name }}][]" value="{{ $option->name }}" class="custom-radio bg-gray-200 appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
-                                    </div>
-                                @endforeach
+                                <div data-required-group="{{ $category->name }}">
+                                    @foreach ($category->options as $option)
+                                    <span class="error-message text-red-500 text-sm ml-2 hidden"></span>
+                                        <div class="flex justify-between w-full items-center my-4">
+                                            <label for="option-{{ $option->customizeOptionsID }}" class="text-gray-600">{{ $option->name }}</label>
+                                            <input {{ $category->isRequired ? 'data-required' : '' }} id="option-{{ $option->customizeOptionsID }}" type="{{ $category->singleChoose ? 'radio' : 'checkbox' }}" name="options[{{ $category->name }}][]" value="{{ $option->name }}" class="custom-radio bg-white appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
+                                        </div>
+                                    @endforeach
+                                </div>
                             @endif
                         @endforeach
                     </div>
@@ -91,3 +93,31 @@
 }
 
 </style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector("form").addEventListener("submit", function (event) {
+        let isValid = true; // Flag to track form validity
+
+        document.querySelectorAll("[data-required-group]").forEach(group => {
+            const checkboxes = group.querySelectorAll("input[type='checkbox']");
+
+            // Only check for required checkboxes, ignore radio buttons
+            if (checkboxes.length > 0 && [...checkboxes].some(cb => cb.hasAttribute("data-required"))) {
+                const errorMessageSpan = group.querySelector('.error-message');
+
+                if (![...checkboxes].some(cb => cb.checked)) {
+                    isValid = false; // Set validity to false if validation fails
+                    errorMessageSpan.textContent = `Please select at least one option for ${group.dataset.requiredGroup}`; // Show error message
+                    errorMessageSpan.classList.remove('hidden'); // Show the error message
+                } else {
+                    errorMessageSpan.classList.add('hidden'); // Hide error message if the checkbox is checked
+                }
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+    });
+});
+</script>
