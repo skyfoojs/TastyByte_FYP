@@ -42,7 +42,7 @@ class LoginController extends Controller
             // Check the user's role and redirect accordingly
             return match ($user->role) {
                 'Waiter' => redirect()->intended(route('menu')),
-                'Admin' => redirect()->route('admin-users'),
+                'Admin' => redirect()->route('admin-dashboard'),
                 'cashier' => redirect()->route('cashier-menu'),
                 default => tap(Auth::logout(), fn () => redirect()->route('login')->with('error', 'Unauthorized access.')),
             };
