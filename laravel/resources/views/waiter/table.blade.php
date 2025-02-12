@@ -8,8 +8,8 @@
 
             <form action="{{ route('storeTable') }}" method="POST">
                 @csrf
-                <input name="table" type="number" id="table" class="w-72 border border-gray-300 rounded-lg py-2 px-3 mt-1 bg-[#DDDDDD]" required>
-                <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center space-x-2">
+                <input name="table" type="number" id="table" class="w-72 border border-gray-300 rounded-lg py-2 px-3 mt-10 bg-[#DDDDDD]" required>
+                <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center space-x-2 mt-10">
                     <span>Confirm</span>
                 </button>
             </form>

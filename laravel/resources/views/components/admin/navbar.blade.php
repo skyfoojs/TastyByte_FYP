@@ -1,5 +1,5 @@
 <main class="flex-1 ml-64">
-    <header class="bg-[#CFCFCF] shadow p-4 mx-6 mt-5 rounded-3xl flex justify-between items-center">
+    <header class="bg-gray-800 shadow p-4 mx-6 mt-5 rounded-3xl flex justify-between items-center">
         <div class="flex justify-end w-full items-center space-x-4 relative">
         @if (session('success'))
         <div id="toast-success" class="toast" role="alert">
@@ -44,8 +44,10 @@
 
                 <button id="dropdownToggle" class="flex items-center space-x-2 mr-2">
                     <!--Show username according the login username-->
-                    <span class="font-semibold text-gray-700 mr-3">{{ session('username') ?? 'Admin' }}</span>
-                    <img src="../../public/images/avatar.png" alt="Admin Avatar" class="w-10 h-10 rounded-full">
+                    <span class="font-semibold text-gray-300 mr-3">{{ session('username') ?? 'Admin' }}</span>
+                    <img class="size-12 rounded-full"
+                                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                 alt="">
                 </button>
 
                 <div id="dropdownMenu" class="absolute right-0 mt-2 p-2 w-48 bg-white border border-gray-200 rounded-lg hidden">

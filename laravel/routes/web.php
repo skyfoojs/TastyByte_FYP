@@ -32,6 +32,12 @@ Route::post('/table', [OrdersController::class, 'storeTable'])->name('storeTable
 // Get the view from Product Details Controller.
 Route::get('/product-details/{id}', [ProductController::class, 'edit'])->name('product-details');
 
+// Get the Dashboard page View from Admin Controller.
+Route::get('/admin/', [AdminController::class, 'dashboard'])->name('admin-dashboard');
+
+// Get the Dashboard Page Datas from Admin Controller.
+Route::get('/admin/dashboard-data', [AdminController::class, 'getDashboardData'])->name('dashboard-data');
+
 // Get the User Page view from Admin Controller.
 Route::get('/admin/users', [AdminController::class, 'users'])->name('admin-users');
 
@@ -40,6 +46,9 @@ Route::post('/admin/users', [AdminController::class, 'addUserPost'])->name('addU
 
 // Get the Edit Users Data from the View.
 Route::put('/admin/users', [AdminController::class, 'editUserPost'])->name('editUser.post');
+
+// Get the filtered users from the Controller.
+Route::get('/filteredUser', [AdminController::class, 'getFilteredUsers'])->name('filterUser.get');
 
 // Get the Product Page view from Admin Controller.
 Route::get('/admin/products', [AdminController::class, 'products'])->name('admin-products');
@@ -50,6 +59,9 @@ Route::post('/admin/products', [AdminController::class, 'addProductPost'])->name
 // Get the Edit Product Data from the View.
 Route::put('/admin/products', [AdminController::class, 'editProductPost'])->name('editProduct.post');
 
+// Get the filtered products from the Controller.
+Route::get('/filteredProducts', [AdminController::class, 'getFilteredProducts'])->name('filterProducts.get');
+
 // Get the Inventory Page view from Admin Controller.
 Route::get('/admin/inventory', [AdminController::class, 'inventory'])->name('admin-inventory');
 
@@ -59,6 +71,9 @@ Route::post('admin/inventory', [AdminController::class, 'addInventoryPost'])->na
 // Get the Edit Inventory Data from the View.
 Route::put('admin/inventory', [AdminController::class, 'editInventoryPost'])->name('editInventory.post');
 
+// Get the filtered Inventory from the Controller.
+Route::get('/filteredInventories', [AdminController::class, 'getFilteredInventories'])->name('filterInventories.get');
+
 // Get the Voucher Page view from Admin Controller.
 Route::get('admin/vouchers', [AdminController::class, 'vouchers'])->name('admin-vouchers');
 
@@ -67,6 +82,9 @@ Route::post('admin/vouchers', [AdminController::class, 'addVoucherPost'])->name(
 
 // Get the Edit Voucher Data from the View.
 Route::put('admin/vouchers', [AdminController::class, 'editVoucherPost'])->name('editVoucher.post');
+
+// Get the filtered Vouchers from the Controller.
+Route::get('/filteredVouchers', [AdminController::class, 'getFilteredVouchers'])->name('filterVouchers.get');
 
 // Get the Add To Cart Datas from the View.
 Route::post('order', [OrdersController::class, 'addToCartPost'])->name('addToCart.post');
@@ -80,13 +98,18 @@ Route::post('/summary', [OrdersController::class, 'addOrderPost'])->name('addOrd
 // Get the Track Order View from Order Controller.
 Route::get('/track-order', [OrdersController::class, 'trackOrder'])->name('trackOrder');
 
-// Ge the Order History View from the Order Controller.
+// Get the Order History View from the Order Controller.
 Route::get('/order-history', [OrdersController::class, 'orderHistory'])->name('orderHistory');
+
+// Get the OrderID from the View.
+Route::put('/orders/update-status', [OrdersController::class, 'updateOrderStatusCompleted'])->name('orders.update-status');
 
 Route::get('/cashier/order', [ProductController::class, 'index'])->name('cashier.order');
 
 Route::get('/cashier/order/edit/{id}', [ProductController::class, 'getProductDetails'])->name('cashier.order.edit');
 
 Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('cashier.table');
+
+Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInventories']);
 
 Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPost'])->name('cashier.addToCart.post');

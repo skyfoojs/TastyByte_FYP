@@ -12,15 +12,46 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+    public function dashboard() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+        return view('admin.dashboard');
+    }
+
     public function users() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
         $users = User::get();
-        return view('admin.users', compact('users'));
+        $totalUsers = User::count();
+        $limit = 6;
+        $totalPages = ceil($totalUsers / $limit);
+        return view('admin.users', compact('users', 'totalPages'));
     }
 
     public function products() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
+        $totalProducts = Product::count();
+        $limit = 6;
+        $totalPages = ceil($totalProducts / $limit);
         // Get the count of distinct sort values from customizableCategory
         $categoryDistinctSortCount = DB::table('customizablecategory')->distinct('sort')->count('sort');
 
@@ -30,19 +61,51 @@ class AdminController extends Controller
         // Fetch products with their categories, customizable categories, and options
         $products = Product::with(['category', 'customizableCategory.options'])->distinct()->get();
         $categories = Category::all();
-        return view('admin.products', compact('products', 'categoryDistinctSortCount', 'optionDistinctSortCount', 'categories'));
+        return view('admin.products', compact('products', 'categoryDistinctSortCount', 'optionDistinctSortCount', 'categories', 'totalPages'));
     }
 
 
     public function inventory() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
+        $totalInventory = Inventory::count();
+        $limit = 6;
+        $totalPages = ceil($totalInventory / $limit);
         $inventory = Inventory::with(['product'])->get();
         $product = Product::all();
-        return view('admin.inventory', compact('inventory'), compact('product'));
+        return view('admin.inventory', compact('inventory', 'totalPages'), compact('product'));
     }
 
     public function vouchers() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
         $vouchers = Vouchers::all();
-        return view('admin.vouchers', compact('vouchers'));
+        $totalVouchers = Vouchers::count();
+        $limit = 6;
+        $totalPages = ceil($totalVouchers / $limit);
+        return view('admin.vouchers', compact('vouchers', 'totalPages'));
+    }
+
+    public function getDashboardData() {
+        // Return the datas as json format (API) to fetch data realtime.
+        return response()->json([
+            'usersCount' => User::count(),
+            'productsCount' => Product::count(),
+            'inventoriesCount' => Inventory::count(),
+            'vouchersCount' => Vouchers::count(),
+            'lowStock' => Inventory::where('stockLevel', '<', 100)->get(),
+            'upcomingVouchers' => Vouchers::where('startedOn', '>', now())->get(),
+        ]);
     }
 
     public function addUserPost(Request $request) {
@@ -126,6 +189,50 @@ class AdminController extends Controller
         } else {
             return redirect()->route('admin-users')->with('error', 'Error updating user.');
         }
+    }
+
+    public function getFilteredUsers(Request $request)
+    {
+        $request->validate([
+            'filterType' => 'required|string|in:filterUserID,filterUsername,filterFullName,filterRole,filterPhone,filterEmail,filterGender',
+            'keywords' => 'required|string',
+        ]);
+
+        $query = User::query();
+
+        $filterType = $request->input('filterType');
+        $keywords = $request->input('keywords');
+
+        // Apply filtering based on filter type
+        switch ($filterType) {
+            case 'filterUserID':
+                $query->where('userID', $keywords);
+                break;
+            case 'filterUsername':
+                $query->where('username', 'LIKE', "%$keywords%");
+                break;
+            case 'filterFullName':
+                $query->whereRaw("CONCAT(firstName, ' ', lastName) LIKE ?", ["%$keywords%"]);
+                break;
+            case 'filterRole':
+                $query->where('role', $keywords);
+                break;
+            case 'filterPhone':
+                $query->where('phoneNo', 'LIKE', "%$keywords%");
+                break;
+            case 'filterEmail':
+                $query->where('email', 'LIKE', "%$keywords%");
+                break;
+            case 'filterGender':
+                $query->where('gender', $keywords);
+                break;
+        }
+        $totalUsers = User::count();
+        $limit = 6;
+        $totalPages = ceil($totalUsers / $limit);
+        $users = $query->paginate(6);
+
+        return view('admin.users', compact('users', 'totalPages'));
     }
 
     public function addProductPost(Request $request) {
@@ -389,6 +496,50 @@ class AdminController extends Controller
         return redirect()->route('admin-products')->with('success', 'Product updated successfully!');
     }
 
+    public function getFilteredProducts(Request $request)
+    {
+        $request->validate([
+            'filterType' => 'required|string|in:filterProductID,filterCategory,filterProductName,filterStatus',
+            'keywords' => 'required|string',
+        ]);
+
+        $query = Product::query();
+
+        $filterType = $request->input('filterType');
+        $keywords = $request->input('keywords');
+
+        // Apply filtering based on filter type
+        switch ($filterType) {
+            case 'filterProductID':
+                $query->where('productID', $keywords);
+                break;
+            case 'filterCategory':
+                // Filter by category name using a join
+                $query->whereHas('category', function ($q) use ($keywords) {
+                    $q->where('name', 'LIKE', "%$keywords%");
+                });
+                break;
+            case 'filterProductName':
+                $query->where('name', 'LIKE', "%$keywords%");
+                break;
+            case 'filterStatus':
+                $query->where('status', $keywords);
+                break;
+        }
+
+        $totalProducts = Product::count();
+        $limit = 6;
+        $totalPages = ceil($totalProducts / $limit);
+        $products = $query->paginate($limit);
+
+        $categories = Category::all();
+        $categoryDistinctSortCount = DB::table('customizablecategory')->distinct('sort')->count('sort');
+        $optionDistinctSortCount = DB::table('customizableoptions')->distinct('sort')->count('sort');
+
+
+        return view('admin.products', compact('products', 'totalPages', 'categories', 'categoryDistinctSortCount', 'optionDistinctSortCount'));
+    }
+
     public function addInventoryPost(Request $request) {
         $request->validate([
             'inventory' => 'required',
@@ -438,6 +589,52 @@ class AdminController extends Controller
         } else {
             return redirect()->route('admin-inventory')->with('error', 'Error updating inventory.');
         }
+    }
+
+    public function getFilteredInventories(Request $request)
+    {
+        $request->validate([
+            'filterType' => 'required|string|in:filterInventoryID,filterCategoryName,filterProductName,filterStockMoreThan,filterStockLessThan',
+            'keywords' => 'required|string',
+        ]);
+
+        $query = Inventory::query();
+
+        $filterType = $request->input('filterType');
+        $keywords = $request->input('keywords');
+
+        // Apply filtering based on filter type
+        switch ($filterType) {
+            case 'filterInventoryID':
+                $query->where('inventoryID', $keywords);
+                break;
+            case 'filterCategoryName':
+                $query->where('name', 'LIKE', "%$keywords%");
+                break;
+            case 'filterProductName':
+                // Filter by product name using a join
+                $query->whereHas('product', function ($q) use ($keywords) {
+                    $q->where('name', 'LIKE', "%$keywords%");
+                });
+                break;
+            case 'filterStockMoreThan':
+                // Stock greater than the given number
+                $query->where('stockLevel', '>', (int)$keywords);
+                break;
+            case 'filterStockLessThan':
+                // Stock less than the given number
+                $query->where('stockLevel', '<', (int)$keywords);
+                break;
+        }
+
+        $totalInventory = Inventory::count();
+        $limit = 6;
+        $totalPages = ceil($totalInventory / $limit);
+        $inventory = $query->paginate($limit);
+
+        $product = Product::all();
+
+        return view('admin.inventory', compact('inventory', 'totalPages', 'product'));
     }
 
     public function addVoucherPost(Request $request) {
@@ -504,4 +701,38 @@ class AdminController extends Controller
             return redirect()->route('admin-vouchers')->with('error', 'Error updating voucher.');
         }
     }
+
+    public function getFilteredVouchers(Request $request)
+    {
+        $request->validate([
+            'filterType' => 'required|string|in:filterVoucherID,filterVoucherCode,filterType',
+            'keywords' => 'required|string',
+        ]);
+
+        $query = Vouchers::query();
+
+        $filterType = $request->input('filterType');
+        $keywords = $request->input('keywords');
+
+        // Apply filtering based on filter type
+        switch ($filterType) {
+            case 'filterVoucherID':
+                $query->where('voucherID', $keywords);
+                break;
+            case 'filterVoucherCode':
+                $query->where('code', 'LIKE', "%$keywords%");
+                break;
+            case 'filterType':
+                $query->where('type', $keywords);
+                break;
+        }
+
+        $totalVouchers = Vouchers::count();
+        $limit = 6;
+        $totalPages = ceil($totalVouchers / $limit);
+        $vouchers = $query->paginate($limit);
+
+        return view('admin.vouchers', compact('vouchers', 'totalPages'));
+    }
+
 }
