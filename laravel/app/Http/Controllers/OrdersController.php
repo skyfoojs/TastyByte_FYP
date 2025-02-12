@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Auth;
 class OrdersController extends Controller
 {
     public function index() {
+        if (!Auth::check() || Auth::user()->role !== 'Waiter') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
         return view('waiter.table');
     }
 
@@ -26,6 +33,13 @@ class OrdersController extends Controller
             if ($role === 'Cashier') {
                 return view('cashier.order-summary');
             } elseif ($role === 'Waiter') {
+                if (!Auth::check() || Auth::user()->role !== 'Waiter') {
+                    session()->forget(['username', 'userID']);
+                    Auth::logout();
+
+                    return redirect('/login')->with('error', 'Unauthorized Access');
+                }
+
                 return view('waiter.order-summary');
             }
         }
@@ -37,12 +51,26 @@ class OrdersController extends Controller
 
 
     public function trackOrder() {
+        if (!Auth::check() || Auth::user()->role !== 'Waiter') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
         $orders = Orders::with('orderItems')->get();
 
         return view('waiter.track-order', compact('orders'));
     }
 
     public function orderHistory(Request $request) {
+        if (!Auth::check() || Auth::user()->role !== 'Waiter') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+        
         $query = Orders::with('orderItems.products');
 
         if ($request->has('orderID')) {
