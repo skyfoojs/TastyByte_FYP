@@ -15,7 +15,7 @@
     </head>
     <body>
 
-    <main class="font-mont">
+    <main class="font-mont bg-slate-200 min-h-screen">
         {{ $slot }}
     </main>
     </body>
