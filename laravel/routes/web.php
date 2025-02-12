@@ -32,13 +32,11 @@ Route::post('/table', [OrdersController::class, 'storeTable'])->name('storeTable
 // Get the view from Product Details Controller.
 Route::get('/product-details/{id}', [ProductController::class, 'edit'])->name('product-details');
 
-// Route to display the dashboard page
-Route::get('/admin/', function () {
-    return view('admin.dashboard'); // Load the Blade template
-})->name('admin-dashboard');
+// Get the Dashboard page View from Admin Controller.
+Route::get('/admin/', [AdminController::class, 'dashboard'])->name('admin-dashboard');
 
-// Get the Dashboard Page view from Admin Controller.
-Route::get('/admin/dashboard-data', [AdminController::class, 'dashboard'])->name('dashboard-data');
+// Get the Dashboard Page Datas from Admin Controller.
+Route::get('/admin/dashboard-data', [AdminController::class, 'getDashboardData'])->name('dashboard-data');
 
 // Get the User Page view from Admin Controller.
 Route::get('/admin/users', [AdminController::class, 'users'])->name('admin-users');
