@@ -49,7 +49,7 @@ class ProductController extends Controller
         }
 
         // Fetch products with their categories
-        $products = Product::with('category')->get();
+        $products = Product::with('category')->get()->sortBy(fn($product) => $product->category->sort ?? PHP_INT_MAX);
 
         // Group products by category
         $groupedProducts = $products->groupBy(fn($product) => $product->category->name ?? 'Uncategorized');
@@ -72,11 +72,18 @@ class ProductController extends Controller
             return redirect('/login')->with('error', 'Unauthorized Access');
         }
 
+        // Fetch product details
         $productDetails = Product::findOrFail($id);
 
-        // Eager load categories and their options
-        $categoriesWithOptions = $productDetails->customizableCategory()->with('options')->get();
+        // Load customizable categories sorted by 'sort_order' and their options also sorted
+        $categoriesWithOptions = $productDetails->customizableCategory()
+            ->with(['options' => function ($query) {
+                $query->orderBy('sort', 'asc'); // Sort options inside each category
+            }])
+            ->orderBy('sort', 'asc') // Sort categories
+            ->get();
 
         return view('waiter.product-details', compact('productDetails', 'categoriesWithOptions'));
-        }
+    }
+
 }
