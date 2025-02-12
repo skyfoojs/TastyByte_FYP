@@ -70,7 +70,7 @@ class OrdersController extends Controller
 
             return redirect('/login')->with('error', 'Unauthorized Access');
         }
-        
+
         $query = Orders::with('orderItems.products');
 
         if ($request->has('orderID')) {
@@ -180,7 +180,10 @@ class OrdersController extends Controller
                     'productID' => $productID,
                     'orderID' => $order->orderID,
                     'quantity' => $cartItem['quantity'],
-                    'remark' => json_encode($cartItem['options']), // Store options as JSON
+                    'remark' => json_encode([
+                        'options' => $cartItem['options'], // Store options as JSON
+                        'takeaway' => $cartItem['takeaway'] // Add takeaway information to the remark
+                    ]),
                 ]);
             }
 
