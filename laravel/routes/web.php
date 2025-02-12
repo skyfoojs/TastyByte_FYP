@@ -32,8 +32,13 @@ Route::post('/table', [OrdersController::class, 'storeTable'])->name('storeTable
 // Get the view from Product Details Controller.
 Route::get('/product-details/{id}', [ProductController::class, 'edit'])->name('product-details');
 
+// Route to display the dashboard page
+Route::get('/admin/', function () {
+    return view('admin.dashboard'); // Load the Blade template
+})->name('admin-dashboard');
+
 // Get the Dashboard Page view from Admin Controller.
-Route::get('/admin/', [AdminController::class, 'dashboard'])->name('admin-dashboard');
+Route::get('/admin/dashboard-data', [AdminController::class, 'dashboard'])->name('dashboard-data');
 
 // Get the User Page view from Admin Controller.
 Route::get('/admin/users', [AdminController::class, 'users'])->name('admin-users');
@@ -101,3 +106,5 @@ Route::get('/order-history', [OrdersController::class, 'orderHistory'])->name('o
 Route::get('/cashier/order', [ProductController::class, 'index'])->name('cashier.order');
 
 Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('cashier.table');
+
+Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInventories']);
