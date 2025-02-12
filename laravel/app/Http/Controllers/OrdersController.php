@@ -106,7 +106,13 @@ class OrdersController extends Controller
         // Save the updated cart back to the session
         session()->put('cart', $cart);
 
-        return redirect()->route('order')->with('success', 'Product added to cart!');
+        if ($request->route()->getName() === 'cashier.addToCart.post') {
+            return redirect()->route('cashier.order')->with('success', 'Product added to cart!');
+        } else if ($request->route()->getName() === 'addToCart.post'){
+            return redirect()->route('order')->with('success', 'Product added to cart!');
+        } else {
+            return redirect()->route('404');
+        }
     }
 
     public function viewCart() {
