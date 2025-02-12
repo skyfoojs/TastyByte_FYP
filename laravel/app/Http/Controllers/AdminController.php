@@ -18,6 +18,9 @@ class AdminController extends Controller
 {
     public function dashboard() {
         if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
             return redirect('/login')->with('error', 'Unauthorized Access');
         }
         return view('admin.dashboard');
@@ -25,6 +28,9 @@ class AdminController extends Controller
 
     public function users() {
         if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
             return redirect('/login')->with('error', 'Unauthorized Access');
         }
 
@@ -37,6 +43,9 @@ class AdminController extends Controller
 
     public function products() {
         if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
             return redirect('/login')->with('error', 'Unauthorized Access');
         }
 
@@ -58,6 +67,9 @@ class AdminController extends Controller
 
     public function inventory() {
         if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
             return redirect('/login')->with('error', 'Unauthorized Access');
         }
 
@@ -71,9 +83,12 @@ class AdminController extends Controller
 
     public function vouchers() {
         if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
             return redirect('/login')->with('error', 'Unauthorized Access');
         }
-        
+
         $vouchers = Vouchers::all();
         $totalVouchers = Vouchers::count();
         $limit = 6;
