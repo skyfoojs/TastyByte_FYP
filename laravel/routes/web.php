@@ -100,8 +100,11 @@ Route::post('/summary', [OrdersController::class, 'addOrderPost'])->name('addOrd
 // Get the Track Order View from Order Controller.
 Route::get('/track-order', [OrdersController::class, 'trackOrder'])->name('trackOrder');
 
-// Ge the Order History View from the Order Controller.
+// Get the Order History View from the Order Controller.
 Route::get('/order-history', [OrdersController::class, 'orderHistory'])->name('orderHistory');
+
+// Get the OrderID from the View.
+Route::put('/orders/update-status', [OrdersController::class, 'updateOrderStatusCompleted'])->name('orders.update-status');
 
 Route::get('/cashier/order', [ProductController::class, 'index'])->name('cashier.order');
 
