@@ -16,19 +16,17 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     public function dashboard() {
-        // Get pages count
-        $usersCount = User::count();
-        $productsCount = Product::count();
-        $inventoriesCount = Inventory::count();
-        $vouchersCount = Vouchers::count();
-
-        // Count inventory items where stockLevel is less than 20
-        $lowStock = Inventory::where('stockLevel', '<', 100)->get();
-
-        return view('admin.dashboard', compact(
-            'usersCount', 'productsCount', 'inventoriesCount', 'vouchersCount', 'lowStock'
-        ));
+        // Return the datas as json format (API) to fetch data realtime.
+        return response()->json([
+            'usersCount' => User::count(),
+            'productsCount' => Product::count(),
+            'inventoriesCount' => Inventory::count(),
+            'vouchersCount' => Vouchers::count(),
+            'lowStock' => Inventory::where('stockLevel', '<', 100)->get(),
+            'upcomingVouchers' => Vouchers::where('startedOn', '>', now())->get(),
+        ]);
     }
+
 
     public function users() {
         $users = User::get();
