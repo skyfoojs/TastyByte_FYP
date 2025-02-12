@@ -76,8 +76,6 @@
                             </div>
                         </div>
                     @endif
-
-
                 </div>
             </x-waiter.table-header>
         </div>
