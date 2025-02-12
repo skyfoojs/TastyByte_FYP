@@ -1,4 +1,4 @@
-<nav class="bg-light-gray z-10">
+<nav class="bg-gray-800 z-10">
     <header class="p-4 mx-6 rounded-3xl flex justify-between items-center">
     @if (session('success'))
         <div id="toast-success" class="toast" role="alert">
@@ -22,7 +22,7 @@
         <div class="flex justify-end w-full items-center relative">
             <div class="relative">
                 <button id="dropdownToggle" class="flex items-center">
-                    <span class="font-semibold text-gray-700 mr-3">{{ session('username') ?? 'Waiter' }}</span>
+                    <span class="text-gray-300 font-semibold mr-3">{{ session('username') ?? 'Waiter' }}</span>
                     <img src="#" alt="Admin Avatar" class="w-10 h-10 rounded-full bg-white">
                 </button>
 
