@@ -385,6 +385,9 @@ class AdminController extends Controller
             }
         } else {
             $categoryID = $validatedData['editCategory'];
+            $category = Category::find($categoryID);
+            $category->sort = $validatedData['editCategorySort'];
+            $category->save();
         }
 
         // Find the product
