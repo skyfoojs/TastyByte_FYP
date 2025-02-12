@@ -12,23 +12,22 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function dashboard() {
-        // Return the datas as json format (API) to fetch data realtime.
-        return response()->json([
-            'usersCount' => User::count(),
-            'productsCount' => Product::count(),
-            'inventoriesCount' => Inventory::count(),
-            'vouchersCount' => Vouchers::count(),
-            'lowStock' => Inventory::where('stockLevel', '<', 100)->get(),
-            'upcomingVouchers' => Vouchers::where('startedOn', '>', now())->get(),
-        ]);
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+        return view('admin.dashboard');
     }
 
-
     public function users() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
         $users = User::get();
         $totalUsers = User::count();
         $limit = 6;
@@ -37,6 +36,10 @@ class AdminController extends Controller
     }
 
     public function products() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
         $totalProducts = Product::count();
         $limit = 6;
         $totalPages = ceil($totalProducts / $limit);
@@ -54,6 +57,10 @@ class AdminController extends Controller
 
 
     public function inventory() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
         $totalInventory = Inventory::count();
         $limit = 6;
         $totalPages = ceil($totalInventory / $limit);
@@ -63,11 +70,27 @@ class AdminController extends Controller
     }
 
     public function vouchers() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+        
         $vouchers = Vouchers::all();
         $totalVouchers = Vouchers::count();
         $limit = 6;
         $totalPages = ceil($totalVouchers / $limit);
         return view('admin.vouchers', compact('vouchers', 'totalPages'));
+    }
+
+    public function getDashboardData() {
+        // Return the datas as json format (API) to fetch data realtime.
+        return response()->json([
+            'usersCount' => User::count(),
+            'productsCount' => Product::count(),
+            'inventoriesCount' => Inventory::count(),
+            'vouchersCount' => Vouchers::count(),
+            'lowStock' => Inventory::where('stockLevel', '<', 100)->get(),
+            'upcomingVouchers' => Vouchers::where('startedOn', '>', now())->get(),
+        ]);
     }
 
     public function addUserPost(Request $request) {
