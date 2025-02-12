@@ -43,7 +43,7 @@ class LoginController extends Controller
             return match ($user->role) {
                 'Waiter' => redirect()->intended(route('menu')),
                 'Admin' => redirect()->route('admin-users'),
-                'cashier' => redirect()->route('cashier-menu'),
+                'Cashier' => redirect()->route('cashier-menu'),
                 default => tap(Auth::logout(), fn () => redirect()->route('login')->with('error', 'Unauthorized access.')),
             };
         }
