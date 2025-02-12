@@ -3,7 +3,7 @@
             <x-waiter.table-header :table="'Table'" :trackOrder="'Choose '">
                 <div class="flex flex-col pb-8">
                     <div class="flex justify-center items-center mt-4">
-                        <select class="w-72 rounded-2xl py-1 px-4 bg-[#E6E6E6] border-r-[12px]" name="" id="">
+                        <select class="w-72 rounded-2xl py-1 px-4 bg-white" name="" id="">
                             <option value="">Test</option>
                         </select>
                         <i class='bx bx-search ml-5 bx-sm text-[#8E8E8E]'></i>
@@ -15,7 +15,7 @@
                                 @foreach ($order->orderItems as $item)
                                 @endforeach
                                 <a href="{{ route('orderHistory', ['orderID' => $order->orderID]) }}">
-                                    <div class="bg-[#EDEDED] w-full p-5 rounded-xl mt-10">
+                                    <div class="bg-white w-full p-5 rounded-xl mt-10">
                                         <div class="flex">
                                             <div class="space-y-3 ml-3">
                                                 <div>
