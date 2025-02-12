@@ -34,12 +34,15 @@
                                             <p>RM {{ number_format($item->products->price ?? 0, 2) }}</p>
 
                                             @if (!empty($item->remark))
-                                                @php $remarks = json_decode($item->remark, true); @endphp
-                                                @if (is_array($remarks))
-                                                    @foreach ($remarks as $optionName => $optionValues)
-                                                        <p>{{ $optionName }}: {{ implode(', ', (array) $optionValues) }}</p>
-                                                    @endforeach
-                                                @endif
+                                                @foreach (json_decode($item->remark, true) as $optionName => $optionValues)
+                                                    @if ($optionName === 'options')
+                                                        @foreach ($optionValues as $name => $values)
+                                                            <p>{{ $name }}: {{ implode(', ', (array) $values) }}</p>
+                                                        @endforeach
+                                                    @elseif ($optionName === 'takeaway')
+                                                        <p>{{ $optionValues ? 'Takeaway' : 'Dine in' }}</p>
+                                                    @endif
+                                                @endforeach
                                             @endif
                                         </div>
                                         <div class="ml-2 flex border py-1 px-2 rounded-lg bg-[#efefef] text-center items-center">
