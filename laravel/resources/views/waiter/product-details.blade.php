@@ -12,7 +12,13 @@
                     <input type="hidden" name="image" value="{{ $productDetails->image }}">
 
                     <div class="px-7">
-                        <div class="w-full bg-[#E1E1E1] h-56 rounded-lg mt-7"></div>
+                        <div class="w-full bg-[#E1E1E1] h-56 rounded-lg mt-7">
+                            @if (!empty($productDetails->image))
+                                <img class="w-full h-full rounded-lg object-cover" src="{{ asset($productDetails->image) }}" alt="Image Not Available">
+                            @else
+                                <p>No Image</p>
+                            @endif
+                        </div>
                         <div class="flex justify-between text-xl font-bold mt-4">
                             <p>{{ $productDetails->name }}</p>
                             <p class="text-red-700">{{ 'RM ' . $productDetails->price }}</p>
