@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
-    {
-        $products = Product::with(['category', 'customizableCategory.options'])->get();
     public function index(Request $request) {
         // Authorization check: Ensure user is authenticated
         if (!Auth::check()) {
@@ -83,18 +80,15 @@ class ProductController extends Controller
         return view('waiter.product-details', compact('productDetails', 'categoriesWithOptions'));
     }
 
-    public function getProductDetails($id)
+        public function getProductDetails($id)
     {
         // Find the product by ID
         $product = Product::with('customizableCategory.options')->find($id);
-
         if (!$product) {
             return response()->json(['success' => false, 'message' => 'Product not found'], 404);
         }
-
         // Get the customization options
         $categories = $product->customizableCategory()->with('options')->get();
-
         return response()->json([
             'success' => true,
             'product' => [
