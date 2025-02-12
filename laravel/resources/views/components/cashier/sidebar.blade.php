@@ -15,7 +15,7 @@
         <h2 class="font-semibold text-lg">Table {{ session('tableNo') }} Summary</h2>
         <hr class="mt-4">
 
-        <div class="flex-1 overflow-y-auto mt-6">
+        <div class="flex-1 overflow-y-auto mt-6 mb-6">
             @if (session('cart'))
                 @foreach (session('cart') as $cartItem)
                     <div class="flex gap-x-4 mb-6">
