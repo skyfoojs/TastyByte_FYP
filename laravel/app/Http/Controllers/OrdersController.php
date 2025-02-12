@@ -169,5 +169,16 @@ class OrdersController extends Controller
         }
     }
 
+    public function updateOrderStatusCompleted(Request $request) {
+        $request->validate([
+            'completedOrderID' => 'required|integer|exists:orders,orderID',
+        ]);
+
+        $order = Orders::findOrFail($request->completedOrderID);
+        $order->status = 'Completed';
+        $order->save();
+
+        return redirect()->route('trackOrder')->with('success', 'Order marked as completed!');
+    }
 
 }
