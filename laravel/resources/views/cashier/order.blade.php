@@ -86,7 +86,7 @@
 
                         <!-- Add to Cart Section -->
                         <div class="py-6 px-10 flex justify-end mb-6">
-                            <button type="submit" class="bg-indigo-500 text-white font-medium py-3 px-12 rounded-2xl" id="final-price"></button>
+                            <button type="submit" class="bg-indigo-500 shadow-lg shadow-indigo-500/50 text-white font-medium py-3 px-12 rounded-2xl" id="final-price"></button>
                         </div>
                     </div>
                 </form>
