@@ -48,7 +48,7 @@
             <x-cashier.sidebar></x-cashier.sidebar>
         </div>
         <!-- Bottom Sheet for Product Details -->
-        <div id="bottom-sheet" class="fixed bottom-0 left-0 w-full bg-slate-50 shadow-lg transform translate-y-full transition-transform duration-300 rounded-t-3xl h-3/4">
+        <div id="bottom-sheet" class="fixed bottom-0 left-0 w-full bg-slate-50 shadow-xl transform translate-y-full transition-transform duration-300 rounded-t-3xl h-3/4">
             <div class="flex h-full">
                 <form action="{{ route('cashier.addToCart.post') }}" method="POST" class="font-varela flex w-full">
                     @csrf
@@ -186,7 +186,7 @@
 
 <style>
     #bottom-sheet {
-        height: 80vh;
+        height: 85vh;
         overflow-y: auto;
         display: none; /* Hide the bottom sheet by default */
     }
