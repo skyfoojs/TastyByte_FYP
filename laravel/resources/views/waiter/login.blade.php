@@ -15,8 +15,10 @@
 
     <div class="mt-12 flex flex-col justify-center items-center">
         <h1 class="font-bold">Login With</h1>
-        @if (session('error'))
+            @if (session('error'))
                 <span class="w-full bg-red-200 text-center m-3 text-gray-600 p-3 rounded-lg">{{ session('error') }}</span>
+            @elseif(session('logoutSuccess'))
+                <span class="w-full bg-red-200 text-center m-3 text-gray-600 p-3 rounded-lg">{{ session('logoutSuccess') }}</span>
             @endif
         <form action="{{ route('login.post') }}" method="POST" class="pt-2 flex flex-col">
             @csrf
