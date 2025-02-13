@@ -58,7 +58,7 @@
                         <span class="font-medium">View Profile</span>
                     </a>
                     <!--Log Out Function-->
-                    <a href="../logout.php"
+                    <a href="{{ route('logout') }}"
                        class="flex items-center space-x-5 py-3 px-5 hover:bg-gray-100 rounded-md">
                         <i class='bx bx-log-out text-base'></i>
                         <span class="font-medium">Log Out</span>
