@@ -50,4 +50,11 @@ class LoginController extends Controller
 
         return redirect()->route('login')->with('error', 'Unsuccessful login. Incorrect credentials.');
     }
+
+    public function logout() {
+        auth()->logout();
+        session()->flush();
+
+        return redirect()->route('login')->with('logoutSuccess', 'Logout Successfull！');
+    }
 }
