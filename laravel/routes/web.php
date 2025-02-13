@@ -17,6 +17,9 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 // Get the login credentials from the view.
 Route::post('/login', [LoginController::class, 'loginPost'])->name('login.post');
 
+// Get the logout function from Login Controller.
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
 // Get the view from Product Controller.
 Route::get('/order', [ProductController::class, 'index'])->name('order');
 
