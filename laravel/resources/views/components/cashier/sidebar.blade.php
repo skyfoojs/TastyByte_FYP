@@ -15,7 +15,7 @@
         <h2 class="font-semibold text-lg">Table {{ session('tableNo') }} Summary</h2>
         <hr class="mt-4">
 
-        <div class="flex-1 overflow-y-auto mt-6">
+        <div class="flex-1 overflow-y-auto mt-6 mb-6">
             @if (session('cart'))
                 @foreach (session('cart') as $cartItem)
                     <div class="flex gap-x-4 mb-6">
@@ -29,11 +29,10 @@
 
                         <div class="flex-1 flex flex-col justify-between">
                             <p class="text-base font-bold text-zinc-700">{{ $cartItem['name'] }}</p>
-                            <p class="text-sm text-gray-500">{{ 'RM ' . $cartItem['price'] }}</p>
-
-                            @foreach ($cartItem['options'] as $optionName => $optionValues)
-                                <p class="text-xs text-gray-600">{{ $optionName }}:<br> {{ implode(', ', $optionValues) }}</p>
-                            @endforeach
+                            @if (!empty($cartItem['options']))
+                                <p class="text-sm text-gray-500">{{ collect($cartItem['options'])->map(function($values, $name) { return implode(', ', $values); })->implode(', ') }}</p>
+                            @endif
+                            <p class="text-sm">{{ '- RM ' . $cartItem['price'] }}</p>
                         </div>
 
                         <div class="flex items-center justify-center">
