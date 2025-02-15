@@ -9,7 +9,7 @@
                         <hr class="mt-3">
                         <!-- Loop through products under the category -->
                         @if (session('cart'))
-                            @foreach (session('cart') as $cartItem)
+                            @foreach (session('cart') as $cartKey => $cartItem)
                                 <div class="flex gap-x-10 items-center py-4 pl-8">
                                     <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
                                         @if (!empty($cartItem['image']))
@@ -35,6 +35,10 @@
                                             <small>x</small>
                                             <p class="ml-1">{{ $cartItem['quantity'] }}</p>
                                         </div>
+
+                                        <button class="remove-from-cart" data-key="{{ $cartKey }}">
+                                            <i class='bx bx-trash text-red-500 bx-sm'></i>
+                                        </button>
                                     </div>
                                 </div>
                                 <hr class="mx-6">
@@ -86,3 +90,35 @@
             </x-waiter.table-header>
     </x-waiter.navbar>
 </x-waiter.layout>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".remove-from-cart").forEach(button => {
+        button.addEventListener("click", function () {
+            let cartKey = this.getAttribute("data-key");
+            let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+            fetch("{{ route('cart.remove') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ cartKey: cartKey })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.redirect) {
+                        window.location.href = data.redirect; // Redirect first
+                    } else {
+                        location.reload(); // Refresh page if cart is not empty
+                    }
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
+});
+
+
+</script>
