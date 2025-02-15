@@ -148,6 +148,26 @@ class OrdersController extends Controller
         return view('waiter.order', compact('cart'));
     }
 
+    public function removeFromCart(Request $request) {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$request->cartKey])) {
+            unset($cart[$request->cartKey]); // Remove the specific item
+            session()->put('cart', $cart); // Update the session
+        }
+
+        // If cart is empty, redirect to /order with success message
+        if (empty($cart)) {
+            session()->forget('cart'); // Clear session if empty
+            session()->flash('success', 'Your cart is empty now!'); // Store message
+
+            return response()->json(['success' => true, 'redirect' => route('order')]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+
     public function addOrderPost(Request $request) {
         if (!session()->has('cart') || empty(session('cart'))) {
             return redirect()->route('order')->with('error', 'Cart is empty!');
