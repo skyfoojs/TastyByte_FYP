@@ -96,7 +96,7 @@ class OrdersController extends Controller
             return redirect()->route('cashier.order')->with('success', 'Table number stored in session!');
         }
 
-        return redirect()->route('order')->with('success', 'Table number stored in session!');
+        return redirect()->route('order');
     }
 
     public function addToCartPost(Request $request) {
