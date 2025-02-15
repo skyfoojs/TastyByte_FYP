@@ -3,7 +3,7 @@
         <div class="flex flex-col">
             <x-waiter.table-header :table="'Table ' . session('tableNo')" :trackOrder="''">
                 <div class="flex justify-center items-center mt-4">
-                    <select class="p-2 bg-[#E6E6E6] border border-gray-500 px-10 rounded-full" name="categoryFilter" id="categoryFilter">
+                    <select class="w-72 rounded-2xl py-1 px-4 bg-white" name="categoryFilter" id="categoryFilter">
                         <option value="all">All Categories</option>
                         @foreach ($groupedProducts as $categoryName => $products)
                             <option value="{{ $categoryName }}">{{ $categoryName }}</option>
