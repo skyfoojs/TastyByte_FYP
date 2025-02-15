@@ -26,7 +26,7 @@
 
                         <div>
                             <p class="mt-4 text-lg">Description:</p>
-                            <p>{{ $productDetails->description }}</p>
+                            <p class="text-gray-600">{{ $productDetails->description }}</p>
                         </div>
                     </div>
 
