@@ -37,26 +37,31 @@
                         </div>
 
                         <!-- Loop through the categories with their options -->
-                        @foreach ($categoriesWithOptions as $category)
-                            <!-- Display category name -->
-                            <p class="font-bold text-lg mt-7">{{ $category->name }}</p>
+                        @if ($categoriesWithOptions->isNotEmpty())
+                            @foreach ($categoriesWithOptions as $category)
+                                <!-- Display category name -->
+                                <p class="font-bold text-lg mt-7">{{ $category->name }}</p>
 
-                            <!-- Check if the category has options -->
-                            @if ($category->options->isEmpty())
-                                <p class="text-sm text-gray-500">No options available for this category.</p>
-                            @else
-                                <!-- Loop through options for this category -->
-                                <div data-required-group="{{ $category->name }}">
-                                    @foreach ($category->options as $option)
-                                    <span class="error-message text-red-500 text-sm ml-2 hidden"></span>
-                                        <div class="flex justify-between w-full items-center my-4">
-                                            <label for="option-{{ $option->customizeOptionsID }}" class="text-gray-600">{{ $option->name }}</label>
-                                            <input {{ $category->isRequired ? 'data-required' : '' }} id="option-{{ $option->customizeOptionsID }}" type="{{ $category->singleChoose ? 'radio' : 'checkbox' }}" name="options[{{ $category->name }}][]" value="{{ $option->name }}" class="custom-radio bg-white appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
-                        @endforeach
+                                <!-- Check if the category has options -->
+                                @if ($category->options->isEmpty())
+                                    <p class="text-sm text-gray-500">No options available for this category.</p>
+                                @else
+                                    <!-- Loop through options for this category -->
+                                    <div data-required-group="{{ $category->name }}">
+                                        @foreach ($category->options as $option)
+                                        <span class="error-message text-red-500 text-sm ml-2 hidden"></span>
+                                            <div class="flex justify-between w-full items-center my-4">
+                                                <label for="option-{{ $option->customizeOptionsID }}" class="text-gray-600">{{ $option->name }}</label>
+                                                <input {{ $category->isRequired ? 'data-required' : '' }} id="option-{{ $option->customizeOptionsID }}" type="{{ $category->singleChoose ? 'radio' : 'checkbox' }}" name="options[{{ $category->name }}][]" value="{{ $option->name }}" class="custom-radio bg-white appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            @endforeach
+
+                        @else
+                            <p class="mt-10 text-md text-gray-500 text-center">No customize category available.</p>
+                        @endif
                     </div>
 
                     <div class="w-full bg-[#F3F3F3] py-6 fixed bottom-0 px-10 flex justify-between items-center">
