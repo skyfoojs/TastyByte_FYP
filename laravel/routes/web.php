@@ -90,6 +90,10 @@ Route::put('admin/vouchers', [AdminController::class, 'editVoucherPost'])->name(
 Route::get('/filteredVouchers', [AdminController::class, 'getFilteredVouchers'])->name('filterVouchers.get');
 
 Route::get('admin/payments', [AdminController::class, 'payments'])->name('admin-payments');
+
+// Get the filtered payments from the Controller.
+Route::get('/filteredPayments', [AdminController::class, 'getFilteredPayments'])->name('filterPayments.get');
+
 // Get the Add To Cart Datas from the View.
 Route::post('order', [OrdersController::class, 'addToCartPost'])->name('addToCart.post');
 
