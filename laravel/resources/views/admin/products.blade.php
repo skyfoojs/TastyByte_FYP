@@ -596,16 +596,14 @@ function closeEditModal() {
 }
 
 function clearModalFields() {
-    document.getElementById('productID').value = '';
-    document.getElementById('editCustomizableCategoriesInput').value = '';
-    document.getElementById('editName').value = '';
-    document.getElementById('editPrice').value = '';
-    document.getElementById('editCategory').value = '';
-    document.getElementById('editCategorySort').value = '';
-    document.getElementById('otherCategory').value = '';
-    document.getElementById('editDescription').value = '';
-    document.getElementById('editStatus').value = '';
-    document.getElementById('editImage').value = '';
+    document.getElementById("editCustomizableCategoriesInput").value = '';
+    document.getElementById("productID").value = '';
+    document.getElementById("editName").value = '';
+    document.getElementById("editPrice").value = '';
+    document.getElementById("editDescription").value = '';
+    document.getElementById("editStatus").value = '';
+    document.getElementById("editCategory").value = '';
+    document.getElementById("editCategorySort").value = '';
 }
 
 document.addEventListener('DOMContentLoaded', function () {

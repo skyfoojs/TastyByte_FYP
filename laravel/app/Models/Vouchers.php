@@ -17,4 +17,8 @@ class Vouchers extends Model
     protected $fillable = [
         'code', 'type', 'singleUse', 'usage', 'value', 'startedOn', 'expiredOn', 'usedCount',
     ];
+
+    public function payment()  {
+        return $this->belongsTo(Payment::class, 'paymentID', 'paymentID');
+    }
 }

@@ -46,7 +46,7 @@
                                 <td class="p-3 mt-4">{{ $inventories->stockLevel }}</td>
                                 <td class="p-3 mt-4">{{ $inventories->minLevel }}</td>
                                 <td class="p-3 mt-4 flex justify-center space-x-2">
-                                    <button class="text-gray-500 hover:text-blue-600" onclick="openInventoryEditModal({{ $inventories->inventoryID }}, '{{ $inventories->name }}', '{{ $inventories->product->name }}', {{ $inventories->stockLevel }}, {{ $inventories->minLevel }})">
+                                    <button class="text-gray-500 hover:text-blue-600" onclick="openInventoryEditModal({{ $inventories->inventoryID }}, '{{ $inventories->name }}', '{{ $inventories->productID }}', {{ $inventories->stockLevel }}, {{ $inventories->minLevel }})">
                                         <i class="bx bx-pencil"></i>
                                     </button>
                                 </td>
@@ -287,14 +287,10 @@ function closeInventoryEditModal() {
 }
 
 function clearModalFields() {
-    document.getElementById('registeredUserID').value = '';
-    document.getElementById('firstName').value = '';
-    document.getElementById('lastName').value = '';
-    document.getElementById('email').value = '';
-    document.getElementById('phoneNo').value = '';
-    document.getElementById('gender').value = '';
-    document.getElementById('dateOfBirth').value = '';
-    document.getElementById('membershipStart').value = '';
-    document.getElementById('membershipEnd').value = '';
+    document.getElementById('inventoryID').value = '';
+    document.getElementById('edit-inventory').value = '';
+    document.getElementById('edit-product').value = '';
+    document.getElementById('editStockLevel').value = '';
+    document.getElementById('editMinLevel').value = '';
 }
 </script>
