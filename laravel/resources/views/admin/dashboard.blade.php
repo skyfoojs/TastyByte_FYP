@@ -43,19 +43,12 @@
 
             <div class="bg-white p-6 rounded-2xl shadow-md col-span-2">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-gray-600 font-bold">Latest Transaction Records</h2>
-                    <a href="" class="text-sm text-indigo-500 font-medium hover:underline hover:text-indigo-600">view ></a>
+                    <h2 class="text-gray-600 font-bold">Latest Payment Records</h2>
+                    <a href="{{ route('admin-payments') }}" class="text-sm text-indigo-500 font-medium hover:underline hover:text-indigo-600">view ></a>
                 </div>
 
                 <div class="flex flex-col space-y-2">
-                    <ul class="space-y-4">
-                        <li class="p-4 rounded-lg bg-red-50">
-                            <p class="font-semibold mb-2">Payment ID #<span class="font-medium"></span></p>
-                            <p>Type: <span class="font-medium"></span></p>
-                            <p>Status: <span class="font-medium"></span></p>
-                            <p>Date: <span class="font-medium"></span></p>
-                        </li>
-                    </ul>
+                    <ul id="latestPaymentList" class="space-y-4"></ul>
                 </div>
             </div>
         </section>
@@ -63,6 +56,7 @@
     </x-admin.sidebar>
 </x-admin.layout>
 <script>
+
     async function fetchDashboardData() {
         try {
             const response = await fetch("{{ route(name: 'dashboard-data') }}");
@@ -105,6 +99,30 @@
                             <p>Voucher Code: <span class="font-medium">${item.code}</span></p>
                             <p>Start Date: <span class="font-medium">${item.startedOn}</span></p>
                         </li>
+                    `;
+                });
+            }
+
+            let latestPaymentList = document.getElementById("latestPaymentList");
+            latestPaymentList.innerHTML = "";
+
+            if(data.payments.length === 0) {
+                latestPaymentList = `<p class="text-gray-500">No Payment Record.</p>`;
+            } else {
+                data.payments.forEach(item => {
+                    const date = new Date(item.updated_at);
+                    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+
+                    latestPaymentList.innerHTML += `
+                    <li class="p-6 rounded-lg bg-violet-50">
+                        <p class="font-semibold mb-2">Payment ID #<span class="font-medium">${item.paymentID}</span></p>
+                        <p>Order ID: <span class="font-medium">${item.orderID}</span></p>
+                        <p>Voucher ID: <span class="font-medium">${item.voucherID ?? 'No Voucher Applied'}</span></p>
+                        <p>Total Amount: <span class="font-medium">RM ${parseFloat(item.totalAmount).toFixed(2)}</span></p>
+                        <p>Payment Method: <span class="font-medium">${item.paymentMethod}</span></p>
+                        <p>Payment Status: <span class="font-medium">${item.status}</span></p>
+                        <p>Payment Date: <span class="font-medium">${formattedDate}</span></p>
+                    </li>
                     `;
                 });
             }
