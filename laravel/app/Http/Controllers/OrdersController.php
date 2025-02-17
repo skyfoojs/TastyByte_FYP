@@ -226,14 +226,6 @@ class OrdersController extends Controller
             // Clear cart session
             session()->forget('cart');
 
-            $query = Orders::with('orderItems.products');
-
-            if ($request->has('orderID')) {
-                $query->where('orderID', $request->orderID);
-            }
-
-            $orders = $query->get();
-
             if ($request->route()->getName() === 'addOrder.post') {
                 return redirect()->route('orderHistory', ['orderID' => $order->orderID])
                     ->with('success', 'Order placed successfully!');
