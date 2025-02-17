@@ -194,7 +194,7 @@
                     <input name="username" type="text" id="username" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Nickname</label>
-                    <input name="nickname" type="text" id="email" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+                    <input name="nickname" type="text" id="nickname" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Role<span class="text-red-500">*</span></label>
                     <select name="role" id="role" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
@@ -377,13 +377,14 @@ $(document).ready(function () {
 
     function clearModalFields() {
         document.getElementById('registeredUserID').value = '';
-        document.getElementById('firstName').value = '';
-        document.getElementById('lastName').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('phoneNo').value = '';
-        document.getElementById('gender').value = '';
-        document.getElementById('dateOfBirth').value = '';
-        document.getElementById('membershipStart').value = '';
-        document.getElementById('membershipEnd').value = '';
+        document.getElementById('editFirstName').value = '';
+        document.getElementById('editLastName').value = '';
+        document.getElementById('editUsername').value = '';
+        document.getElementById('editNickname').value = '';
+        document.getElementById('editEmail').value = '';
+        document.getElementById('editPhoneNo').value = '';
+        document.getElementById('editRole').value = '';
+        document.getElementById('editGender').value = '';
+        document.getElementById('editDateOfBirth').value = '';
     }
 </script>
