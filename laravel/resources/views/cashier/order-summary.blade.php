@@ -3,28 +3,32 @@
         <div class="w-3/4 p-6 mt-26">
             <h2 class="text-xl font-bold mb-6 p-2">Order History - Table {{ session('tableNo') }}</h2>
 
+            @php
+                $selectedOrder = request()->orderID ? $orders->firstWhere('orderID', request()->orderID) : null;
+            @endphp
+
             <div class="space-y-4">
-                @if (session('cart'))
-                    @foreach (session('cart') as $cartItem)
+                @if ($selectedOrder)
+                    @foreach ($selectedOrder->orderItems as $item)
                         <div class="flex items-center justify-between bg-white p-4 shadow rounded-lg">
                             <div class="flex items-center space-x-4">
                                 <div class="w-28 h-28 border rounded-lg flex items-center justify-center">
-                                    @if (!empty($cartItem['image']))
-                                        <img class="w-full h-full rounded-lg object-cover" src="{{ asset($cartItem['image']) }}" alt="Image Not Available">
+                                    @if (!empty($item->products->image))
+                                        <img class="w-full h-full rounded-lg object-cover" src="{{ asset($item->products->image) }}" alt="Image Not Available">
                                     @else
                                         <p>No Image</p>
                                     @endif
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-lg">{{ $cartItem['name'] }}</p>
-                                    <p class="text-gray-600">RM {{ $cartItem['price'] }}</p>
-                                    @if (!empty($cartItem['options']))
-                                        <p class="text-sm text-gray-500">{{ collect($cartItem['options'])->map(function($values, $name) { return implode(', ', $values); })->implode(', ') }}</p>
+                                    <p class="font-semibold text-lg">{{ $item->products->name }}</p>
+                                    <p class="text-gray-600">RM {{ number_format($item->products->price ?? 0, 2) }}</p>
+                                    @if (!empty($item['options']))
+                                        <p class="text-sm text-gray-500">{{ collect($item['options'])->map(function($values, $name) { return implode(', ', $values); })->implode(', ') }}</p>
                                     @endif
                                 </div>
                             </div>
                             <div class="flex flex-col items-center">
-                                <span class="border w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white mb-4">{{ $cartItem['quantity'] }}</span>
+                                <span class="border w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white mb-4">{{ $item->quantity }}</span>
                                 <button class="px-6 py-2 bg-gray-200 rounded-full text-sm tracking-wide">Split</button>
                             </div>
                         </div>

@@ -26,12 +26,20 @@ class OrdersController extends Controller
         return view('cashier.table');
     }
 
-    public function orderSummary() {
+    public function orderSummary(Request $request) {
         if (Auth::check()) {
             $role = session('role', Auth::user()->role); // Get role from session or authenticated user
 
+            $query = Orders::with('orderItems.products');
+
+            if ($request->has('orderID')) {
+                $query->where('orderID', $request->orderID);
+            }
+
+            $orders = $query->get();
+
             if ($role === 'Cashier') {
-                return view('cashier.order-summary');
+                return view('cashier.order-summary', compact('orders'));
             } elseif ($role === 'Waiter') {
                 if (!Auth::check() || Auth::user()->role !== 'Waiter') {
                     session()->forget(['username', 'userID']);
@@ -218,8 +226,17 @@ class OrdersController extends Controller
             // Clear cart session
             session()->forget('cart');
 
-            return redirect()->route('orderHistory', ['orderID' => $order->orderID])
-                ->with('success', 'Order placed successfully!');
+            if ($request->route()->getName() === 'addOrder.post') {
+                return redirect()->route('orderHistory', ['orderID' => $order->orderID])
+                    ->with('success', 'Order placed successfully!');
+            } elseif ($request->route()->getName() === 'cashier.addOrder.post') {
+                return redirect()->route('orderSummary', ['orderID' => $order->orderID])
+                    ->with('success', 'Order placed successfully!');
+            } else {
+                return redirect()->route('404');
+            }
+
+
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('order')->with('error', 'Failed to place order: ' . $e->getMessage());
