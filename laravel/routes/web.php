@@ -112,6 +112,8 @@ Route::put('/orders/update-status', [OrdersController::class, 'updateOrderStatus
 
 Route::get('/cashier/order', [ProductController::class, 'index'])->name('cashier.order');
 
+Route::post('/cashier/order/add-to-order', [OrdersController::class, 'addOrderPost'])->name('cashier.addOrder.post');
+
 Route::get('/cashier/order/edit/{id}', [ProductController::class, 'getProductDetails'])->name('cashier.order.edit');
 
 Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('cashier.table');
