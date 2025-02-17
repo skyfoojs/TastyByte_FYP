@@ -287,14 +287,10 @@ function closeInventoryEditModal() {
 }
 
 function clearModalFields() {
-    document.getElementById('registeredUserID').value = '';
-    document.getElementById('firstName').value = '';
-    document.getElementById('lastName').value = '';
-    document.getElementById('email').value = '';
-    document.getElementById('phoneNo').value = '';
-    document.getElementById('gender').value = '';
-    document.getElementById('dateOfBirth').value = '';
-    document.getElementById('membershipStart').value = '';
-    document.getElementById('membershipEnd').value = '';
+    document.getElementById('inventoryID').value = '';
+    document.getElementById('edit-inventory').value = '';
+    document.getElementById('edit-product').value = '';
+    document.getElementById('editStockLevel').value = '';
+    document.getElementById('editMinLevel').value = '';
 }
 </script>
