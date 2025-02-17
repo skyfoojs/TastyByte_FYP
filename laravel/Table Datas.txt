@@ -29,4 +29,12 @@ INSERT INTO `inventory` (`inventoryID`, `productID`, `stockLevel`, `minLevel`, `
 (NULL, '2', '30', '5', 'Lemon', '2025-02-03 12:02:45', '2025-02-03 12:02:45');
 
 INSERT INTO `users` (`userID`, `firstName`, `lastName`, `username`, `nickname`, `role`, `gender`, `dateOfBirth`, `email`, `phoneNo`, `password`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Foo', 'Jia Seng', 'skyfoojs', 'Sky', 'Admin', 'Male', '2005-11-05', 'skyfoojs@gmail.com', '0172681225', '$2y$12$/SAYJpKLJUmjRTgauH1dNuiT2mAocLjWtl61Jdje/IdGnAGmdOR.y', 'Active', '2025-02-07 06:38:49', '2025-02-07 06:38:49');
+(1, 'Foo', 'Jia Seng', 'skyfoojs', 'Skyy', 'Cashier', 'Male', '2005-11-05', 'skyfoojs@gmail.com', '0172681225', '$2y$12$/SAYJpKLJUmjRTgauH1dNuiT2mAocLjWtl61Jdje/IdGnAGmdOR.y', 'Active', '2025-02-06 22:38:49', '2025-02-17 00:50:35'),
+(2, 'Emily', 'Johnson', 'EJ', 'Emily', 'Waiter', 'Female', '2003-07-09', 'emilyjohnson@gmail.com', '1234567890', '$2y$12$XlqCa3ESdlZIOH7EuV/vVON2oK9jp7C1zPJA7SgxrFI4WuGzekSWS', 'Active', '2025-02-06 22:42:41', '2025-02-06 22:42:41'),
+(5, 'Admin', 'Admin', 'Admin', 'Admin', 'Admin', 'Male', '1990-01-01', 'admin@example.com', '0123456789', '$2y$12$hKanLIp7Px9i0lEWuyZNxuYqVbdOMkOCr5B9nft8r9knxPpooxay6', 'Active', '2025-02-09 18:19:52', '2025-02-09 18:19:52');
+
+INSERT INTO `vouchers` (`voucherID`, `code`, `type`, `singleUse`, `usage`, `value`, `startedOn`, `expiredOn`, `usedCount`, `created_at`, `updated_at`) VALUES
+(1, 'ABC122', 'Percentage', 'True', '21', 21.00, '2025-02-22 20:52:00', '2025-02-27 20:52:00', 0, '2025-02-10 04:52:25', '2025-02-17 00:38:51'),
+(2, 'CNY123', 'Amount', 'False', '40', 4.50, '2025-02-11 21:59:00', '2025-02-27 21:59:00', 0, '2025-02-10 06:00:03', '2025-02-10 06:00:03'),
+(3, 'RAYA123', 'Percentage', 'False', '30', 5.50, '2025-02-12 22:01:00', '2025-03-07 22:01:00', 0, '2025-02-10 06:01:29', '2025-02-10 06:01:29'),
+(4, 'RAMAHDAN123', 'Amount', 'False', '39', 30.50, '2025-03-01 09:12:00', '2025-03-08 09:12:00', 0, '2025-02-11 17:12:26', '2025-02-11 17:12:26');
