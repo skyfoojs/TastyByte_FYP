@@ -53,6 +53,14 @@ $is_users_page = Str::contains($current_route, 'users'); // Check if the route c
                     <span class="font-medium">Vouchers</span>
                 </a>
             </li>
+            <li>
+                <!-- Payments -->
+                <a href="{{ route('admin-payments') }}"
+                   class="hover:text-white flex items-center space-x-5 py-3 px-5 {{ $current_route == 'admin-payments' ? 'bg-gray-900 text-white' : 'hover:bg-gray-700' }} rounded-md">
+                    <i class="bi bi-credit-card-fill"></i>
+                    <span class="font-medium">Payments</span>
+                </a>
+            </li>
         </ul>
     </nav>
 </aside>
