@@ -89,6 +89,7 @@ Route::put('admin/vouchers', [AdminController::class, 'editVoucherPost'])->name(
 // Get the filtered Vouchers from the Controller.
 Route::get('/filteredVouchers', [AdminController::class, 'getFilteredVouchers'])->name('filterVouchers.get');
 
+// Get the Payment view from the Controller.
 Route::get('admin/payments', [AdminController::class, 'payments'])->name('admin-payments');
 
 // Get the filtered payments from the Controller.
