@@ -7,10 +7,11 @@ use App\Models\CustomizableOptions;
 use App\Models\CustomizeableCategory;
 use App\Models\Inventory;
 use App\Models\Vouchers;
-use Hash;
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Payment;
+use Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -94,6 +95,22 @@ class AdminController extends Controller
         $limit = 6;
         $totalPages = ceil($totalVouchers / $limit);
         return view('admin.vouchers', compact('vouchers', 'totalPages'));
+    }
+
+    public function payments() {
+        if (!Auth::check() || Auth::user()->role !== 'Admin') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect('/login')->with('error', 'Unauthorized Access');
+        }
+
+        $payments = Payment::all();
+        $totalPayments = Payment::count();
+        $limit = 6;
+        $totalPages = ceil($totalPayments / $limit);
+
+        return view('admin.payments', compact('payments', 'totalPages'));
     }
 
     public function getDashboardData() {
@@ -738,4 +755,44 @@ class AdminController extends Controller
         return view('admin.vouchers', compact('vouchers', 'totalPages'));
     }
 
+    public function getFilteredPayments(Request $request)
+    {
+        $request->validate([
+            'filterType' => 'required|string|in:filterPaymentID,filterOrderID,filterVoucherID,filterPaymentMethod,filterPaymentStatus',
+            'keywords' => 'required|string',
+        ]);
+
+        $query = Payment::query();
+
+        $filterType = $request->input('filterType');
+        $keywords = $request->input('keywords');
+
+        // Apply filtering based on filter type
+        switch ($filterType) {
+            case 'filterPaymentID':
+                $query->where('paymentID', $keywords);
+                break;
+            case 'filterOrderID':
+                $query->where('orderID', $keywords);
+                break;
+            case 'filterVoucherID':
+                $query->where('voucherID', $keywords);
+                break;
+
+            case 'filterPaymentMethod':
+                $query->where('paymentMethod', $keywords);
+                break;
+
+            case 'filterPaymentStatus':
+                $query->where('status', $keywords);
+                break;
+        }
+
+        $totalPayments = Payment::count();
+        $limit = 6;
+        $totalPages = ceil($totalPayments / $limit);
+        $payments = $query->paginate($limit);
+
+        return view('admin.payments', compact('payments', 'totalPages'));
+    }
 }
