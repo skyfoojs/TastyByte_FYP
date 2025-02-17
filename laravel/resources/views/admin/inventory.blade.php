@@ -46,7 +46,7 @@
                                 <td class="p-3 mt-4">{{ $inventories->stockLevel }}</td>
                                 <td class="p-3 mt-4">{{ $inventories->minLevel }}</td>
                                 <td class="p-3 mt-4 flex justify-center space-x-2">
-                                    <button class="text-gray-500 hover:text-blue-600" onclick="openInventoryEditModal({{ $inventories->inventoryID }}, '{{ $inventories->name }}', '{{ $inventories->product->name }}', {{ $inventories->stockLevel }}, {{ $inventories->minLevel }})">
+                                    <button class="text-gray-500 hover:text-blue-600" onclick="openInventoryEditModal({{ $inventories->inventoryID }}, '{{ $inventories->name }}', '{{ $inventories->productID }}', {{ $inventories->stockLevel }}, {{ $inventories->minLevel }})">
                                         <i class="bx bx-pencil"></i>
                                     </button>
                                 </td>
