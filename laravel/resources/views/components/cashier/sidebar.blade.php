@@ -70,9 +70,10 @@
 
             <hr class="border-t-4 mt-4 border-dotted border-gray-200">
 
-            <a href="{{ route('orderSummary') }}">
-                <button class="w-full bg-indigo-500 text-white py-2 mt-4 rounded">Place Order</button>
-            </a>
+            <form action="{{ route('cashier.addOrder.post') }}" method="POST">
+                @csrf
+                <button class="w-full bg-indigo-500 text-white py-2 mt-4 rounded" type="submit">Place Order</button>
+            </form>
         </div>
     </div>
 
