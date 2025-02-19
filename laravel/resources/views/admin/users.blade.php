@@ -196,15 +196,6 @@
                     <label class="block text-gray-700 text-sm font-medium mt-4">Nickname</label>
                     <input name="nickname" type="text" id="nickname" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Role<span class="text-red-500">*</span></label>
-                    <select name="role" id="role" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                        <option value="">Select Role</option>
-                        <option value="Waiter">Waiter</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Kitchen">Kitchen</option>
-                        <option value="Cashier">Cashier</option>
-                    </select>
-
                     <label class="block text-gray-700 text-sm font-medium mt-4">Password</label>
                     <input name="password" type="password" id="password" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
@@ -217,6 +208,28 @@
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Phone Number</label>
                     <input name="phoneNo" type="text" id="phoneNo" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+
+                    <div class="flex space-x-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium mt-4">Role<span class="text-red-500">*</span></label>
+                            <select name="role" id="role" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Role</option>
+                                <option value="Waiter">Waiter</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Kitchen">Kitchen</option>
+                                <option value="Cashier">Cashier</option>
+                            </select>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium mt-4">User Status</label>
+                            <select name="status" id="status" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="flex space-x-4 mt-4">
                         <div class="flex-1">
