@@ -29,6 +29,7 @@
                         <th class="py-4 px-6 border-b border-gray-200">Phone</th>
                         <th class="py-4 px-6 border-b border-gray-200">Email</th>
                         <th class="py-4 px-6 border-b border-gray-200">Gender</th>
+                        <th class="py-4 px-6 border-b border-gray-200">Status</th>
                         <th class="py-4 px-6 border-b border-gray-200">Edit</th>
                     </tr>
                     </thead>
@@ -50,6 +51,7 @@
                                 <td class="p-3 mt-4">{{ $user->phoneNo }}</td>
                                 <td class="p-3 mt-4">{{ $user->email }}</td>
                                 <td class="p-3 mt-4">{{ $user->gender }}</td>
+                                <td class="p-3 mt-4">{{ $user->status }}</td>
 
                                 <td class="p-3 mt-4 flex justify-center space-x-2">
                                     <button class="text-gray-500 hover:text-blue-600" onclick="openEditModal({{ $user->userID }}, '{{ $user->firstName }}', '{{ $user->lastName }}', '{{ $user->username }}', '{{ $user->nickname }}', '{{ $user->role }}', '{{ $user->gender }}', '{{ $user->dateOfBirth }}', '{{ $user->email }}', '{{ $user->phoneNo }}', '{{ $user->status }}')">
@@ -133,20 +135,33 @@
                     <label class="block text-gray-700 text-sm font-medium mt-4">Nickname</label>
                     <input name="editNickname" type="text" id="editNickname" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Role<span class="text-red-500">*</span></label>
-                    <select name="editRole" id="editRole" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                        <option value="">Select Role</option>
-                        <option value="Waiter">Waiter</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Kitchen">Kitchen</option>
-                        <option value="Cashier">Cashier</option>
-                    </select>
-
                     <label class="block text-gray-700 text-sm font-medium mt-4">E-mail</label>
                     <input name="editEmail" type="email" id="editEmail" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
 
                     <label class="block text-gray-700 text-sm font-medium mt-4">Phone Number</label>
                     <input name="editPhoneNo" type="text" id="editPhoneNo" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+
+                    <div class="flex space-x-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium mt-4">Role<span class="text-red-500">*</span></label>
+                            <select name="editRole" id="editRole" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Role</option>
+                                <option value="Waiter">Waiter</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Kitchen">Kitchen</option>
+                                <option value="Cashier">Cashier</option>
+                            </select>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium mt-4">User Status</label>
+                            <select name="editStatus" id="editStatus" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="flex space-x-4 mt-4">
                         <div class="flex-1">
@@ -352,7 +367,7 @@ $(document).ready(function () {
         }, 300);
     }
 
-    function openEditModal(id, firstName, lastName, username, nickname, role, gender, dateOfBirth, email, phoneNo, password, status) {
+    function openEditModal(id, firstName, lastName, username, nickname, role, gender, dateOfBirth, email, phoneNo, status) {
         const modal = document.getElementById('userEditModal');
         const overlay = document.getElementById('modalOverlay');
 
@@ -369,6 +384,7 @@ $(document).ready(function () {
         document.getElementById('editRole').value = role;
         document.getElementById('editGender').value = gender;
         document.getElementById('editDateOfBirth').value = dateOfBirth;
+        document.getElementById('editStatus').value = status;
 
         setTimeout(() => {
             modal.classList.add('show');
