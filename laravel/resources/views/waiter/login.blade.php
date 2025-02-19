@@ -1,5 +1,5 @@
 <x-waiter.layout>
-<div class="flex bg-gray-800 w-full justify-center items-center shadow-xl">
+<div class="flex bg-gray-800 w-full justify-center items-center shadow-xl py-4">
     <img class="h-28 w-auto" src="{{ asset('images/' . 'TastyByte-Banner.png') }}" alt="">
 </div>
 
