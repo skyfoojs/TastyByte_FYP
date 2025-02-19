@@ -7,15 +7,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MenuController;
 use Illuminate\Support\Facades\Route;
 
+// Set the login view as index.
 Route::get('/', function () {
-    return view('welcome');
-});
-
-// Get the view from Login Controller.
-Route::get('/login', [LoginController::class, 'index'])->name('login');
+    return view('waiter.login');
+})->name('login');
 
 // Get the login credentials from the view.
-Route::post('/login', [LoginController::class, 'loginPost'])->name('login.post');
+Route::post('/', [LoginController::class, 'loginPost'])->name('login.post');
 
 // Get the logout function from Login Controller.
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
