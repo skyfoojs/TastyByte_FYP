@@ -182,6 +182,7 @@ class AdminController extends Controller
             'editDateOfBirth' => 'required|date|before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
             'editEmail' => 'required|email|unique:users,email,' . $request->registeredUserID . ',userID',
             'editPhoneNo' => 'required|numeric|digits_between:10,15',
+            'editStatus' => 'required|string|in:Active,Inactive',
         ], [
             'editDateOfBirth.before_or_equal' => 'User must be at least 18 years old.',
         ]);
@@ -201,7 +202,7 @@ class AdminController extends Controller
         $user->dateOfBirth = $request->editDateOfBirth;
         $user->email = $request->editEmail;
         $user->phoneNo = $request->editPhoneNo;
-        $user->status = 'Active';
+        $user->status = $request->editStatus;
 
         if ($user->save()) {
             return redirect()->route('admin-users')->with('success', 'User updated successfully!');
