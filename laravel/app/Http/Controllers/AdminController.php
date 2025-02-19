@@ -22,7 +22,7 @@ class AdminController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
         return view('admin.dashboard');
     }
@@ -32,7 +32,7 @@ class AdminController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         $users = User::get();
@@ -47,7 +47,7 @@ class AdminController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         $totalProducts = Product::count();
@@ -71,7 +71,7 @@ class AdminController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         $totalInventory = Inventory::count();
@@ -87,7 +87,7 @@ class AdminController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         $vouchers = Vouchers::all();
@@ -102,7 +102,7 @@ class AdminController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         $payments = Payment::all();

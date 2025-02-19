@@ -14,7 +14,7 @@ class ProductController extends Controller
         if (!Auth::check()) {
             session()->forget(['username', 'userID']);
             Auth::logout();
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         // Check if the user's role matches the required role for the page
@@ -24,28 +24,28 @@ class ProductController extends Controller
         if (Auth::user()->role === 'Admin') {
             session()->forget(['username', 'userID']);
             Auth::logout();
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         // Restrict Kitchen role access
         if (Auth::user()->role === 'Kitchen') {
             session()->forget(['username', 'userID']);
             Auth::logout();
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         // Restrict Waiter role from accessing cashier's page
         if (Auth::user()->role === 'Waiter' && $routeName !== 'order') {
             session()->forget(['username', 'userID']);
             Auth::logout();
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         // Restrict Cashier role from accessing waiter's page
         if (Auth::user()->role === 'Cashier' && $routeName !== 'cashier.order') {
             session()->forget(['username', 'userID']);
             Auth::logout();
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         // Fetch products with their categories
@@ -69,7 +69,7 @@ class ProductController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         // Fetch product details

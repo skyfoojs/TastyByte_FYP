@@ -12,7 +12,7 @@ class MenuController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         return view('waiter.menu');

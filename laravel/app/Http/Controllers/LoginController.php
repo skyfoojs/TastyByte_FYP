@@ -11,11 +11,6 @@ class LoginController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return view('waiter.login');
-    }
-
     public function loginPost(Request $request) {
         $request->validate([
             "email_or_username" => "required", // Accepts email or username

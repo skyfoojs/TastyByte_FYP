@@ -16,7 +16,7 @@ class OrdersController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         return view('waiter.table');
@@ -45,7 +45,7 @@ class OrdersController extends Controller
                     session()->forget(['username', 'userID']);
                     Auth::logout();
 
-                    return redirect('/login')->with('error', 'Unauthorized Access');
+                    return redirect()->route('login')->with('error', 'Unauthorized Access');
                 }
 
                 return view('waiter.order-summary');
@@ -63,7 +63,7 @@ class OrdersController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         $orders = Orders::with('orderItems')->get();
@@ -76,7 +76,7 @@ class OrdersController extends Controller
             session()->forget(['username', 'userID']);
             Auth::logout();
 
-            return redirect('/login')->with('error', 'Unauthorized Access');
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
         $query = Orders::with('orderItems.products');
