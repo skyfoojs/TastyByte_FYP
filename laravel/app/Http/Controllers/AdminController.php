@@ -137,6 +137,7 @@ class AdminController extends Controller
             'dateOfBirth' => 'required|date|before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
             'email' => 'required|email|unique:users,email',
             'phoneNo' => 'required|numeric|digits_between:10,11',
+            'status' => 'required|string|in:Active,Inactive',
             'password' => [
                 'required',
                 'string',
@@ -159,7 +160,7 @@ class AdminController extends Controller
             'email' => $request->email,
             'phoneNo' => $request->phoneNo,
             'password' => Hash::make($request->password),
-            'status' => 'Active',
+            'status' => $request->status,
         ]);
 
         if (!$user) {
