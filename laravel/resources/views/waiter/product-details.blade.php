@@ -51,8 +51,14 @@
                                         @foreach ($category->options as $option)
                                         <span class="error-message text-red-500 text-sm ml-2 hidden"></span>
                                             <div class="flex justify-between w-full items-center my-4">
-                                                <label for="option-{{ $option->customizeOptionsID }}" class="text-gray-600">{{ $option->name }}</label>
-                                                <input {{ $category->isRequired ? 'data-required' : '' }} id="option-{{ $option->customizeOptionsID }}" type="{{ $category->singleChoose ? 'radio' : 'checkbox' }}" name="options[{{ $category->name }}][]" value="{{ $option->name }}" class="custom-radio bg-white appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
+                                                @if ($option->status === "Available")
+                                                    <label for="option-{{ $option->customizeOptionsID }}" class="text-gray-600">{{ $option->name }}</label>
+                                                    <input {{ $category->isRequired ? 'data-required' : '' }} id="option-{{ $option->customizeOptionsID }}" type="{{ $category->singleChoose ? 'radio' : 'checkbox' }}" name="options[{{ $category->name }}][]" value="{{ $option->name }}" class="custom-radio bg-white appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
+                                                @endif
+
+                                                @if ($category->options->where('status', 'Available')->isEmpty())
+                                                    <p class="text-gray-500">No available options.</p>
+                                                @endif
                                             </div>
                                         @endforeach
                                     </div>
