@@ -3,10 +3,10 @@ INSERT INTO `category` (`categoryID`, `name`, `status`, `sort`, `created_at`, `u
 (2, 'Beverage', 'Available', '3', NULL, '2025-02-19 02:05:40');
 
 INSERT INTO `product` (`productID`, `categoryID`, `name`, `price`, `description`, `status`, `image`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Curry Mee', 8.80, 'Tasty Curry Mee with chicken.', 'Available', 'uploads/1738911518.jpg', '2025-01-07 20:28:10', '2025-02-07 00:32:05'),
-(2, 2, 'Ice Lemon Tea', 5.99, 'Refreshing Ice Lemon Tea!', 'Available', NULL, NULL, NULL),
-(3, 1, 'Fried Chicken', 20.00, 'Yu Xiang Favourite', 'Available', NULL, NULL, NULL),
-(6, 1, 'Burger', 16.80, 'Beef burger', 'Available', 'uploads/1738853954.jpg', '2025-02-06 05:09:06', '2025-02-06 06:59:14');
+(1, 1, 'Curry Mee', 8.80, 'Tasty Curry Mee with chicken.', 'Available', 'uploads/1740359454.webp', '2025-01-07 12:28:10', '2025-02-24 01:14:51'),
+(2, 2, 'Ice Lemon Tea', 5.99, 'Refreshing Ice Lemon Tea!', 'Available', 'uploads/1740359536.jpg', NULL, '2025-02-24 01:12:16'),
+(3, 1, 'Fried Chicken', 20.00, 'Yu Xiang Favourite', 'Available', 'uploads/1740359513.webp', NULL, '2025-02-24 01:11:53'),
+(6, 1, 'Burger', 16.80, 'Beef burger', 'Available', 'uploads/1738853954.jpg', '2025-02-05 21:09:06', '2025-02-05 22:59:14');
 
 INSERT INTO `customizablecategory` (`customizeCategoryID`, `productID`, `name`, `status`, `sort`, `singleChoose`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Noodle Type', '1', '1', 0, '2025-01-10 07:10:46', '2025-01-10 07:10:46'),
