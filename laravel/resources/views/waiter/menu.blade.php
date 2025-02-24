@@ -9,14 +9,14 @@
                 <div class="p-2 rounded-lg">
                     <img class="" src="{{ asset('images/' . 'menu-order.png') }}" alt="">
                 </div>
-                <p class="mt-2">Order</p>
+                <p class="mt-2 text-center">Order</p>
             </a>
 
             <a href="{{ route('trackOrder') }}" class="bg-white px-10 pt-10 pb-7 rounded-lg flex flex-col justify-center items-center">
                 <div class="p-2 rounded-lg">
                     <img class="" src="{{ asset('images/' . 'menu-track-order.png') }}" alt="">
                 </div>
-                <p class="mt-2">Track Order</p>
+                <p class="mt-2 text-center">Track Order</p>
             </a>
         </div>
     </div>
