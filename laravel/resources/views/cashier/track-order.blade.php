@@ -1,6 +1,6 @@
 <x-cashier.layout>
     <x-cashier.navbar>
-        <div class="p-6 mt-20">
+        <div class="p-12 mt-20">
             @if ($orders->isNotEmpty())
                 @foreach ($orders as $order)
                     <a href="{{ route('orderSummary', ['orderID' => $order->orderID]) }}"
