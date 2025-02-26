@@ -5,20 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class Payment extends Controller
+class PaymentController extends Controller
 {
+    public function createPayment(){
+        //TODO: Implement insert payment details to db
+    }
     public function checkout(Request $request){
-        if (!Auth::check() || Auth::user()->role !== 'Cashier') {
-            session()->forget(['username', 'userID']);
-            Auth::logout();
+        if (Auth::check() || Auth::user()->role == 'Cashier') {
 
-            return redirect()->route('login')->with('error', 'Unauthorized Access');
+            //TODO: Change payment status to successfull
+            return view('cashier.payment');
         }
 
-        $tax = $subtotal * 0.06;
-        $serviceCharge = $subtotal * 0.10;
-        $total = $subtotal + $tax + $serviceCharge;
-
-        return view('cashier.payment');
+        return redirect()->route('login')->with('error', 'Unauthorized Access');
     }
 }
