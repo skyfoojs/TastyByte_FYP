@@ -1,14 +1,20 @@
 <x-cashier.layout>
     <x-cashier.navbar>
         <div class="w-3/4 p-6 mt-26">
-            <h2 class="text-xl font-bold mb-6 p-2">Order History - Table {{ session('tableNo') }}</h2>
-
             @php
                 $selectedOrder = request()->orderID ? $orders->firstWhere('orderID', request()->orderID) : null;
             @endphp
 
             <div class="space-y-4">
                 @if ($selectedOrder)
+                    @php
+                        $firstItem = $selectedOrder->orderItems->first();
+                    @endphp
+
+                    @if ($firstItem)
+                        <h2 class="text-xl font-bold mb-6 p-2">Order History - Table {{ $firstItem->table->tableNo }}</h2>
+                    @endif
+
                     @foreach ($selectedOrder->orderItems as $item)
                         <div class="flex items-center justify-between bg-white p-4 shadow rounded-lg">
                             <div class="flex items-center space-x-4">
