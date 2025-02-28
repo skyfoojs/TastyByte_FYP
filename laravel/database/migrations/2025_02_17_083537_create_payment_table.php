@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id("paymentID");
             $table->foreignId('orderID')->constrained('orders', 'orderID')->onDelete('cascade');
             $table->foreignId('voucherID')->nullable()->constrained('vouchers', 'voucherID')->onDelete('cascade');
+            $table->string('orderItemsID');
             $table->double('totalAmount');
             $table->string('paymentMethod');
             $table->string('status');
