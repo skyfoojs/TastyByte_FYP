@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    public function createPayment(){
-        //TODO: Implement insert payment details to db
-    }
     public function checkout(Request $request){
         if (Auth::check() || Auth::user()->role == 'Cashier') {
 
