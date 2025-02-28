@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 // Set the login view as index.
@@ -101,6 +102,8 @@ Route::get('/summary', [OrdersController::class, 'orderSummary'])->name('orderSu
 
 // Get the Order Items Datas from the View.
 Route::post('/summary', [OrdersController::class, 'addOrderPost'])->name('addOrder.post');
+
+Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
 
 // Get the cart item from the View.
 Route::post('/summary/remove', [OrdersController::class, 'removeFromCart'])->name('cart.remove');
