@@ -89,11 +89,13 @@
                 <h3 class="font-semibold text-lg mb-2">Payment Method</h3>
                 <div class="space-y-3">
                     <label class="flex items-center space-x-4 cursor-pointer">
-                        <input type="radio" name="payment" class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full" checked>
+                        <input type="radio" name="paymentMethod" value="cash"
+                               class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full" checked>
                         <span>Cash</span>
                     </label>
                     <label class="flex items-center space-x-4 cursor-pointer">
-                        <input type="radio" name="payment" class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full">
+                        <input type="radio" name="paymentMethod" value="credit_card"
+                               class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full">
                         <span>Credit/ Debit Card</span>
                     </label>
                 </div>
@@ -133,9 +135,22 @@
 
             <hr class="border-t-4 mt-4 border-dotted border-gray-200">
 
-            <a href="{{ route('orderSummary') }}">
-                <button class="w-full bg-indigo-500 text-white py-2 mt-4 rounded">Checkout</button>
-            </a>
+            <!-- Checkout Form -->
+            <form action="{{ route('checkout') }}" method="POST">
+                @csrf
+                <input type="hidden" name="orderID" value="{{ request()->orderID }}">
+                <input type="hidden" name="paymentMethod" id="selectedPaymentMethod" value="cash">
+                <button type="submit" class="w-full bg-indigo-500 text-white py-2 mt-4 rounded">Checkout</button>
+            </form>
         </div>
     </div>
+
+    <script>
+        // Update the hidden payment method input when a radio button is selected
+        document.querySelectorAll('input[name="paymentMethod"]').forEach((radio) => {
+            radio.addEventListener('change', function () {
+                document.getElementById('selectedPaymentMethod').value = this.value;
+            });
+        });
+    </script>
 @endif
