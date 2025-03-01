@@ -26,7 +26,7 @@
             <div class="grid grid-cols-2 gap-6">
                 <div class="bg-white p-6 rounded-2xl shadow-md">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-gray-600 font-bold">Inventories Less Than 20</h2>
+                        <h2 class="text-gray-600 font-bold">Inventories Less Than 10</h2>
                         <a href="{{ route('admin-inventory') }}" class="text-sm text-indigo-500 font-medium hover:underline hover:text-indigo-600">view ></a>
                     </div>
                     <ul id="lowStockList" class="space-y-4"></ul>
@@ -90,7 +90,7 @@
             upcomingVoucherList.innerHTML = "";
 
             if (data.upcomingVouchers.length === 0) {
-                upcomingVouchers.innerHTML = `<p class="text-gray-500">No Upcoming Vouchers.</p>`;
+                upcomingVoucherList.innerHTML = `<p class="text-gray-500">No Upcoming Vouchers.</p>`;
             } else {
                 data.upcomingVouchers.forEach(item => {
                     upcomingVoucherList.innerHTML += `
@@ -107,7 +107,7 @@
             latestPaymentList.innerHTML = "";
 
             if(data.payments.length === 0) {
-                latestPaymentList = `<p class="text-gray-500">No Payment Record.</p>`;
+                latestPaymentList.innerHTML = `<p class="text-gray-500">No Payment Record.</p>`;
             } else {
                 data.payments.forEach(item => {
                     const date = new Date(item.updated_at);
