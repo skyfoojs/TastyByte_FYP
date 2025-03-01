@@ -27,10 +27,30 @@
                                 </div>
                                 <div>
                                     <p class="font-semibold text-lg">{{ $item->products->name }}</p>
-                                    <p class="text-gray-600">RM {{ number_format($item->products->price ?? 0, 2) }}</p>
-                                    @if (!empty($item['options']))
-                                        <p class="text-sm text-gray-500">{{ collect($item['options'])->map(function($values, $name) { return implode(', ', $values); })->implode(', ') }}</p>
+                                    @if (!empty($item->remark))
+                                        @php
+                                            $remarkData = json_decode($item->remark, true);
+                                            $options = $remarkData['options'] ?? [];
+                                            $takeaway = $remarkData['takeaway'] ?? false;
+
+                                            $remarks = [];
+
+                                            foreach ($options as $optionName => $values) {
+                                                if (!empty($values)) {
+                                                    $remarks[] = implode(', ', $values);
+                                                }
+                                            }
+                                        @endphp
+
+                                        @if ($takeaway)
+                                            <p class="text-sm text-gray-500">Takeaway: Yes</p>
+                                        @endif
+
+                                        @if (!empty($remarks))
+                                            <p class="text-sm text-gray-500">{{ implode(', ', $remarks) }}</p>
+                                        @endif
                                     @endif
+                                    <p class="mt-2 text-gray-600">- RM {{ number_format($item->products->price ?? 0, 2) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-col items-center">
