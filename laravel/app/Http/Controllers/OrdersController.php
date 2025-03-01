@@ -175,22 +175,34 @@ class OrdersController extends Controller
     }
 
     public function removeFromCart(Request $request) {
+        $request->validate([
+            'cartKey' => 'required|string',
+        ]);
+
         $cart = session()->get('cart', []);
 
         if (isset($cart[$request->cartKey])) {
-            unset($cart[$request->cartKey]); // Remove the specific item
-            session()->put('cart', $cart); // Update the session
+            unset($cart[$request->cartKey]);
+            if (empty($cart)) {
+                session()->forget('cart');
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Your cart is empty now!',
+                    'redirect' => route('order')
+                ]);
+            } else {
+                session()->put('cart', $cart);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Item removed successfully!',
+                ]);
+            }
         }
 
-        // If cart is empty, redirect to /order with success message
-        if (empty($cart)) {
-            session()->forget('cart'); // Clear session if empty
-            session()->flash('success', 'Your cart is empty now!'); // Store message
-
-            return response()->json(['success' => true, 'redirect' => route('order')]);
-        }
-
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => false,
+            'message' => 'Item not found in cart!',
+        ], 400);
     }
 
 
