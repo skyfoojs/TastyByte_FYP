@@ -7,8 +7,8 @@
 
             <div class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-6">
-                    <a href="#"
-                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300">Dashboard</a>
+                    <a href="/"
+                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Dashboard</a>
                     <a href="/cashier/table"
                        class="rounded-md bg-gray-900 px-5 py-4 text-lg font-bold text-white hover:bg-gray-700 hover:text-white"
                        aria-current="page">Order Food</a>
