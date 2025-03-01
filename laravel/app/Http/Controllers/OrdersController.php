@@ -197,7 +197,7 @@ class OrdersController extends Controller
             $order = Orders::create([
                 'userID' => $userID,
                 'tableNo' => $tableNo,
-                'remark' => 'Test',
+                'remark' => '-',
                 'status' => 'Pending', // Default status
                 'totalAmount' => $totalAmount,
             ]);
