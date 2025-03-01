@@ -53,6 +53,7 @@ class OrdersController extends Controller
                 'subtotal' => $subtotal,
                 'tax' => $tax,
                 'total' => $total,
+                'tableNo' => $orders->first()->orderItems->first()->table->tableNo ?? null,
             ]]);
 
             if ($role === 'Cashier') {
