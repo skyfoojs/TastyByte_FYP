@@ -160,10 +160,9 @@
                 customizationSection.innerHTML = `<p class="text-gray-500">No customizations available.</p>`;
             }
 
-            // ✅ Show bottom sheet only after content is loaded
             setTimeout(() => {
                 document.getElementById("bottom-sheet").classList.remove("translate-y-full");
-            }, 100); // Small delay to ensure smooth transition
+            }, 100);
 
         } catch (error) {
             console.error("Error fetching product details:", error);
@@ -173,7 +172,7 @@
 
     function closeBottomSheet() {
         document.getElementById('bottom-sheet').classList.add('translate-y-full');
-        document.getElementById('bottom-sheet').classList.remove('show'); // Remove show class
+        document.getElementById('bottom-sheet').classList.remove('show');
     }
 
     document.addEventListener('click', function(event) {
@@ -186,11 +185,11 @@
 
 <style>
     #bottom-sheet {
-        height: 85vh;
+        height: 75vh;
         overflow-y: auto;
-        display: none; /* Hide the bottom sheet by default */
+        display: none;
     }
     #bottom-sheet.show {
-        display: block; /* Show the bottom sheet when the class is added */
+        display: block;
     }
 </style>
