@@ -38,6 +38,23 @@ class OrdersController extends Controller
 
             $orders = $query->get();
 
+            $subtotal = $orders->sum(function ($order) {
+                return $order->orderItems->sum(function ($item) {
+                    return $item->products->price * $item->quantity;
+                });
+            });
+
+            $tax = $subtotal * 0.06;
+            $serviceCharge = $subtotal * 0.10;
+            $total = $subtotal + $tax + $serviceCharge;
+
+            session(['checkout' => [
+                'orderID' => $request->orderID,
+                'subtotal' => $subtotal,
+                'tax' => $tax,
+                'total' => $total,
+            ]]);
+
             if ($role === 'Cashier') {
                 return view('cashier.order-summary', compact('orders'));
             } elseif ($role === 'Waiter') {
