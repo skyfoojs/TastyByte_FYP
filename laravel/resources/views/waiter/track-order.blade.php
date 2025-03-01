@@ -23,8 +23,8 @@
                                                 <p><span class="font-semibold">Table:</span>&nbsp;&nbsp;{{ $order->tableNo }}</p>
                                                 <p><span class="font-semibold">Status:</span>&nbsp;&nbsp;{{ $order->status }}</p>
                                                 <p><span class="font-semibold">Total Amount:</span>&nbsp;&nbsp;{{ $order->totalAmount }}</p>
-                                                <p><span class="font-semibold">Remark:</span>&nbsp;&nbsp;{{ $order->remark }}</p>
                                             </div>
+                                            
                                             <div>
                                                 <p class="text-[#919191] text-sm">
                                                     <span>Last Order:</span>&nbsp;&nbsp;{{ $order->created_at }}
