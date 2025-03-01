@@ -1,42 +1,43 @@
 <nav class="bg-gray-800 fixed top-0 left-0 w-full z-50">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-26 items-center justify-between">
-            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div class="flex shrink-0 items-center">
-                    <img class="h-10 w-auto"
-                         src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                         alt="Your Company">
-                </div>
-                <div class="hidden sm:ml-6 sm:block">
-                    <div class="flex space-x-6">
-                        <a href="#"
-                           class="rounded-md px-5 py-4 text-lg font-bold text-gray-300">Dashboard</a>
-                        <a href="/cashier/table"
-                           class="rounded-md bg-gray-900 px-5 py-4 text-lg font-bold text-white hover:bg-gray-700 hover:text-white"
-                           aria-current="page">Order Food</a>
-                        <a href="/track-order"
-                           class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Order
-                            History</a>
-                    </div>
+            <div class="">
+                <p class="text-indigo-500 text-2xl font-bold">TastyByte</p>
+            </div>
+
+            <div class="hidden sm:ml-6 sm:block">
+                <div class="flex space-x-6">
+                    <a href="#"
+                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300">Dashboard</a>
+                    <a href="/cashier/table"
+                       class="rounded-md bg-gray-900 px-5 py-4 text-lg font-bold text-white hover:bg-gray-700 hover:text-white"
+                       aria-current="page">Order Food</a>
+                    <a href="/track-order"
+                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Order
+                        History</a>
                 </div>
             </div>
-            <button id="dropdownToggle" class="flex items-center space-x-2 mr-2">
-                <span class="font-semibold text-gray-300 mr-3">{{ session('username') ?? 'Null' }}</span>
-                <img class="size-12 rounded-full"
-                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                     alt="">
-            </button>
 
-            <div id="dropdownMenu" class="absolute right-0 mt-35 p-2 w-48 bg-white border border-gray-200 rounded-lg hidden">
-                <a href="{{ route('logout') }}"
-                   class="flex items-center space-x-5 py-3 px-5 hover:bg-gray-100 rounded-md">
-                    <i class='bx bx-log-out text-base'></i>
-                    <span class="font-medium">Log Out</span>
-                </a>
+            <div class="flex items-center space-x-2 mr-2">
+                <button id="dropdownToggle" class="flex items-center space-x-2">
+                    <span class="font-semibold text-gray-300 mr-3">{{ session('username') ?? 'Null' }}</span>
+                    <img class="size-12 rounded-full"
+                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                         alt="">
+                </button>
+
+                <div id="dropdownMenu" class="absolute right-0 mt-35 p-2 w-48 bg-white border border-gray-200 rounded-lg hidden">
+                    <a href="{{ route('logout') }}"
+                       class="flex items-center space-x-5 py-3 px-5 hover:bg-gray-100 rounded-md">
+                        <i class='bx bx-log-out text-base'></i>
+                        <span class="font-medium">Log Out</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </nav>
+
 <script>
     document.getElementById('dropdownToggle').addEventListener('click', function () {
         const dropdownMenu = document.getElementById('dropdownMenu');
