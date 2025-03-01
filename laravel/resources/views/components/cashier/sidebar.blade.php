@@ -12,7 +12,7 @@
 @if ($routeName === 'cashier.order')
     <!-- Cashier Sidebar -->
     <div class="w-1/4 bg-white p-6 shadow-lg fixed right-0 top-26 h-[calc(100%-6rem)] flex flex-col">
-        <h2 class="font-semibold text-lg">Table {{ session('tableNo') }} Summary</h2>
+        <h2 class="font-semibold text-lg">Table {{ session('tableNo') }} - Cart Summary</h2>
         <hr class="mt-4">
 
         <div class="flex-1 overflow-y-auto mt-6 mb-6">
