@@ -13,7 +13,7 @@
                                    placeholder="Please enter a table number" required>
                             <input type="hidden" name="source" value="cashier">
                             <div class="flex justify-end space-x-4">
-                                <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">Confirm</button>
+                                <button type="submit" class="px-4 py-2 text-white bg-indigo-500 rounded-md hover:bg-indigo-600">Confirm</button>
                             </div>
                         </form>
                     </div>
