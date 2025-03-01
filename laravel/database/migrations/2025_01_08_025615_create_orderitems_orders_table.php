@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('orderID');
             $table->foreignId('userID')->constrained('users', 'userID')->onDelete('cascade');
             $table->integer('tableNo');
-            $table->text('remark');
             $table->string('status');
             $table->decimal('totalAmount', 9,2);
             $table->timestamps();
