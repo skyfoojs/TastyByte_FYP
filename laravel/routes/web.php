@@ -132,3 +132,5 @@ Route::get('/paymentSuccess', [PaymentController::class, 'index'])->name('order.
 Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInventories']);
 
 Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPost'])->name('cashier.addToCart.post');
+
+Route::post('/remove-from-cart', [OrdersController::class, 'removeFromCart'])->name('removeFromCart');
