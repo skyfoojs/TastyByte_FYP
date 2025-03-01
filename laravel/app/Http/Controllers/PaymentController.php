@@ -57,4 +57,27 @@ class PaymentController extends Controller
                 ->with('error', 'Payment failed. Please try again.');
         }
     }
+
+    public function applyVoucher(Request $request)
+    {
+        $request->validate([
+            'voucher_code' => 'required|string'
+        ]);
+
+        $voucher = Vouchers::where('code', $request->voucher_code)->first();
+        if (!$voucher) {
+            return response()->json(['success' => false, 'message' => 'Invalid voucher code.'], 400);
+        }
+
+        $order = session('checkout');
+        $subtotal = $order['subtotal'] ?? 0;
+        $newTotal = max(0, $subtotal - $voucher->discount);
+
+        return response()->json([
+            'success' => true,
+            'voucherID' => $voucher->voucherID,
+            'discount' => $voucher->discount,
+            'new_total' => $newTotal
+        ]);
+    }
 }
