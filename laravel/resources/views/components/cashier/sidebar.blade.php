@@ -35,10 +35,14 @@
                             <p class="text-sm">{{ '- RM ' . $cartItem['price'] }}</p>
                         </div>
 
-                        <div class="flex items-center justify-center">
+                        <div class="flex items-center justify-center flex-col">
                             <div class="border w-8 h-8 mr-2 rounded-full bg-indigo-500 flex items-center justify-center">
                                 <p class="text-white">{{ $cartItem['quantity'] }}</p>
                             </div>
+
+                            <button class=" w-8 h-8 mr-2 mt-4 text-red-600 remove-cart-item flex items-center justify-center" data-key="{{ $loop->index }}">
+                                <i class="bx bx-trash text-xl"></i>
+                            </button>
                         </div>
                     </div>
                 @endforeach
