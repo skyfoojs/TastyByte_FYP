@@ -101,12 +101,14 @@
                 <div class="space-y-3">
                     <label class="flex items-center space-x-4 cursor-pointer">
                         <input type="radio" name="paymentMethod" value="cash"
-                               class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full" checked>
+                               class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full"
+                               onchange="updatePaymentMethod(this)" checked>
                         <span>Cash</span>
                     </label>
                     <label class="flex items-center space-x-4 cursor-pointer">
                         <input type="radio" name="paymentMethod" value="credit_card"
-                               class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full">
+                               class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full"
+                               onchange="updatePaymentMethod(this)">
                         <span>Credit/ Debit Card</span>
                     </label>
                 </div>
@@ -114,12 +116,13 @@
 
             <div class="pt-4 mt-4">
                 <h3 class="font-semibold text-lg mb-2">Voucher</h3>
-                <form>
+                <form id="voucherForm">
                     @csrf
-                    <input type="text" name="voucher_code" placeholder="Enter voucher code"
+                    <input type="text" name="voucher_code" id="voucherCode" placeholder="Enter voucher code"
                            class="border border-gray-300 rounded-lg px-3 py-2 flex-1 mr-4 focus:ring-indigo-500 focus:border-indigo-500">
                     <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-lg">Apply</button>
                 </form>
+                <p id="voucherMessage" class="text-red-500 mt-2"></p>
             </div>
         </div>
 
@@ -150,8 +153,50 @@
                 @csrf
                 <input type="hidden" name="orderID" value="{{ request()->orderID }}">
                 <input type="hidden" name="paymentMethod" id="selectedPaymentMethod" value="cash">
+                <input type="hidden" name="voucher_code" id="hiddenVoucherCode" value="">
+
                 <button type="submit" class="w-full bg-indigo-500 text-white py-2 mt-4 rounded">Checkout</button>
             </form>
         </div>
     </div>
 @endif
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function updatePaymentMethod(radio) {
+            document.getElementById('selectedPaymentMethod').value = radio.value;
+        }
+
+        document.getElementById('voucherForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let code = document.getElementById('voucherCode').value;
+
+            fetch("{{ route('applyVoucher') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ voucher_code: code })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('voucherMessage').textContent = "Voucher applied successfully!";
+                        document.getElementById('hiddenVoucherCode').value = code;
+                        document.getElementById('totalAmount').textContent = "RM " + data.new_total.toFixed(2);
+                    } else {
+                        document.getElementById('voucherMessage').textContent = "Invalid voucher code.";
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        document.querySelectorAll('input[name="paymentMethod"]').forEach((radio) => {
+            radio.addEventListener("change", function() {
+                updatePaymentMethod(this);
+            });
+        });
+    });
+</script>
