@@ -42,20 +42,23 @@
                                             }
                                         @endphp
 
-                                        @if ($takeaway)
-                                            <p class="text-sm text-gray-500">Takeaway: Yes</p>
-                                        @endif
-
                                         @if (!empty($remarks))
                                             <p class="text-sm text-gray-500">{{ implode(', ', $remarks) }}</p>
                                         @endif
+
+                                        <p class="mt-2 text-gray-600">- RM {{ number_format($item->products->price ?? 0, 2) }}</p>
                                     @endif
-                                    <p class="mt-2 text-gray-600">- RM {{ number_format($item->products->price ?? 0, 2) }}</p>
                                 </div>
                             </div>
                             <div class="flex flex-col items-center">
                                 <span class="border w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white mb-4">{{ $item->quantity }}</span>
-                                <button class="px-6 py-2 bg-gray-200 rounded-full text-sm tracking-wide">Split</button>
+                                @if (!empty($item->remark))
+                                    @if ($takeaway)
+                                        <p class="px-6 py-2 bg-gray-200 rounded-full text-sm tracking-wide">Take Away</p>
+                                    @else
+                                        <p class="px-6 py-2 bg-gray-200 rounded-full text-sm tracking-wide">Dine In</p>
+                                    @endif
+                                @endif
                             </div>
                         </div>
                     @endforeach
