@@ -13,47 +13,44 @@ class PaymentController extends Controller
 {
     public function checkout(Request $request)
     {
-        // Validate that the orderID exists
         $request->validate([
             'orderID' => 'required|integer|exists:orders,orderID',
-            'paymentMethod' => 'required|string',
-            'voucherID' => 'nullable|integer|exists:vouchers,voucherID',
+            'paymentMethod' => 'required|string|in:cash,credit_card',
+            'voucher_code' => 'nullable|string'
         ]);
 
         try {
             DB::beginTransaction();
 
-            // Retrieve the selected order
             $order = Orders::with('orderItems.products')->findOrFail($request->orderID);
 
-            // Calculate total amount from order items
             $totalAmount = $order->orderItems->sum(function ($item) {
                 return $item->quantity * ($item->products->price ?? 0);
             });
 
-            // Apply voucher discount if provided
-            if ($request->filled('voucherID')) {
-                $voucher = Vouchers::find($request->voucherID);
+            $voucherID = null;
+            if ($request->filled('voucher_code')) {
+                $voucher = Vouchers::where('code', $request->voucher_code)->first();
                 if ($voucher) {
-                    $totalAmount -= $voucher->discount; // Adjust logic as needed
+                    $totalAmount -= $voucher->discount;
+                    $voucherID = $voucher->voucherID;
                 }
             }
 
-            // Ensure total amount is not negative
             $totalAmount = max(0, $totalAmount);
 
-            // Create new payment record
             $payment = Payment::create([
                 'orderID' => $order->orderID,
-                'voucherID' => $request->voucherID,
+                'voucherID' => $voucherID,
                 'totalAmount' => $totalAmount,
                 'paymentMethod' => $request->paymentMethod,
-                'status' => 'completed', // Adjust based on actual payment process
+                'status' => 'completed',
             ]);
 
             DB::commit();
 
             return redirect()->route('order.success')->with('success', 'Payment completed! Payment ID: ' . $payment->paymentID);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('orderSummary', ['orderID' => $request->orderID])
