@@ -40,7 +40,8 @@
                                 <p class="text-white">{{ $cartItem['quantity'] }}</p>
                             </div>
 
-                            <button class=" w-8 h-8 mr-2 mt-4 text-red-600 remove-cart-item flex items-center justify-center" data-key="{{ $loop->index }}">
+                            <button class="w-8 h-8 mr-2 mt-4 text-red-600 remove-cart-item flex items-center justify-center"
+                                    data-cart-key="{{ md5($cartItem['name'] . json_encode($cartItem['options']) . ($cartItem['takeaway'] ? '1' : '0')) }}">
                                 <i class="bx bx-trash text-xl"></i>
                             </button>
                         </div>
@@ -80,6 +81,36 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".remove-cart-item").forEach((button) => {
+                button.addEventListener("click", function () {
+                    let cartKey = this.getAttribute("data-cart-key");
+
+                    fetch("{{ route('removeFromCart') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({ cartKey: cartKey })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                if (data.redirect) {
+                                    window.location.href = data.redirect;
+                                } else {
+                                    location.reload();
+                                }
+                            }
+                        })
+                        .catch(error => console.error("Error:", error));
+                });
+            });
+        });
+    </script>
 
 @elseif ($routeName === 'orderSummary')
     @php
