@@ -17,9 +17,6 @@
                         <a href="/track-order"
                            class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Order
                             History</a>
-                        <a href="#"
-                           class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Check
-                            Inventory</a>
                     </div>
                 </div>
             </div>
