@@ -6,11 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\Orders;
 use App\Models\Vouchers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
+    public function index() {
+
+        return view('cashier.payment');
+    }
+
     public function checkout(Request $request)
     {
         $request->validate([
@@ -54,7 +60,7 @@ class PaymentController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('orderSummary', ['orderID' => $request->orderID])
-                ->with('error', 'Payment failed. Please try again.');
+                ->with('error', 'Payment failed. Please try again.'. $e->getMessage());
         }
     }
 
