@@ -85,12 +85,13 @@
         $tax = $checkout['tax'] ?? 0;
         $serviceCharge = $subtotal * 0.10;
         $total = $checkout['total'] ?? 0;
+        $tableNo = $checkout['tableNo'] ?? 'Error';
     @endphp
 
     <!-- Cashier Sidebar -->
     <div class="w-1/4 bg-white p-6 shadow-lg fixed right-0 top-26 h-[calc(100%-6rem)] flex flex-col justify-between">
         <div class="overflow-y-auto flex-1">
-            <h2 class="font-semibold text-lg mb-2">Table {{ session('tableNo') }} Order Summary</h2>
+            <h2 class="font-semibold text-lg mb-2">Table {{ $tableNo }} Order Summary</h2>
             <p class="text-gray-500">Order ID: {{ $orderID }}</p>
 
             <hr class="mt-4 mb-2">
