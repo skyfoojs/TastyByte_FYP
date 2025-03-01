@@ -1,14 +1,20 @@
 <x-cashier.layout>
     <x-cashier.navbar>
         <div class="w-3/4 p-6 mt-26">
-            <h2 class="text-xl font-bold mb-6 p-2">Order History - Table {{ session('tableNo') }}</h2>
-
             @php
                 $selectedOrder = request()->orderID ? $orders->firstWhere('orderID', request()->orderID) : null;
             @endphp
 
             <div class="space-y-4">
                 @if ($selectedOrder)
+                    @php
+                        $firstItem = $selectedOrder->orderItems->first();
+                    @endphp
+
+                    @if ($firstItem)
+                        <h2 class="text-xl font-bold mb-6 p-2">Order History - Table {{ $firstItem->table->tableNo }}</h2>
+                    @endif
+
                     @foreach ($selectedOrder->orderItems as $item)
                         <div class="flex items-center justify-between bg-white p-4 shadow rounded-lg">
                             <div class="flex items-center space-x-4">
@@ -21,15 +27,38 @@
                                 </div>
                                 <div>
                                     <p class="font-semibold text-lg">{{ $item->products->name }}</p>
-                                    <p class="text-gray-600">RM {{ number_format($item->products->price ?? 0, 2) }}</p>
-                                    @if (!empty($item['options']))
-                                        <p class="text-sm text-gray-500">{{ collect($item['options'])->map(function($values, $name) { return implode(', ', $values); })->implode(', ') }}</p>
+                                    @if (!empty($item->remark))
+                                        @php
+                                            $remarkData = json_decode($item->remark, true);
+                                            $options = $remarkData['options'] ?? [];
+                                            $takeaway = $remarkData['takeaway'] ?? false;
+
+                                            $remarks = [];
+
+                                            foreach ($options as $optionName => $values) {
+                                                if (!empty($values)) {
+                                                    $remarks[] = implode(', ', $values);
+                                                }
+                                            }
+                                        @endphp
+
+                                        @if (!empty($remarks))
+                                            <p class="text-sm text-gray-500">{{ implode(', ', $remarks) }}</p>
+                                        @endif
+
+                                        <p class="mt-2 text-gray-600">- RM {{ number_format($item->products->price ?? 0, 2) }}</p>
                                     @endif
                                 </div>
                             </div>
                             <div class="flex flex-col items-center">
                                 <span class="border w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white mb-4">{{ $item->quantity }}</span>
-                                <button class="px-6 py-2 bg-gray-200 rounded-full text-sm tracking-wide">Split</button>
+                                @if (!empty($item->remark))
+                                    @if ($takeaway)
+                                        <p class="px-6 py-2 bg-gray-200 rounded-full text-sm tracking-wide">Take Away</p>
+                                    @else
+                                        <p class="px-6 py-2 bg-gray-200 rounded-full text-sm tracking-wide">Dine In</p>
+                                    @endif
+                                @endif
                             </div>
                         </div>
                     @endforeach

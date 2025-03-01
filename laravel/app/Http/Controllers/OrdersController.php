@@ -38,17 +38,30 @@ class OrdersController extends Controller
 
             $orders = $query->get();
 
+            $subtotal = $orders->sum(function ($order) {
+                return $order->orderItems->sum(function ($item) {
+                    return $item->products->price * $item->quantity;
+                });
+            });
+
+            $tax = $subtotal * 0.06;
+            $serviceCharge = $subtotal * 0.10;
+            $total = $subtotal + $tax + $serviceCharge;
+
+            session(['checkout' => [
+                'orderID' => $request->orderID,
+                'subtotal' => $subtotal,
+                'tax' => $tax,
+                'total' => $total,
+                'tableNo' => $orders->first()->orderItems->first()->table->tableNo ?? null,
+            ]]);
+
             if ($role === 'Cashier') {
                 return view('cashier.order-summary', compact('orders'));
             } elseif ($role === 'Waiter') {
-                if (!Auth::check() || Auth::user()->role !== 'Waiter') {
-                    session()->forget(['username', 'userID']);
-                    Auth::logout();
-
-                    return redirect()->route('login')->with('error', 'Unauthorized Access');
-                }
-
                 return view('waiter.order-summary');
+            } else {
+                return view('404');
             }
         }
 
@@ -59,16 +72,21 @@ class OrdersController extends Controller
 
 
     public function trackOrder() {
-        if (!Auth::check() || Auth::user()->role !== 'Waiter') {
-            session()->forget(['username', 'userID']);
-            Auth::logout();
+        if (Auth::check()) {
+            $role = session('role', Auth::user()->role);
 
-            return redirect()->route('login')->with('error', 'Unauthorized Access');
+            $orders = Orders::with('orderItems')->get();
+
+            if ($role === 'Cashier') {
+                return view('cashier.track-order', compact('orders'));
+            } elseif ($role === 'Waiter') {
+                return view('waiter.track-order', compact('orders'));
+            } else {
+                return view('404');
+            }
         }
 
-        $orders = Orders::with('orderItems')->get();
-
-        return view('waiter.track-order', compact('orders'));
+        return redirect()->route('login')->with('error', 'Unauthorized Access');
     }
 
     public function orderHistory(Request $request) {
