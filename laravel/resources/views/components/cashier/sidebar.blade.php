@@ -78,10 +78,20 @@
     </div>
 
 @elseif ($routeName === 'orderSummary')
+    @php
+        $checkout = session('checkout', []);
+        $orderID = $checkout['orderID'] ?? 'Error';
+        $subtotal = $checkout['subtotal'] ?? 0;
+        $tax = $checkout['tax'] ?? 0;
+        $serviceCharge = $subtotal * 0.10;
+        $total = $checkout['total'] ?? 0;
+    @endphp
+
     <!-- Cashier Sidebar -->
     <div class="w-1/4 bg-white p-6 shadow-lg fixed right-0 top-26 h-[calc(100%-6rem)] flex flex-col justify-between">
         <div class="overflow-y-auto flex-1">
-            <h2 class="font-semibold text-lg">Table {{ session('tableNo') }} Order Summary</h2>
+            <h2 class="font-semibold text-lg mb-2">Table {{ session('tableNo') }} Order Summary</h2>
+            <p class="text-gray-500">Order ID: {{ $orderID }}</p>
 
             <hr class="mt-4 mb-2">
 
@@ -135,7 +145,6 @@
 
             <hr class="border-t-4 mt-4 border-dotted border-gray-200">
 
-            <!-- Checkout Form -->
             <form action="{{ route('checkout') }}" method="POST">
                 @csrf
                 <input type="hidden" name="orderID" value="{{ request()->orderID }}">
@@ -144,13 +153,4 @@
             </form>
         </div>
     </div>
-
-    <script>
-        // Update the hidden payment method input when a radio button is selected
-        document.querySelectorAll('input[name="paymentMethod"]').forEach((radio) => {
-            radio.addEventListener('change', function () {
-                document.getElementById('selectedPaymentMethod').value = this.value;
-            });
-        });
-    </script>
 @endif
