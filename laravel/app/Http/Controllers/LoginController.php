@@ -39,6 +39,7 @@ class LoginController extends Controller
                 'Waiter' => redirect()->intended(route('menu')),
                 'Admin' => redirect()->route('admin-dashboard'),
                 'Cashier' => redirect()->route('cashier.table'),
+                'Kitchen' => redirect()->route('kitchen.order-summary'),
                 default => tap(Auth::logout(), fn () => redirect()->route('login')->with('error', 'Unauthorized access.')),
             };
         }
