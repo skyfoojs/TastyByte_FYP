@@ -1,8 +1,9 @@
 <nav class="bg-gray-800 fixed top-0 left-0 w-full z-50">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-26 items-center justify-between">
-            <div class="">
-                <p class="text-indigo-500 text-2xl font-bold">TastyByte</p>
+            <div class="flex items-center space-x-2">
+                <img src="{{ asset('images/' . 'Logo.png') }}" alt="Logo" class="w-12 h-12">
+                <p class="text-gray-300 text-2xl font-bold">TastyByte</p>
             </div>
 
             <div class="hidden sm:ml-6 sm:block">
