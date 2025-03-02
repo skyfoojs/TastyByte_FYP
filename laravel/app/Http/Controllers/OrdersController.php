@@ -26,6 +26,10 @@ class OrdersController extends Controller
         return view('cashier.table');
     }
 
+    public function kitchenIndex() {
+        return view('kitchen.order-summary');
+    }
+
     public function orderSummary(Request $request) {
         if (Auth::check()) {
             $role = session('role', Auth::user()->role); // Get role from session or authenticated user
