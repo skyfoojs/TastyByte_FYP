@@ -40,8 +40,7 @@
                                 <p class="text-white">{{ $cartItem['quantity'] }}</p>
                             </div>
 
-                            <button class="w-8 h-8 mr-2 mt-4 text-red-600 remove-cart-item flex items-center justify-center"
-                                    data-cart-key="{{ md5($cartItem['name'] . json_encode($cartItem['options']) . ($cartItem['takeaway'] ? '1' : '0')) }}">
+                            <button class="w-8 h-8 mr-2 mt-4 text-red-600 remove-cart-item flex items-center justify-center">
                                 <i class="bx bx-trash text-xl"></i>
                             </button>
                         </div>
