@@ -135,4 +135,4 @@ Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPo
 
 Route::post('/remove-from-cart', [OrdersController::class, 'removeFromCart'])->name('removeFromCart');
 
-Route::get('/kitchen/order-items', [OrdersController::class, 'kitchenIndex'])->name('kitchen.order-items');
+Route::get('/kitchen/order-items', [OrdersController::class, 'trackOrderItems'])->name('kitchen.order-items');
