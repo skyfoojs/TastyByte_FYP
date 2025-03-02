@@ -251,6 +251,7 @@ class OrdersController extends Controller
                         'options' => $cartItem['options'], // Store options as JSON
                         'takeaway' => $cartItem['takeaway'] // Add takeaway information to the remark
                     ]),
+                    'status' => 'Pending',
                 ]);
             }
 
