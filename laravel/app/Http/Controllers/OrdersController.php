@@ -93,6 +93,26 @@ class OrdersController extends Controller
         return redirect()->route('login')->with('error', 'Unauthorized Access');
     }
 
+    public function trackOrderItems(Request $request) {
+        if (!Auth::check() || Auth::user()->role !== 'Kitchen') {
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
+        }
+
+        $filter = $request->input('filter', 'pending');
+
+        $query = OrderItems::with('products', 'orders');
+
+        if ($filter === 'pending') {
+            $query->where('status', 'Pending');
+        } elseif ($filter === 'completed') {
+            $query->where('status', 'Completed');
+        }
+
+        $orderItems = $query->get();
+
+        return view('kitchen.order-items', compact('orderItems'));
+    }
+
     public function orderHistory(Request $request) {
         if (!Auth::check() || Auth::user()->role !== 'Waiter') {
             session()->forget(['username', 'userID']);
