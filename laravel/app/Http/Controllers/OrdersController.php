@@ -108,7 +108,7 @@ class OrdersController extends Controller
             $query->where('status', 'Completed');
         }
 
-        $orderItems = $query->get();
+        $orderItems = $query->orderBy('created_at', 'desc')->get();
 
         return view('kitchen.order-items', compact('orderItems'));
     }
