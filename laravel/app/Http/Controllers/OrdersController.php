@@ -27,7 +27,7 @@ class OrdersController extends Controller
     }
 
     public function kitchenIndex() {
-        return view('kitchen.order-summary');
+        return view('kitchen.order-items');
     }
 
     public function orderSummary(Request $request) {
