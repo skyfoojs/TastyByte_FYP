@@ -25,8 +25,8 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4">
                 <h2 class="text-2xl font-semibold mb-4">Filter Inventory</h2>
                 <hr class="py-2">
-                <form action="{{ route('filterInventories.get') }}" method="GET">
-                    <label class="block text-gray-700 text-sm font-medium">Filter By <span class="text-red-500">*</span></label>
+                <form action="{{ route('cashier.inventory') }}" method="GET">
+                <label class="block text-gray-700 text-sm font-medium">Filter By <span class="text-red-500">*</span></label>
                     <select name="filterType" id="filterType" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
                         <option value="">Please Select a Type</option>
                         <option value="filterInventoryID">Inventory ID</option>
@@ -40,7 +40,7 @@
 
                     <div class="flex justify-end mt-10">
                         <button type="button" onclick="closeFilterModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mr-2">Close</button>
-                        <a href="{{ route('admin-inventory') }}" class="text-white bg-red-500 hover:bg-red-600 font-bold py-2 px-6 rounded-lg mr-2">Reset</a>
+                        <a href="{{ route('cashier.inventory') }}" class="text-white bg-red-500 hover:bg-red-600 font-bold py-2 px-6 rounded-lg mr-2">Reset</a>
                         <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">Filter</button>
                     </div>
                 </form>
@@ -51,7 +51,7 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit Inventory</h2>
                 <hr class="py-2">
-                <form action="{{ route('editInventory.post') }}" method="POST">
+                <form action="{{ route('cashierEditInventory.post') }}" method="POST">
                     <input type="hidden" id="inventoryID" name="inventoryID">
                     @csrf
                     @method('PUT')
@@ -82,7 +82,7 @@
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Inventory</h2>
                 <hr class="py-2">
-                <form action="{{ route('addInventory.post') }}" method="POST">
+                <form action="{{ route('cashierAddInventory.post') }}" method="POST">
                     @csrf
                     <label class="block text-gray-700 text-sm font-medium mt-4">Inventory Name <span class="text-red-500">*</span></label>
                     <input name="inventory" type="text" id="inventory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
