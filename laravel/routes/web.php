@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
@@ -129,12 +130,13 @@ Route::get('/cashier/order/edit/{id}', [ProductController::class, 'getProductDet
 
 Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('cashier.table');
 
+Route::get('/track-inventory', [InventoryController::class, 'trackInventory'])->name('cashier.inventory');
+
 Route::get('/paymentSuccess', [PaymentController::class, 'index'])->name('order.success');
 
 Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInventories']);
 
 Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPost'])->name('cashier.addToCart.post');
-
 
 Route::get('/kitchen/order-items', [OrdersController::class, 'kitchenIndex'])->name('kitchen.index');
 
