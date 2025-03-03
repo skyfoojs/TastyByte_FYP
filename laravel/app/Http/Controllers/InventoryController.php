@@ -47,4 +47,31 @@ class InventoryController extends Controller
 
         return redirect()->route('admin-inventory')->with('success', 'Inventory added successfully!');
     }
+
+    public function editInventoryPost(Request $request) {
+        $request->validate([
+            'inventoryID' => 'required',
+            'editInventory' => 'required',
+            'editProduct' => 'required',
+            'editStockLevel' => 'required',
+            'editMinLevel' => 'required',
+        ]);
+
+        $inventory = Inventory::find($request->inventoryID);
+
+        if (!$inventory) {
+            return redirect()->route('admin-inventory')->with('error', 'Inventory not found.');
+        }
+
+        $inventory->name = $request->editInventory;
+        $inventory->productID = $request->editProduct;
+        $inventory->stockLevel = $request->editStockLevel;
+        $inventory->minLevel = $request->editMinLevel;
+
+        if ($inventory->save()) {
+            return redirect()->route('admin-inventory')->with('success', 'Inventory updated successfully!');
+        } else {
+            return redirect()->route('admin-inventory')->with('error', 'Error updating inventory.');
+        }
+    }
 }
