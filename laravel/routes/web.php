@@ -149,3 +149,5 @@ Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPo
 Route::get('/kitchen/order-items', [OrdersController::class, 'kitchenIndex'])->name('kitchen.index');
 
 Route::get('/kitchen/order-items-data', [OrdersController::class, 'trackOrderItems'])->name('kitchen.order-items');
+
+Route::post('/kitchen/update-status', [OrdersController::class, 'updateOrderStatusCompleted'])->name('updateOrderStatusCompleted');
