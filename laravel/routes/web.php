@@ -123,6 +123,8 @@ Route::get('/cashier/order', [ProductController::class, 'index'])->name('cashier
 
 Route::post('/cashier/order/add-to-order', [OrdersController::class, 'addOrderPost'])->name('cashier.addOrder.post');
 
+Route::post('/cashier/cart/remove', [OrdersController::class, 'removeFromCart'])->name('cashierCart.remove');
+
 Route::get('/cashier/order/edit/{id}', [ProductController::class, 'getProductDetails'])->name('cashier.order.edit');
 
 Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('cashier.table');
@@ -133,6 +135,5 @@ Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInvent
 
 Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPost'])->name('cashier.addToCart.post');
 
-Route::post('/remove-from-cart', [OrdersController::class, 'removeFromCart'])->name('removeFromCart');
 
 Route::get('/kitchen/order-items', [OrdersController::class, 'trackOrderItems'])->name('kitchen.order-items');
