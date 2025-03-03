@@ -132,6 +132,14 @@ Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('c
 
 Route::get('/track-inventory', [InventoryController::class, 'trackInventory'])->name('cashier.inventory');
 
+Route::post('cashier/inventory', [InventoryController::class, 'addInventoryPost'])->name('cashierAddInventory.post');
+
+Route::put('cashier/inventory', [InventoryController::class, 'editInventoryPost'])->name('cashierEditInventory.post');
+
+Route::post('cashier/inventory', [InventoryController::class, 'addInventoryPost'])->name('cashierAddInventory.post');
+
+Route::put('cashier/inventory', [InventoryController::class, 'editInventoryPost'])->name('cashierEditInventory.post');
+
 Route::get('/paymentSuccess', [PaymentController::class, 'index'])->name('order.success');
 
 Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInventories']);
