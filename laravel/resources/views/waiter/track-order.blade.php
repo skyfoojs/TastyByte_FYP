@@ -45,7 +45,7 @@
                                     </div>
                                 </a>
                             @endforeach
-
+                                <p id="noPendingMessage" class="text-center text-gray-500 mt-10" style="display: none;">Currently No Pending Orders</p>
                             @else
                                 <p class="text-center text-gray-500 mt-20">Currently No Pending Orders</p>
                         @endif
@@ -76,7 +76,7 @@
                                     </div>
                                 </a>
                             @endforeach
-
+                                <p id="noCompletedMessage" class="text-center text-gray-500 mt-10" style="display: none;">Currently No Completed Orders</p>
                             @else
                                 <p class="text-center text-gray-500 mt-20">Currently No Completed Orders</p>
                         @endif
@@ -94,12 +94,29 @@
         let selectedTable = this.value;
         let orders = document.querySelectorAll('.order-item');
 
+        let hasPending = false;
+        let hasCompleted = false;
+
         orders.forEach(order => {
             if (selectedTable === 'all' || order.dataset.table === selectedTable) {
                 order.style.display = 'block';
+                if (order.dataset.status === 'pending') hasPending = true;
+                if (order.dataset.status === 'completed') hasCompleted = true;
             } else {
                 order.style.display = 'none';
             }
         });
+
+        // Show or hide the "No Pending Orders" message
+        let pendingMessage = document.getElementById('noPendingMessage');
+        if (pendingMessage) {
+            pendingMessage.style.display = hasPending ? 'none' : 'block';
+        }
+
+        // Show or hide the "No Completed Orders" message
+        let completedMessage = document.getElementById('noCompletedMessage');
+        if (completedMessage) {
+            completedMessage.style.display = hasCompleted ? 'none' : 'block';
+        }
     });
 </script>
