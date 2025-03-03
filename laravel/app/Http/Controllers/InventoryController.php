@@ -95,39 +95,4 @@ class InventoryController extends Controller
             return redirect()->route('cashier.track-inventory')->with('error', 'Error updating inventory.');
         }
     }
-
-    public function getFilteredInventories(Request $request)
-    {
-        $request->validate([
-            'filterType' => 'required|string|in:filterInventoryID,filterCategoryName,filterStockMoreThan,filterStockLessThan',
-            'keywords' => 'required|string',
-        ]);
-
-        $query = Inventory::query();
-        $filterType = $request->input('filterType');
-        $keywords = $request->input('keywords');
-
-        switch ($filterType) {
-            case 'filterInventoryID':
-                $query->where('inventoryID', $keywords);
-                break;
-            case 'filterCategoryName':
-                $query->where('name', 'LIKE', "%$keywords%");
-                break;
-            case 'filterStockMoreThan':
-                $query->where('stockLevel', '>', (int)$keywords);
-                break;
-            case 'filterStockLessThan':
-                $query->where('stockLevel', '<', (int)$keywords);
-                break;
-        }
-
-        $inventory = $query->select('inventoryID', 'stockLevel', 'minLevel', 'name')->get();
-
-        if ($request->ajax()) {
-            return response()->json(['inventory' => $inventory]);
-        }
-
-        return view('cashier.track-inventory', compact('inventory'));
-    }
 }
