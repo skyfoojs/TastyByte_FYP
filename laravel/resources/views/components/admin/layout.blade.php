@@ -15,10 +15,7 @@
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
     </head>
-    <body class="min-h-screen flex flex-col">
-
-    <main class="font-mont bg-slate-200">
+    <body class="font-mont bg-slate-200 flex flex-col">
         {{ $slot }}
-    </main>
     </body>
 </html>
