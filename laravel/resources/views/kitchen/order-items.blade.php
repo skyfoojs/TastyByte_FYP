@@ -25,6 +25,9 @@
                 </div>
             </div>
         </div>
+
+        <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
     </x-kitchen.navbar>
 </x-kitchen.layout>
 <script>
