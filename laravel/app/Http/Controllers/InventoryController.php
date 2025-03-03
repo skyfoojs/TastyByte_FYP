@@ -25,4 +25,26 @@ class InventoryController extends Controller
 
         return redirect()->route('login')->with('error', 'Unauthorized Access');
     }
+
+    public function addInventoryPost(Request $request) {
+        $request->validate([
+            'inventory' => 'required',
+            'product' => 'required',
+            'stockLevel' => 'required',
+            'minLevel' => 'required',
+        ]);
+
+        $inventory = Inventory::create([
+            'name' => $request->inventory,
+            'productID' => $request->product,
+            'stockLevel' => $request->stockLevel,
+            'minLevel' => $request->minLevel,
+        ]);
+
+        if (!$inventory) {
+            return redirect()->route('admin-inventory')->with('error', 'Error adding inventory.');
+        }
+
+        return redirect()->route('admin-inventory')->with('success', 'Inventory added successfully!');
+    }
 }
