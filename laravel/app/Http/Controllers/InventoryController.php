@@ -11,14 +11,18 @@ use Illuminate\Support\Facades\Auth;
 
 class InventoryController extends Controller
 {
-    public function trackInventory(Request $request){
-        if (Auth::check() || Auth::user()->role == 'Cashier'){
-            $query = Vouchers::with('product');
+    public function trackInventory(Request $request)
+    {
+        if (Auth::check() || Auth::user()->role == 'Cashier') {
+            $inventory = Inventory::with('product')->select('inventoryID', 'productID', 'stockLevel', 'minLevel', 'name')->get();
 
-            $inventory = $query->get();
+            if ($request->ajax()) {
+                return response()->json(['inventory' => $inventory]);
+            }
 
-            return view('kitchen.track-inventory', compact('inventory'));
+            return view('cashier.track-inventory', compact('inventory'));
         }
+
         return redirect()->route('login')->with('error', 'Unauthorized Access');
     }
 }
