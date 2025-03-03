@@ -13,28 +13,73 @@
 
                 <div class="px-8" id="orderContainer">
                     @if ($orders->isNotEmpty())
-                        @foreach ($orders as $order)
-                            <a href="{{ route('orderHistory', ['orderID' => $order->orderID]) }}"
-                               class="order-item" data-table="{{ $order->tableNo }}">
-                                <div class="bg-white w-full p-5 rounded-xl mt-10">
-                                    <div class="flex">
-                                        <div class="space-y-3 ml-3">
-                                            <div>
-                                                <p><span class="font-semibold">Table:</span>&nbsp;&nbsp;{{ $order->tableNo }}</p>
-                                                <p><span class="font-semibold">Status:</span>&nbsp;&nbsp;{{ $order->status }}</p>
-                                                <p><span class="font-semibold">Total Amount:</span>&nbsp;&nbsp;{{ $order->totalAmount }}</p>
-                                            </div>
-                                            
-                                            <div>
-                                                <p class="text-[#919191] text-sm">
-                                                    <span>Last Order:</span>&nbsp;&nbsp;{{ $order->created_at }}
-                                                </p>
+                        @php
+                            [$pendingOrders, $completedOrders] = $orders->partition(function ($order) {
+                                return strtolower($order->status) === 'pending';
+                            });
+                        @endphp
+
+                        <p class="mt-5 text-xl">Pending</p>
+
+                        {{-- Pending Orders First --}}
+                        @if ($pendingOrders->isNotEmpty())
+                            @foreach ($pendingOrders as $order)
+                                <a href="{{ route('orderHistory', ['orderID' => $order->orderID]) }}"
+                                class="order-item " data-table="{{ $order->tableNo }}" data-status="pending">
+                                    <div class="bg-white w-full p-5 rounded-xl mt-5">
+                                        <div class="flex">
+                                            <div class="space-y-3 ml-3">
+                                                <div>
+                                                    <p><span class="font-semibold">Table:</span>&nbsp;&nbsp;{{ $order->tableNo }}</p>
+                                                    <p><span class="font-semibold">Status:</span>&nbsp;&nbsp;<span class="text-red-500">{{ $order->status }}</span></p>
+                                                    <p><span class="font-semibold">Total Amount:</span>&nbsp;&nbsp;{{ $order->totalAmount }}</p>
+                                                </div>
+
+                                                <div>
+                                                    <p class="text-[#919191] text-sm">
+                                                        <span>Last Order:</span>&nbsp;&nbsp;{{ $order->created_at }}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                        @endforeach
+                                </a>
+                            @endforeach
+
+                            @else
+                                <p class="text-center text-gray-500 mt-20">Currently No Pending Orders</p>
+                        @endif
+
+                        <p class="mt-10 text-xl">Completed</p>
+
+                        {{-- Completed Orders Below --}}
+                        @if ($completedOrders->isNotEmpty())
+                            @foreach ($completedOrders as $order)
+                                <a href="{{ route('orderHistory', ['orderID' => $order->orderID]) }}"
+                                class="order-item" data-table="{{ $order->tableNo }}" data-status="completed">
+                                    <div class="bg-white w-full p-5 rounded-xl mt-5">
+                                        <div class="flex">
+                                            <div class="space-y-3 ml-3">
+                                                <div>
+                                                    <p><span class="font-semibold">Table:</span>&nbsp;&nbsp;{{ $order->tableNo }}</p>
+                                                    <p><span class="font-semibold">Status:</span>&nbsp;&nbsp;<span class="text-green-500">{{ $order->status }}</span></p>
+                                                    <p><span class="font-semibold">Total Amount:</span>&nbsp;&nbsp;{{ $order->totalAmount }}</p>
+                                                </div>
+
+                                                <div>
+                                                    <p class="text-[#919191] text-sm">
+                                                        <span>Last Order:</span>&nbsp;&nbsp;{{ $order->created_at }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
+
+                            @else
+                                <p class="text-center text-gray-500 mt-20">Currently No Completed Orders</p>
+                        @endif
                     @else
                         <p class="text-center text-gray-500 mt-20">Currently No Orders</p>
                     @endif
