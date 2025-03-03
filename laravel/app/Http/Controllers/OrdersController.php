@@ -110,7 +110,9 @@ class OrdersController extends Controller
 
         $orderItems = $query->orderBy('created_at', 'desc')->get();
 
-        return view('kitchen.order-items', compact('orderItems'));
+        return response()->json([
+            'orderItems' => $orderItems,
+        ]);
     }
 
     public function orderHistory(Request $request) {

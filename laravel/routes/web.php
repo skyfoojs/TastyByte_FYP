@@ -136,4 +136,6 @@ Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInvent
 Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPost'])->name('cashier.addToCart.post');
 
 
-Route::get('/kitchen/order-items', [OrdersController::class, 'trackOrderItems'])->name('kitchen.order-items');
+Route::get('/kitchen/order-items', [OrdersController::class, 'kitchenIndex'])->name('kitchen.index');
+
+Route::get('/kitchen/order-items-data', [OrdersController::class, 'trackOrderItems'])->name('kitchen.order-items');
