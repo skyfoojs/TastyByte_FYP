@@ -239,23 +239,25 @@
                     let stockStatusClass = item.stockLevel <= item.minLevel ? "text-red-500 bg-red-100" : "text-green-500 bg-green-100";
 
                     inventoryList.innerHTML +=
-                        `<div class="bg-white p-4 shadow rounded-lg">
-                            <div class="flex justify-between items-center mb-4">
-                                <p class="text-gray-700 font-bold">${item.name}</p>
-                                <p class="${stockStatusClass} px-3 py-2 text-sm rounded-full font-bold">
-                                    ${item.stockLevel}
-                                </p>
-                            </div>
-                            <hr class="mb-2">
-                            <p class="text-gray-700"><strong>Inventory ID:</strong> ${item.inventoryID}</p>
-                            <p class="text-gray-700"><strong>Minimum Level:</strong> ${item.minLevel}</p>
-                        </div>`;
+                        `<div onclick="openInventoryEditModal('${item.inventoryID}', '${item.name}', ${item.stockLevel}, ${item.minLevel})" class="cursor-pointer bg-white p-4 shadow rounded-lg hover:shadow-lg transition">
+                        <div class="flex justify-between items-center mb-4">
+                            <p class="text-gray-700 font-bold">${item.name}</p>
+                            <p class="${stockStatusClass} px-3 py-2 text-sm rounded-full font-bold">
+                                ${item.stockLevel}
+                            </p>
+                        </div>
+                        <hr class="mb-2">
+                        <p class="text-gray-700"><strong>Inventory ID:</strong> ${item.inventoryID}</p>
+                        <p class="text-gray-700"><strong>Minimum Level:</strong> ${item.minLevel}</p>
+                    </div>`;
                 });
             }
         } catch (error) {
             console.error("Error fetching inventory", error);
         }
     }
+
+    fetchInventory();
 
     // Refresh every 10 seconds
     setInterval(fetchInventory, 10000);
