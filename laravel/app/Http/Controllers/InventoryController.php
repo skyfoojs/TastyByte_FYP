@@ -43,7 +43,7 @@ class InventoryController extends Controller
         ]);
 
         if (!$inventory) {
-            return redirect()->route('admin-inventory')->with('error', 'Error adding inventory.');
+            return redirect()->route('cashier.track-inventory')->with('error', 'Error adding inventory.');
         }
 
         return redirect()->route('admin-inventory')->with('success', 'Inventory added successfully!');
@@ -61,7 +61,7 @@ class InventoryController extends Controller
         $inventory = Inventory::find($request->inventoryID);
 
         if (!$inventory) {
-            return redirect()->route('admin-inventory')->with('error', 'Inventory not found.');
+            return redirect()->route('cashier.track-inventory')->with('error', 'Inventory not found.');
         }
 
         $inventory->name = $request->editInventory;
@@ -70,9 +70,9 @@ class InventoryController extends Controller
         $inventory->minLevel = $request->editMinLevel;
 
         if ($inventory->save()) {
-            return redirect()->route('admin-inventory')->with('success', 'Inventory updated successfully!');
+            return redirect()->route('cashier.track-inventory')->with('success', 'Inventory updated successfully!');
         } else {
-            return redirect()->route('admin-inventory')->with('error', 'Error updating inventory.');
+            return redirect()->route('cashier.track-inventory')->with('error', 'Error updating inventory.');
         }
     }
 
@@ -116,6 +116,6 @@ class InventoryController extends Controller
 
         $product = Product::all();
 
-        return view('admin.inventory', compact('inventory', 'totalPages', 'product'));
+        return view('cashier.track-inventory', compact('inventory', 'totalPages', 'product'));
     }
 }
