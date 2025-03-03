@@ -14,8 +14,9 @@
                        class="rounded-md bg-gray-900 px-5 py-4 text-lg font-bold text-white hover:bg-gray-700 hover:text-white"
                        aria-current="page">Order Food</a>
                     <a href="/track-order"
-                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Order
-                        History</a>
+                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Order History</a>
+                    <a href="/track-inventory"
+                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Check Inventory</a>
                 </div>
             </div>
 
