@@ -53,6 +53,8 @@ class PaymentController extends Controller
                 'status' => 'completed',
             ]);
 
+            $order->update(['status' => 'Completed']);
+
             DB::commit();
 
             return redirect()->route('order.success')->with('success', 'Payment completed! Payment ID: ' . $payment->paymentID);

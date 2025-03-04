@@ -17,8 +17,8 @@
 
         <div class="flex-1 overflow-y-auto mt-6 mb-6">
             @if (session('cart'))
-                @foreach (session('cart') as $cartItem)
-                    <div class="flex gap-x-4 mb-6">
+                @foreach (session('cart') as $cartKey => $cartItem)
+                <div class="flex gap-x-4 mb-6">
                         <div class="border w-24 h-24 rounded-lg flex items-center justify-center">
                             @if (!empty($cartItem['image']))
                                 <img class="w-full h-full rounded-lg object-cover" src="{{ asset($cartItem['image']) }}" alt="Image Not Available">
@@ -40,7 +40,7 @@
                                 <p class="text-white">{{ $cartItem['quantity'] }}</p>
                             </div>
 
-                            <button class="w-8 h-8 mr-2 mt-4 text-red-600 remove-cart-item flex items-center justify-center">
+                            <button class="w-8 h-8 mr-2 mt-4 text-red-600 remove-cart-item flex items-center justify-center" data-key="{{ $cartKey }}">
                                 <i class="bx bx-trash text-xl"></i>
                             </button>
                         </div>
@@ -85,13 +85,14 @@
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".remove-cart-item").forEach((button) => {
                 button.addEventListener("click", function () {
-                    let cartKey = this.getAttribute("data-cart-key");
+                    let cartKey = this.getAttribute("data-key");
+                    let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-                    fetch("{{ route('removeFromCart') }}", {
+                    fetch("{{ route('cashierCart.remove') }}", {
                         method: "POST",
                         headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            "X-CSRF-TOKEN": csrfToken,
+                            "Content-Type": "application/json"
                         },
                         body: JSON.stringify({ cartKey: cartKey })
                     })
@@ -99,13 +100,22 @@
                         .then(data => {
                             if (data.success) {
                                 if (data.redirect) {
-                                    window.location.href = data.redirect;
+                                    location.reload()
                                 } else {
-                                    location.reload();
+                                    alert("Error occurred while removing the item.");
                                 }
                             }
                         })
-                        .catch(error => console.error("Error:", error));
+                        .catch(async (error) => {
+                            console.error("Error:", error);
+
+                            if (error.response) {
+                                const errorText = await error.response.text();
+                                alert("Error occurred: " + errorText);
+                            } else {
+                                alert("An unknown error occurred while removing the item.");
+                            }
+                        });
                 });
             });
         });

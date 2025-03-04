@@ -25,7 +25,6 @@
                     <tr class="text-gray-500 font-medium text-center">
                         <th class="py-4 px-6 border-b border-gray-200">Inventory ID</th>
                         <th class="py-4 px-6 border-b border-gray-200">Category</th>
-                        <th class="py-4 px-6 border-b border-gray-200">Product</th>
                         <th class="py-4 px-6 border-b border-gray-200">Stock Level</th>
                         <th class="py-4 px-6 border-b border-gray-200">Minimum Level</th>
                         <th class="py-4 px-6 border-b border-gray-200">Edit</th>
@@ -42,7 +41,6 @@
                             <tr class="">
                                 <td class="p-3 mt-4">{{ $inventories->inventoryID }}</td>
                                 <td class="p-3 mt-4">{{ $inventories->name }}</td>
-                                <td class="p-3 mt-4">{{ $inventories->product->name }}</td>
                                 <td class="p-3 mt-4">{{ $inventories->stockLevel }}</td>
                                 <td class="p-3 mt-4">{{ $inventories->minLevel }}</td>
                                 <td class="p-3 mt-4 flex justify-center space-x-2">
@@ -111,14 +109,6 @@
                     <label class="block text-gray-700 text-sm font-medium mt-4">Inventory Name <span class="text-red-500">*</span></label>
                     <input name="editInventory" type="text" id="edit-inventory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
 
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Product <span class="text-red-500">*</span></label>
-                    <select name="editProduct" id="edit-product" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                        <option value="">Select Product</option>
-                        @foreach ($product as $products)
-                        <option value="{{ $products->productID }}">{{ $products->name }}</option>
-                        @endforeach
-                    </select>
-
                     <div class="flex space-x-4 mt-4">
                         <div class="flex-1">
                             <label class="block text-gray-700 text-sm font-medium">Stock Level <span class="text-red-500">*</span></label>
@@ -147,14 +137,6 @@
                     @csrf
                     <label class="block text-gray-700 text-sm font-medium mt-4">Inventory Name <span class="text-red-500">*</span></label>
                     <input name="inventory" type="text" id="inventory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-
-                    <label class="block text-gray-700 text-sm font-medium mt-4">Product <span class="text-red-500">*</span></label>
-                    <select name="product" id="product" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                        <option value="">Select Product</option>
-                        @foreach ($product as $products)
-                        <option value="{{ $products->productID }}">{{ $products->name }}</option>
-                        @endforeach
-                    </select>
 
                     <div class="flex space-x-4 mt-4">
                         <div class="flex-1">
@@ -264,7 +246,6 @@ function openInventoryEditModal(id, name, product, stockLevel, minLevel) {
 
     document.getElementById('inventoryID').value = id;
     document.getElementById('edit-inventory').value = name;
-    document.getElementById('edit-product').value = product;
     document.getElementById('editStockLevel').value = stockLevel;
     document.getElementById('editMinLevel').value = minLevel;
 
@@ -289,7 +270,6 @@ function closeInventoryEditModal() {
 function clearModalFields() {
     document.getElementById('inventoryID').value = '';
     document.getElementById('edit-inventory').value = '';
-    document.getElementById('edit-product').value = '';
     document.getElementById('editStockLevel').value = '';
     document.getElementById('editMinLevel').value = '';
 }

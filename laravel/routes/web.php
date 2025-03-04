@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductController;
@@ -123,9 +124,21 @@ Route::get('/cashier/order', [ProductController::class, 'index'])->name('cashier
 
 Route::post('/cashier/order/add-to-order', [OrdersController::class, 'addOrderPost'])->name('cashier.addOrder.post');
 
+Route::post('/cashier/cart/remove', [OrdersController::class, 'removeFromCart'])->name('cashierCart.remove');
+
 Route::get('/cashier/order/edit/{id}', [ProductController::class, 'getProductDetails'])->name('cashier.order.edit');
 
 Route::get('/cashier/table', [OrdersController::class, 'cashierIndex'])->name('cashier.table');
+
+Route::get('/track-inventory', [InventoryController::class, 'trackInventory'])->name('cashier.inventory');
+
+Route::post('cashier/inventory', [InventoryController::class, 'addInventoryPost'])->name('cashierAddInventory.post');
+
+Route::put('cashier/inventory', [InventoryController::class, 'editInventoryPost'])->name('cashierEditInventory.post');
+
+Route::post('cashier/inventory', [InventoryController::class, 'addInventoryPost'])->name('cashierAddInventory.post');
+
+Route::put('cashier/inventory', [InventoryController::class, 'editInventoryPost'])->name('cashierEditInventory.post');
 
 Route::get('/paymentSuccess', [PaymentController::class, 'index'])->name('order.success');
 
@@ -133,8 +146,8 @@ Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInvent
 
 Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPost'])->name('cashier.addToCart.post');
 
-Route::post('/remove-from-cart', [OrdersController::class, 'removeFromCart'])->name('removeFromCart');
-
 Route::get('/kitchen/order-items', [OrdersController::class, 'kitchenIndex'])->name('kitchen.index');
 
 Route::get('/kitchen/order-items-data', [OrdersController::class, 'trackOrderItems'])->name('kitchen.order-items');
+
+Route::post('/kitchen/update-status', [OrdersController::class, 'updateOrderStatusCompleted'])->name('updateOrderStatusCompleted');

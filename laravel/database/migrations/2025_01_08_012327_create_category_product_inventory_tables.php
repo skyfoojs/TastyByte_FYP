@@ -38,7 +38,6 @@ return new class extends Migration
         // Create the 'inventory' table
         Schema::create('inventory', function (Blueprint $table) {
             $table->id('inventoryID');
-            $table->foreignId('productID')->constrained('product', 'productID')->onDelete('cascade');
             $table->integer('stockLevel');
             $table->integer('minLevel');
             $table->string('name');
