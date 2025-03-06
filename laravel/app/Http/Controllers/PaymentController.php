@@ -13,8 +13,23 @@ use Illuminate\Support\Facades\DB;
 class PaymentController extends Controller
 {
     public function index() {
+        if (!Auth::check() || Auth::user()->role !== 'Cashier') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
 
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
+        }
         return view('cashier.payment');
+    }
+
+    public function sendEmail() {
+        if (!Auth::check() || Auth::user()->role !== 'Cashier') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
+        }
+        return view('cashier.send-email');
     }
 
     public function checkout(Request $request)
