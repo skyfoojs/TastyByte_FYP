@@ -142,6 +142,8 @@ Route::put('cashier/inventory', [InventoryController::class, 'editInventoryPost'
 
 Route::get('/paymentSuccess', [PaymentController::class, 'index'])->name('order.success');
 
+Route::get('/sendEmail', [PaymentController::class, 'sendEmail'])->name('cashier.email');
+
 Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInventories']);
 
 Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPost'])->name('cashier.addToCart.post');
