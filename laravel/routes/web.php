@@ -150,4 +150,4 @@ Route::get('/kitchen/order-items', [OrdersController::class, 'kitchenIndex'])->n
 
 Route::get('/kitchen/order-items-data', [OrdersController::class, 'trackOrderItems'])->name('kitchen.order-items');
 
-Route::post('/kitchen/update-status', [OrdersController::class, 'updateOrderStatusCompleted'])->name('updateOrderStatusCompleted');
+Route::post('/kitchen/update-status', [OrdersController::class, 'updateOrderItemStatus'])->name('updateOrderItemStatus');
