@@ -34,12 +34,20 @@
                 <hr class="py-2">
                 <p class="text-gray-700">Do you want to mark this order as completed?</p>
                 <div class="flex justify-end mt-10">
-                    <button type="button" onclick="closeOrderCompleteModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mr-2">Close</button>
-                    <button type="button" onclick="markOrderAsCompleted()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">Confirm</button>
+                    <button type="button" onclick="closeOrderCompleteModal()"
+                            class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mr-2">
+                        Close
+                    </button>
+                    <form id="orderCompleteForm" action="{{ route('updateOrderItemStatus') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="orderItemID" id="orderItemIDInput">
+                        <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">
+                            Confirm
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-
     </x-kitchen.navbar>
 </x-kitchen.layout>
 
@@ -51,19 +59,20 @@
         pointer-events: none;
     }
 
-
     .modal.show {
         opacity: 1;
         transform: scale(1);
         pointer-events: auto;
     }
 </style>
-<script>
-    //todo: fix cannot mark as completed problem
 
-    function openOrderCompleteModal() {
+<script>
+    function openOrderCompleteModal(orderID) {
         const modal = document.getElementById('orderCompleteModal');
         const overlay = document.getElementById('modalOverlay');
+
+        // Set order ID in hidden input field
+        document.getElementById('orderItemIDInput').value = orderID;
 
         modal.classList.remove('hidden');
         overlay.classList.remove('hidden');
@@ -83,32 +92,6 @@
             modal.classList.add('hidden');
             overlay.classList.add('hidden');
         }, 300);
-    }
-
-    async function markOrderAsCompleted() {
-        // Implement the logic to mark the order as completed
-        // Example: Call an API endpoint to update the order status
-        try {
-            const response = await fetch(`{{ route('updateOrderStatusCompleted') }}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ orderID: selectedOrderID }) // Pass the selected order ID
-            });
-
-            if (response.ok) {
-                // Handle successful completion
-                closeOrderCompleteModal();
-                fetchOrderItems(); // Refresh the order items
-            } else {
-                // Handle error
-                console.error('Failed to mark order as completed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
     }
 
     async function fetchOrderItems() {
@@ -142,25 +125,25 @@
                     }
                     let formattedRemarks = remarkOptions.length > 0 ? remarkOptions.join("<br>") : "-";
 
-                    // Make the entire order item div clickable
                     orderList.innerHTML += `
-                <div onclick="openOrderCompleteModal('${item.orderID}')" class="cursor-pointer bg-white p-4 shadow rounded-lg hover:shadow-lg transition">
-                    <div class="flex justify-between items-center mb-4">
-                        <p class="text-gray-700 font-bold">${takeaway}</p>
-                        <div class="flex items-center space-x-2">
-                            <p class="${item.status === 'Pending' ? 'text-red-500 bg-red-100 px-4 py-2 text-sm rounded-full' : 'text-green-500 bg-green-100 px-4 py-2 text-sm rounded-full'} font-bold">
-                                ${item.status}
-                            </p>
-                            <p class="text-white bg-indigo-500 px-3 py-1 rounded-full">${item.quantity}</p>
+                        <div onclick="openOrderCompleteModal('${item.orderID}')"
+                             class="cursor-pointer bg-white p-4 shadow rounded-lg hover:shadow-lg transition">
+                            <div class="flex justify-between items-center mb-4">
+                                <p class="text-gray-700 font-bold">${takeaway}</p>
+                                <div class="flex items-center space-x-2">
+                                    <p class="${item.status === 'Pending' ? 'text-red-500 bg-red-100 px-4 py-2 text-sm rounded-full' : 'text-green-500 bg-green-100 px-4 py-2 text-sm rounded-full'} font-bold">
+                                        ${item.status}
+                                    </p>
+                                    <p class="text-white bg-indigo-500 px-3 py-1 rounded-full">${item.quantity}</p>
+                                </div>
+                            </div>
+                            <hr class="mb-2">
+                            <p class="text-gray-700"><strong>Order ID:</strong> ${item.orderID}</p>
+                            <p class="text-gray-700"><strong>Table No:</strong> ${item.orders ? item.orders.tableNo : '-'}</p>
+                            <p class="text-gray-700"><strong>Product:</strong> ${item.products ? item.products.name : '-'}</p>
+                            <p class="text-gray-700"><strong>Remark:</strong><br> ${formattedRemarks}</p>
                         </div>
-                    </div>
-                    <hr class="mb-2">
-                    <p class="text-gray-700"><strong>Order ID:</strong> ${item.orderID}</p>
-                    <p class="text-gray-700"><strong>Table No:</strong> ${item.orders ? item.orders.tableNo : '-'}</p>
-                    <p class="text-gray-700"><strong>Product:</strong> ${item.products ? item.products.name : '-'}</p>
-                    <p class="text-gray-700"><strong>Remark:</strong><br> ${formattedRemarks}</p>
-                </div>
-                `;
+                    `;
                 });
             }
         } catch (error) {
@@ -168,10 +151,9 @@
         }
     }
 
-// Refresh every 5 seconds
-setInterval(fetchOrderItems, 5000);
+    // Refresh every 5 seconds
+    setInterval(fetchOrderItems, 5000);
 
-// Initial fetch
-fetchOrderItems();
-
+    // Initial fetch
+    fetchOrderItems();
 </script>

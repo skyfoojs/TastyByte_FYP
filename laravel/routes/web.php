@@ -142,6 +142,8 @@ Route::put('cashier/inventory', [InventoryController::class, 'editInventoryPost'
 
 Route::get('/paymentSuccess', [PaymentController::class, 'index'])->name('order.success');
 
+Route::get('/sendEmail', [PaymentController::class, 'sendEmail'])->name('cashier.email');
+
 Route::get('/low-stock-inventories', [AdminController::class, 'getLowStockInventories']);
 
 Route::post('/cashier/order/add-to-cart', [OrdersController::class, 'addToCartPost'])->name('cashier.addToCart.post');
@@ -150,4 +152,4 @@ Route::get('/kitchen/order-items', [OrdersController::class, 'kitchenIndex'])->n
 
 Route::get('/kitchen/order-items-data', [OrdersController::class, 'trackOrderItems'])->name('kitchen.order-items');
 
-Route::post('/kitchen/update-status', [OrdersController::class, 'updateOrderStatusCompleted'])->name('updateOrderStatusCompleted');
+Route::post('/kitchen/update-status', [OrdersController::class, 'updateOrderItemStatus'])->name('updateOrderItemStatus');
