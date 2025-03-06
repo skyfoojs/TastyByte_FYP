@@ -311,4 +311,23 @@ class OrdersController extends Controller
         return redirect()->route('trackOrder')->with('success', 'Order marked as completed!');
     }
 
+    public function updateOrderItemStatus(Request $request) {
+        $request->validate([
+            'orderItemID' => 'required|integer|exists:orderitems,orderItemID',
+        ]);
+
+        $orderItem = OrderItems::find($request->orderItemID);
+
+        if (!$orderItem) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Order item not found!',
+            ], 404);
+        }
+
+        $orderItem->status = 'Completed';
+        $orderItem->save();
+
+        return redirect()->route('kitchen.index')->with('success', 'Order marked as completed!');
+    }
 }
