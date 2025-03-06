@@ -8,12 +8,12 @@
         body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
         .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         .header { text-align: center; border-bottom: 2px solid #16a34a; padding-bottom: 10px; }
-        .header h2 { color: #16a34a; margin: 0; }
+        .header h2 { color: #3B82F6; margin: 0; }
         .details-table, .order-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .details-table td, .order-table th, .order-table td { padding: 8px; border: 1px solid #ddd; text-align: left; }
         .order-table th { background-color: #f8f8f8; }
         .footer { text-align: center; color: #777; font-size: 12px; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; }
-        .btn { display: inline-block; padding: 10px 20px; background: #16a34a; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .btn { display: inline-block; padding: 10px 20px; background: #3B82F6; color: #FFFFFF; text-decoration: none; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
