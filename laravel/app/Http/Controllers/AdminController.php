@@ -121,7 +121,7 @@ class AdminController extends Controller
             'inventoriesCount' => Inventory::count(),
             'vouchersCount' => Vouchers::count(),
             'lowStock' => Inventory::where('stockLevel', '<=', 10)->get(),
-            'upcomingVouchers' => Vouchers::where('startedOn', '>', now())->get(),
+            'upcomingVouchers' => Vouchers::where('startedOn', '>', now())->orderBy('startedOn', 'asc')->get(),
             'payments' => Payment::orderBy('updated_at', 'desc')->get(),
         ]);
     }
