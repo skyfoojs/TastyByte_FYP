@@ -1,8 +1,4 @@
 <x-layout>
-    <div class="flex bg-gray-800 w-full justify-center items-center shadow-xl py-4">
-        <img class="h-28 w-auto" src="{{ asset('images/' . 'TastyByte-Banner.png') }}" alt="">
-    </div>
-
     <div class="flex flex-col p-10 xl:flex-row xl:justify-evenly bg-slate-200 items-center">
         <div class="flex flex-col justify-center items-center">
             <h1 class="font-semibold mt-5">Restaurant's Information</h1>
