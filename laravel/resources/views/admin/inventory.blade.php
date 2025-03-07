@@ -25,7 +25,7 @@
                     <tr class="text-gray-500 font-medium text-center">
                         <th class="py-4 px-6 border-b border-gray-200">Inventory ID</th>
                         <th class="py-4 px-6 border-b border-gray-200">Name</th>
-                        <th class="py-4 px-6 border-b border-gray-200">Stock Level</th>
+                        <th class="py-4 px-6 border-b border-gray-200">Current Stock Level</th>
                         <th class="py-4 px-6 border-b border-gray-200">Minimum Level</th>
                         <th class="py-4 px-6 border-b border-gray-200">Edit</th>
                     </tr>
