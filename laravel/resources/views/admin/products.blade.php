@@ -46,7 +46,11 @@
                             </td>
                             <td class="p-3 mt-4">{{ $product->name }}</td>
                             <td class="p-3 mt-4">{{ $product->category->sort }}</td>
-                            <td class="p-3 mt-4">{{ $product->status }}</td>
+                            <td class="p-3 mt-4">
+                                <span class="<?php echo $product->status === 'Available' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'; ?> text-sm font-medium px-3 py-1 rounded-lg">
+                                        <?php echo $product->status; ?>
+                                </span>
+                            </td>
 
                                 @foreach ($product->customizableCategory->unique('customizeCategoryID') as $customizableCategory)
                                     @foreach ($customizableCategory->options->unique('customizeOptionsID') as $option)
