@@ -1,3 +1,5 @@
+@section('title', 'Track Inventory - TastyByte')
+
 <x-cashier.layout>
     <x-cashier.navbar>
         <div class="flex h-screen relative">

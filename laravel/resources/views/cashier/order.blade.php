@@ -1,3 +1,5 @@
+@section('title', 'Cashier Order Page - TastyByte')
+
 <x-cashier.layout>
     <x-cashier.navbar>
         <div class="flex h-screen relative">

@@ -1,3 +1,5 @@
+@section('title', 'Order Summary - TastyByte')
+
 <x-cashier.layout>
     <x-cashier.navbar>
         <div class="w-3/4 p-6 mt-26">
