@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OrderItems;
 use App\Models\Orders;
+use App\Models\Payment;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -141,9 +142,18 @@ class OrdersController extends Controller
         ]);
 
         // Store the table number into a session global variable.
-        session(['tableNo' => $request->input('table')]);
-
+        $tableNo = $request->input('table');
         // Determine redirection based on the source
+        session(['tableNo' => $tableNo]);
+
+        $orderIds = Orders::where('tableNo', $tableNo)->pluck('orderID');
+
+        $hasCheckedOut = Payment::whereIn('orderID', $orderIds)->exists();
+
+        if (!$hasCheckedOut) {
+            return redirect()->back()->with('continueOrder', true)->with('tableNo', $tableNo);
+        }
+
         if ($request->input('source') === 'cashier') {
             return redirect()->route('cashier.order')->with('success', 'Table number stored in session!');
         }
