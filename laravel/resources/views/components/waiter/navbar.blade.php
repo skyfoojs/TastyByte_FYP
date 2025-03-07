@@ -27,18 +27,18 @@
 
             <div class="relative flex items-center">
                 <button id="dropdownToggle" class="flex items-center">
-                    <span class="text-gray-300 font-semibold mr-3">{{ session('username') ?? 'Waiter' }}</span>
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    <span class="text-gray-300 font-semibold mr-3 text-base">{{ session('username') ?? 'Waiter' }}</span>
+                    <img src="https://static.vecteezy.com/system/resources/previews/046/836/401/non_2x/3d-waiter-avatar-free-png.png"
                          alt="Waiter Avatar" class="w-10 h-10 rounded-full bg-white">
                 </button>
+            </div>
 
-                <div id="dropdownMenu" class="z-50 absolute right-0 mt-2 p-2 w-48 bg-white border border-gray-200 rounded-lg hidden">
-                    <a href="{{ route('logout') }}"
-                       class="flex items-center space-x-5 py-3 px-5 hover:bg-gray-100 rounded-md">
-                        <i class='bx bx-log-out text-base'></i>
-                        <span class="font-medium">Log Out</span>
-                    </a>
-                </div>
+            <div id="dropdownMenu" class="z-100 absolute right-4 mt-36 p-2 w-48 bg-white border border-gray-200 rounded-lg hidden">
+                <a href="{{ route('logout') }}"
+                   class="flex items-center space-x-5 py-3 px-5 hover:bg-gray-100 rounded-md">
+                    <i class='bx bx-log-out text-base'></i>
+                    <span class="font-medium">Log Out</span>
+                </a>
             </div>
         </div>
     </header>
