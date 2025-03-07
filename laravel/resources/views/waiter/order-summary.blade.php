@@ -1,5 +1,6 @@
 <x-waiter.layout>
     <x-waiter.navbar>
+        <div class="flex flex-col mt-24">
             <x-waiter.table-header :table="'Table ' . session('tableNo')" :trackOrder="'Summary'">
                 @php
                 //session()->forget('cart');
@@ -88,6 +89,7 @@
                     </div>
                 </div>
             </x-waiter.table-header>
+        </div>
     </x-waiter.navbar>
 </x-waiter.layout>
 <script>
