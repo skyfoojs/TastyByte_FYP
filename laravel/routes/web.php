@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 // Set the login view as index.
 Route::get('/', function () {
-    return view('waiter.login');
+    return view('login');
 })->name('login');
 
 // Get the login credentials from the view.
