@@ -1,6 +1,6 @@
 <x-layout>
     <div class="min-h-screen flex flex-col justify-center items-center bg-slate-200 p-4">
-        <div class="mt-12 flex flex-col justify-center items-center bg-white p-6 md:p-12 rounded-2xl shadow-lg w-full max-w-sm md:max-w-lg">
+        <div class="flex flex-col justify-center items-center bg-white p-6 md:p-12 rounded-2xl shadow-lg w-full max-w-sm md:max-w-lg">
             <div class="flex items-center space-x-2">
                 <img src="{{ asset('images/' . 'Logo.png') }}" alt="Logo" class="w-12 h-12 md:w-14 md:h-14">
                 <p class="text-gray-800 text-2xl font-bold md:text-3xl">TastyByte</p>
