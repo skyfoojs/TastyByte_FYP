@@ -48,6 +48,14 @@ class ProductController extends Controller
             return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
+        if (!session()->has('tableNo')) {
+            if ($routeName === 'order') {
+                return redirect()->route('table')->with('error', 'Please select a table first.');
+            } elseif ($routeName === 'cashier.order') {
+                return redirect()->route('cashier.table')->with('error', 'Please select a table first.');
+            }
+        }
+
         // Fetch products with their categories
         $products = Product::with('category')->get()->sortBy(fn($product) => $product->category->sort ?? PHP_INT_MAX);
 
