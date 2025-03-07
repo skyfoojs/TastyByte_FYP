@@ -15,8 +15,7 @@
                     @foreach ($groupedProducts as $categoryName => $products)
                         <div class="category-group" data-category="{{ $categoryName }}">
                             <div class="mt-6 mb-2 px-6">
-                                <p class="text-l bg-text-primary w-28 rounded-xl text-white text-center py-1">{{ $categoryName }}</p>
-                                <hr class="mt-3">
+                                <p class="text-2xl font-bold py-1">{{ $categoryName }}</p>
 
                                 @foreach ($products as $product)
                                     @if ($product->status == 'Not Available')
@@ -37,17 +36,17 @@
                                         <hr>
                                     @else
                                         <a href="{{ url('/product-details/' . $product->productID) }}">
-                                            <div class="flex gap-x-10 items-center py-4">
-                                                <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
+                                            <div class="flex items-center py-3">
+                                                <div class="w-32 h-32 flex items-center justify-center">
                                                     @if (!empty($product->image))
-                                                        <img class="w-full h-full rounded-lg object-cover" src="{{ asset($product->image) }}" alt="Image Not Available">
+                                                        <img class="w-full h-full rounded-s-xl object-cover" src="{{ asset($product->image) }}" alt="Image Not Available">
                                                     @else
                                                         <p>No Image</p>
                                                     @endif
                                                 </div>
-                                                <div>
-                                                    <p>{{ $product->name }}</p>
-                                                    <p>{{ $product->price }}</p>
+                                                <div class="flex-1 h-32 flex flex-col justify-center px-6 bg-white rounded-r-xl">
+                                                    <p class="text-gray-900 font-semibold text-lg">{{ $product->name }}</p>
+                                                    <p class="text-gray-600 text-base">RM {{ number_format($product->price, 2) }}</p>
                                                 </div>
                                             </div>
                                         </a>
@@ -57,8 +56,8 @@
                         </div>
                     @endforeach
                     @if(session('cart'))
-                        <div class="w-full bg-[#F3F3F3] p-6 sticky bottom-0">
-                            <div class="bg-blue-button rounded-lg text-white flex items-center justify-center py-4 gap-x-2">
+                        <div class="w-full bg-white p-6 sticky bottom-0">
+                            <div class="bg-indigo-500 rounded-lg text-white flex items-center justify-center py-4 gap-x-2">
                                 <i class='bx bx-cart'></i>
                                 <a href="{{ route('orderSummary') }}">
                                     Total Items:
