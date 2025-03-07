@@ -120,6 +120,8 @@ Route::get('/order-history', [OrdersController::class, 'orderHistory'])->name('o
 // Get the OrderID from the View.
 Route::put('/orders/update-status', [OrdersController::class, 'updateOrderStatusCompleted'])->name('orders.update-status');
 
+Route::get('/cashier', [MenuController::class, 'cashierDashboard'])->name('cashier.dashboard');
+
 Route::get('/cashier/order', [ProductController::class, 'index'])->name('cashier.order');
 
 Route::post('/cashier/order/add-to-order', [OrdersController::class, 'addOrderPost'])->name('cashier.addOrder.post');
