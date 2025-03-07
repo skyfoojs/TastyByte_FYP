@@ -7,6 +7,7 @@
 
         <title>Laravel</title>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <!-- Styles / Scripts -->
@@ -16,7 +17,7 @@
     </head>
     <body>
 
-    <main class="font-mont bg-slate-200 min-h-screen">
+    <main class="font-varela bg-slate-200 min-h-screen">
         {{ $slot }}
     </main>
     </body>
