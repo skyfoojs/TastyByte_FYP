@@ -130,47 +130,69 @@
         $serviceCharge = $subtotal * 0.10;
         $total = $checkout['total'] ?? 0;
         $tableNo = $checkout['tableNo'] ?? 'Error';
+        $orderDate = session('checkout.orderDate') ?? '-';
+        $isPaid = session('checkout.isPaid', false);
+        $paymentID = session('checkout.paymentID') ?? '-';
+        $paymentMethod = session('checkout.paymentMethod') ?? '-';
+        $voucherCode = session('checkout.voucherCode') ?? '-';
+        $paymentDate = session('checkout.paymentDate') ?? '-';
     @endphp
 
     <!-- Cashier Sidebar -->
     <div class="w-1/4 bg-white p-6 shadow-lg fixed right-0 top-26 h-[calc(100%-6rem)] flex flex-col justify-between">
         <div class="overflow-y-auto flex-1">
-            <h2 class="font-semibold text-lg mb-2">Table {{ $tableNo }} - Order Summary</h2>
-            <p class="text-gray-500">Order ID: {{ $orderID }}</p>
-            <p class="text-gray-500">Order Date: 2025-05-20 13:14</p>
+            @if ($isPaid)
+                <h2 class="font-semibold text-lg mb-2">Table {{ $tableNo }} - Invoice Summary</h2>
+                <p class="text-gray-500">Order ID: {{ $orderID }}</p>
+                <p class="text-gray-500">Order Date: {{ $orderDate }}</p>
+                <hr class="mt-4 mb-4">
+            @endif
 
-            <hr class="mt-4 mb-2">
+                @if ($isPaid)
+                    <p class="text-gray-500">Payment ID: {{ $paymentID }}</p>
+                    <p class="text-gray-500">Payment Date: {{ $paymentDate }}</p>
+                    <p class="text-gray-500">Payment Method: {{ $paymentMethod }}</p>
+                    <p class="text-gray-500">Voucher Code: {{ $voucherCode }}</p>
 
-            <div class="pt-4">
-                <h3 class="font-semibold text-lg mb-2">Payment Method</h3>
-                <div class="space-y-3">
-                    <label class="flex items-center space-x-4 cursor-pointer">
-                        <input type="radio" name="paymentMethod" value="cash"
-                               class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full"
-                               onchange="updatePaymentMethod(this)" checked>
-                        <span>Cash</span>
-                    </label>
-                    <label class="flex items-center space-x-4 cursor-pointer">
-                        <input type="radio" name="paymentMethod" value="credit_card"
-                               class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full"
-                               onchange="updatePaymentMethod(this)">
-                        <span>Credit/ Debit Card</span>
-                    </label>
-                </div>
-            </div>
+                    <hr class="mt-4 mb-2">
+                @else
+                    <h2 class="font-semibold text-lg mb-2">Table {{ $tableNo }} - Order Summary</h2>
+                    <p class="text-gray-500">Order ID: {{ $orderID }}</p>
+                    <p class="text-gray-500">Order Date: {{ $orderDate }}</p>
+                    <hr class="mt-4 mb-2">
+                    <div class="pt-4">
+                        <h3 class="font-semibold text-lg mb-2">Payment Method</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center space-x-4 cursor-pointer">
+                                <input type="radio" name="paymentMethod" value="cash"
+                                       class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full"
+                                       onchange="updatePaymentMethod(this)" checked>
+                                <span>Cash</span>
+                            </label>
+                            <label class="flex items-center space-x-4 cursor-pointer">
+                                <input type="radio" name="paymentMethod" value="credit_card"
+                                       class="w-5 h-5 text-indigo-500 focus:ring-0 border-gray-300 rounded-full"
+                                       onchange="updatePaymentMethod(this)">
+                                <span>Credit/ Debit Card</span>
+                            </label>
+                        </div>
+                    </div>
 
-            <div class="pt-4 mt-4">
-                <h3 class="font-semibold text-lg mb-2">Voucher</h3>
-                <form id="voucherForm">
-                    @csrf
-                    <input type="text" name="voucher_code" id="voucherCode" placeholder="Enter voucher code"
-                           class="border border-gray-300 rounded-lg px-3 py-2 flex-1 mr-4 focus:ring-indigo-500 focus:border-indigo-500">
-                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-lg">Apply</button>
-                </form>
-                <p id="voucherMessage" class="text-red-500 mt-2"></p>
-            </div>
+                    <!-- Voucher Section -->
+                    <div class="pt-4 mt-4">
+                        <h3 class="font-semibold text-lg mb-2">Voucher</h3>
+                        <form id="voucherForm">
+                            @csrf
+                            <input type="text" name="voucher_code" id="voucherCode" placeholder="Enter voucher code"
+                                   class="border border-gray-300 rounded-lg px-3 py-2 flex-1 mr-4 focus:ring-indigo-500 focus:border-indigo-500">
+                            <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-lg">Apply</button>
+                        </form>
+                        <p id="voucherMessage" class="text-red-500 mt-2"></p>
+                    </div>
+               @endif
         </div>
 
+        <!-- Order Summary -->
         <div class="pt-4 border-t">
             <div class="flex justify-between text-gray-600">
                 <span>Subtotal</span>
@@ -194,7 +216,7 @@
 
             <hr class="border-t-4 mt-4 border-dotted border-gray-200">
 
-            @if (session('checkout.isPaid', false))
+            @if ($isPaid)
                 <button disabled class="w-full bg-gray-400 text-white py-2 mt-4 rounded cursor-not-allowed">
                     Paid
                 </button>
@@ -210,7 +232,6 @@
                     </button>
                 </form>
             @endif
-
         </div>
     </div>
 @endif
