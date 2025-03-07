@@ -151,7 +151,7 @@ class OrdersController extends Controller
         $unpaidOrderIds = $orderIds->diff($paidOrderIds);
 
         if ($unpaidOrderIds->isNotEmpty()) {
-            return redirect()->back()->with('continueOrder', true)->with('tableNo', $tableNo);
+            return redirect()->back()->with('continueOrder', true);
         }
 
         if ($request->input('source') === 'cashier') {
