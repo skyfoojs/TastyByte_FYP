@@ -1,5 +1,5 @@
 <nav class="bg-gray-800 z-10">
-    <header class="p-4 mx-6 rounded-3xl flex justify-between items-center">
+    <header class="p-4 py-6 mx-6 rounded-3xl flex justify-between items-center">
     @if (session('success'))
         <div id="toast-success" class="toast" role="alert">
             <div class="flex items-center w-full max-w-full p-4 mb-4 text-white rounded-lg shadow bg-indigo-500">
@@ -19,11 +19,17 @@
             </div>
         </div>
     @endif
-        <div class="flex justify-end w-full items-center relative">
-            <div class="relative">
+        <div class="flex justify-between w-full items-center">
+            <div class="flex items-center space-x-4">
+                <img src="{{ asset('images/' . 'Logo.png') }}" alt="Logo" class="w-12 h-12">
+                <p class="text-gray-300 text-2xl font-bold">TastyByte</p>
+            </div>
+
+            <div class="relative flex items-center">
                 <button id="dropdownToggle" class="flex items-center">
                     <span class="text-gray-300 font-semibold mr-3">{{ session('username') ?? 'Waiter' }}</span>
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Waiter Avatar" class="w-10 h-10 rounded-full bg-white">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                         alt="Waiter Avatar" class="w-10 h-10 rounded-full bg-white">
                 </button>
 
                 <div id="dropdownMenu" class="z-50 absolute right-0 mt-2 p-2 w-48 bg-white border border-gray-200 rounded-lg hidden">
