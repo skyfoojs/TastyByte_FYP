@@ -47,7 +47,7 @@ class PaymentController extends Controller
     {
         $request->validate([
             'orderID' => 'required|integer|exists:orders,orderID',
-            'paymentMethod' => 'required|string|in:cash,credit_card',
+            'paymentMethod' => 'required|string|in:cash,credit_debit_card',
             'voucher_code' => 'nullable|string'
         ]);
 
@@ -76,7 +76,7 @@ class PaymentController extends Controller
                 'voucherID' => $voucherID,
                 'totalAmount' => $totalAmount,
                 'paymentMethod' => $request->paymentMethod,
-                'status' => 'completed',
+                'status' => 'Completed',
             ]);
 
             $order->update(['status' => 'Completed']);
