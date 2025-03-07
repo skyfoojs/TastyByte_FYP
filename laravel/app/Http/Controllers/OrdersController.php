@@ -141,16 +141,16 @@ class OrdersController extends Controller
             'table' => 'required|integer|min:1|max:20',
         ]);
 
-        // Store the table number into a session global variable.
         $tableNo = $request->input('table');
-        // Determine redirection based on the source
         session(['tableNo' => $tableNo]);
 
         $orderIds = Orders::where('tableNo', $tableNo)->pluck('orderID');
 
-        $hasCheckedOut = Payment::whereIn('orderID', $orderIds)->exists();
+        $paidOrderIds = Payment::whereIn('orderID', $orderIds)->pluck('orderID');
 
-        if (!$hasCheckedOut) {
+        $unpaidOrderIds = $orderIds->diff($paidOrderIds);
+
+        if ($unpaidOrderIds->isNotEmpty()) {
             return redirect()->back()->with('continueOrder', true)->with('tableNo', $tableNo);
         }
 
