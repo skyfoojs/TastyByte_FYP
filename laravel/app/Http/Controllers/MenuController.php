@@ -17,4 +17,14 @@ class MenuController extends Controller
 
         return view('waiter.menu');
     }
+
+    public function cashierDashboard() {
+        if (!Auth::check() || Auth::user()->role !== 'Cashier') {
+            session()->forget(['username', 'userID']);
+            Auth::logout();
+
+            return redirect()->route('login')->with('error', 'Unauthorized Access');
+        }
+        return view('cashier.dashboard');
+    }
 }
