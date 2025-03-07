@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inventory;
+use App\Models\Orders;
+use App\Models\Payment;
+use App\Models\Product;
+use App\Models\User;
+use App\Models\Vouchers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +31,21 @@ class MenuController extends Controller
 
             return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
-        return view('cashier.dashboard');
+
+        $today = now()->toDateString();
+
+        $data = [
+            'todayOrderCount' => Orders::whereDate('created_at', $today)->count(),
+            'todayAmountCount' => Orders::whereDate('created_at', $today)->sum('totalAmount'),
+            'todayPendingCount' => Orders::whereDate('created_at', $today)->where('status', 'pending')->count(),
+            'todayCompleteCount' => Orders::whereDate('created_at', $today)->where('status', 'completed')->count(),
+
+            'totalOrderCount' => Orders::count(),
+            'totalAmountCount' => Orders::sum('totalAmount'),
+            'totalPendingCount' => Orders::where('status', 'pending')->count(),
+            'totalCompletedCount' => Orders::where('status', 'completed')->count(),
+        ];
+
+        return view('cashier.dashboard', compact('data'));
     }
 }
