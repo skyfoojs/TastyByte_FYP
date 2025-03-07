@@ -51,7 +51,11 @@
                                 <td class="p-3 mt-4">{{ $user->phoneNo }}</td>
                                 <td class="p-3 mt-4">{{ $user->email }}</td>
                                 <td class="p-3 mt-4">{{ $user->gender }}</td>
-                                <td class="p-3 mt-4">{{ $user->status }}</td>
+                                <td class="p-3 mt-4">
+                                    <span class="<?php echo $user->status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'; ?> text-sm font-medium px-3 py-1 rounded-lg">
+                                        <?php echo $user->status; ?>
+                                    </span>
+                                </td>
 
                                 <td class="p-3 mt-4 flex justify-center space-x-2">
                                     <button class="text-gray-500 hover:text-blue-600" onclick="openEditModal({{ $user->userID }}, '{{ $user->firstName }}', '{{ $user->lastName }}', '{{ $user->username }}', '{{ $user->nickname }}', '{{ $user->role }}', '{{ $user->gender }}', '{{ $user->dateOfBirth }}', '{{ $user->email }}', '{{ $user->phoneNo }}', '{{ $user->status }}')">
