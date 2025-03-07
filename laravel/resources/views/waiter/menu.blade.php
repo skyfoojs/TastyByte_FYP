@@ -1,8 +1,8 @@
 <x-waiter.layout>
     <x-waiter.navbar>
 
-    <div class="flex flex-col justify-center items-center px-2">
-        <p class="mt-36 font-semibold text-xl">Waiter Menu</p>
+    <div class="flex flex-col justify-center items-center px-2 mt-24">
+        <p class="mt-6 font-semibold text-xl">Waiter Menu</p>
 
         <div class="grid grid-cols-2 gap-x-4 gap-y-4 mt-5 p-2">
             <a href="{{ route('table') }}" class="bg-white p-10 rounded-xl shadow shadow-indigo-200 flex flex-col justify-center items-center">
