@@ -162,6 +162,7 @@
             </div>
         </div>
         </x-admin.navbar>
+        <x-admin.footer></x-admin.footer>
     </x-admin.sidebar>
 </x-admin.layout>
 
