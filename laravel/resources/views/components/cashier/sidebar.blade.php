@@ -194,14 +194,23 @@
 
             <hr class="border-t-4 mt-4 border-dotted border-gray-200">
 
-            <form action="{{ route('checkout') }}" method="POST">
-                @csrf
-                <input type="hidden" name="orderID" value="{{ request()->orderID }}">
-                <input type="hidden" name="paymentMethod" id="selectedPaymentMethod" value="cash">
-                <input type="hidden" name="voucher_code" id="hiddenVoucherCode" value="">
+            @if (session('checkout.isPaid', false))
+                <button disabled class="w-full bg-gray-400 text-white py-2 mt-4 rounded cursor-not-allowed">
+                    Paid
+                </button>
+            @else
+                <form action="{{ route('checkout') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="orderID" value="{{ request()->orderID }}">
+                    <input type="hidden" name="paymentMethod" id="selectedPaymentMethod" value="cash">
+                    <input type="hidden" name="voucher_code" id="hiddenVoucherCode" value="">
 
-                <button type="submit" class="w-full bg-indigo-500 text-white py-2 mt-4 rounded">Checkout</button>
-            </form>
+                    <button type="submit" class="w-full bg-indigo-500 text-white py-2 mt-4 rounded">
+                        Checkout
+                    </button>
+                </form>
+            @endif
+
         </div>
     </div>
 @endif
