@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <div class="mt-12 flex flex-col justify-center items-center">
+        <div class="mt-12 flex flex-col justify-center items-center bg-white p-10 rounded-2xl">
             <h1 class="font-bold mb-6">Login With</h1>
             @if (session('error'))
                 <span class="w-full bg-red-200 text-center m-3 text-gray-600 p-3 rounded-lg">{{ session('error') }}</span>
