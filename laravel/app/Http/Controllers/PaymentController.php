@@ -79,8 +79,6 @@ class PaymentController extends Controller
                 'status' => 'Completed',
             ]);
 
-            $order->update(['status' => 'Completed']);
-
             $paymentID = $payment->paymentID;
 
             DB::commit();
