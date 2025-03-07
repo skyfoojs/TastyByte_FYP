@@ -9,7 +9,7 @@
                         <form action="{{ route('storeTable') }}" method="POST">
                             @csrf
                             <input name="table" type="number" id="table"
-                                   class="mb-6 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                   class="mb-6 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
                                    placeholder="Please enter a table number" required>
                             <input type="hidden" name="source" value="cashier">
                             <div class="flex justify-end space-x-4">
