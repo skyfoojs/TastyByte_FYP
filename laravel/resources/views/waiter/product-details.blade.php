@@ -2,7 +2,7 @@
     <x-waiter.navbar>
         <x-waiter.table-header :table="'Table ' . session('tableNo')" :trackOrder="''">
 
-        <div class="flex flex-col justify-center items-center">
+        <div class="flex flex-col justify-center items-center mt-14">
             <div class="flex flex-col w-full">
                 <form action="{{ route('addToCart.post') }}" method="POST" class="font-pop">
                     @csrf
