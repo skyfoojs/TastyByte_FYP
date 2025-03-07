@@ -142,7 +142,7 @@
     <div class="w-1/4 bg-white p-6 shadow-lg fixed right-0 top-26 h-[calc(100%-6rem)] flex flex-col justify-between">
         <div class="overflow-y-auto flex-1">
             @if ($isPaid)
-                <h2 class="font-semibold text-lg mb-2">Table {{ $tableNo }} - Invoice Summary</h2>
+                <h2 class="font-semibold text-lg mb-2">Table {{ $tableNo }} - Invoice Details</h2>
                 <p class="text-gray-500">Order ID: {{ $orderID }}</p>
                 <p class="text-gray-500">Order Date: {{ $orderDate }}</p>
                 <hr class="mt-4 mb-4">
