@@ -4,14 +4,14 @@ $is_users_page = Str::contains($current_route, 'users'); // Check if the route c
 ?>
 
 <aside class="w-64 bg-gray-800 h-full fixed">
-    <div class="p-4 flex justify-center items-center mt-5">
-        <div class="flex items-center space-x-2">
+    <div class="flex justify-center items-center mt-12">
+        <div class="flex items-center space-x-4">
             <img src="{{ asset('images/' . 'Logo.png') }}" alt="Logo" class="w-12 h-12">
             <p class="text-gray-300 text-2xl font-bold">TastyByte</p>
         </div>
     </div>
 
-    <nav class="px-6 text-gray-300 mt-7">
+    <nav class="px-6 text-gray-300 mt-10">
         <h2 class="mt-2 px-5 font-medium">Menu</h2>
         <ul class="space-y-4 mt-8">
             <li>
