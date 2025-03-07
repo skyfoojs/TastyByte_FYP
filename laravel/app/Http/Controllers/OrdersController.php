@@ -35,7 +35,7 @@ class OrdersController extends Controller
         if (Auth::check()) {
             $role = session('role', Auth::user()->role); // Get role from session or authenticated user
 
-            $query = Orders::with('orderItems.products');
+            $query = Orders::with('orderItems.products', 'payments');
 
             if ($request->has('orderID')) {
                 $query->where('orderID', $request->orderID);
@@ -54,15 +54,25 @@ class OrdersController extends Controller
                 $serviceCharge = $subtotal * 0.10;
                 $total = $subtotal + $tax + $serviceCharge;
 
+                $payment = $orders->first()->payments->first();
+
+                $isPaid = $orders->first()->payments->isNotEmpty();
+
                 session(['checkout' => [
                     'orderID' => $request->orderID,
                     'subtotal' => $subtotal,
                     'tax' => $tax,
                     'total' => $total,
                     'tableNo' => $orders->first()->orderItems->first()->table->tableNo ?? null,
+                    'orderDate' => $orders->first()->created_at ?? null,
+                    'isPaid' => $isPaid,
+                    'paymentID' => $payment->paymentID ?? null,
+                    'paymentMethod' => $payment->paymentMethod === 'credit_debit_card' ? 'Credit/ Debit Card' : 'Cash',
+                    'voucherCode' => $payment->voucher_code ?? '-',
+                    'paymentDate' => $payment->created_at ?? null,
                 ]]);
 
-                return view('cashier.order-summary', compact('orders'));
+                return view('cashier.order-summary', compact('orders', 'isPaid', 'payment'));
             } elseif ($role === 'Waiter') {
                 return view('waiter.order-summary');
             } else {
