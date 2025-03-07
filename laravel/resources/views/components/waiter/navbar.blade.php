@@ -1,4 +1,4 @@
-<nav class="bg-gray-800 fixed top-0 left-0 w-full z-50"">
+<nav class="bg-gray-800 fixed top-0 left-0 w-full z-50">
     <header class="p-4 py-6 mx-6 rounded-3xl flex justify-between items-center">
     @if (session('success'))
         <div id="toast-success" class="toast" role="alert">
