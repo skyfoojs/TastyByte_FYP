@@ -8,15 +8,32 @@
 
             <div class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-6">
-                    <a href="/cashier"
-                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Dashboard</a>
-                    <a href="/cashier/table"
-                       class="rounded-md bg-gray-900 px-5 py-4 text-lg font-bold text-white hover:bg-gray-700 hover:text-white"
-                       aria-current="page">Order Food</a>
-                    <a href="/track-order"
-                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Order History</a>
-                    <a href="/track-inventory"
-                       class="rounded-md px-5 py-4 text-lg font-bold text-gray-300 hover:bg-gray-700 hover:text-white">Check Inventory</a>
+                    <a href="{{ route('cashier.dashboard') }}"
+                       class="{{ request()->routeIs('cashier.dashboard') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}
+          rounded-md px-5 py-4 text-lg font-bold">
+                        Dashboard
+                    </a>
+
+                    <a href="{{ route('cashier.table') }}"
+                       class="{{ request()->routeIs('cashier.table') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}
+          rounded-md px-5 py-4 text-lg font-bold"
+                       aria-current="{{ request()->routeIs('cashier.table') ? 'page' : '' }}">
+                        Order Food
+                    </a>
+
+                    <a href="{{ route('trackOrder') }}"
+                       class="{{ request()->routeIs('trackOrder') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}
+          rounded-md px-5 py-4 text-lg font-bold"
+                       aria-current="{{ request()->routeIs('trackOrder') ? 'page' : '' }}">
+                        Order History
+                    </a>
+
+                    <a href="{{ route('cashier.inventory') }}"
+                       class="{{ request()->routeIs('cashier.inventory') ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}
+          rounded-md px-5 py-4 text-lg font-bold"
+                       aria-current="{{ request()->routeIs('cashier.inventory') ? 'page' : '' }}">
+                        Check Inventory
+                    </a>
                 </div>
             </div>
 
