@@ -145,12 +145,12 @@
                     } else {
                         category.options.forEach(option => {
                             categoryHTML += `
-                        <hr class="mt-2">
+                        <hr class="my-3 border-gray-300">
                         <div class="flex justify-between w-full items-center my-4">
                             <label for="option-${option.id}" class="text-gray-600">${option.name}</label>
                             <input id="option-${option.id}" type="${category.singleChoose ? 'radio' : 'checkbox'}"
                                 name="options[${category.name}][]" value="${option.name}"
-                                class="custom-radio bg-gray-100 appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
+                                class="custom-radio bg-gray-100 appearance-none rounded-full w-6 h-6 border-none checked:bg-indigo-500 checked:shadow-inner focus:outline-none">
                         </div>`;
                         });
                     }
