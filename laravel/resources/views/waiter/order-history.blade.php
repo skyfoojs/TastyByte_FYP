@@ -11,7 +11,7 @@
                         @endphp
 
                         @if ($selectedOrder)
-                            <div class="border rounded-lg p-4 mb-6">
+                            <div class="border rounded-lg p-4 mb-96">
                                 @foreach ($selectedOrder->orderItems as $item)
                                     @php
                                         $subtotal = $selectedOrder->totalAmount;
@@ -56,7 +56,7 @@
                                 <hr class="mx-6">
                             </div>
 
-                            <div class="w-full sticky bottom-0 flex flex-col px-6 font-pop pb-6 bg-white">
+                            <div class="w-full fixed bottom-0 flex flex-col px-6 font-pop pb-6 bg-white">
                                     <div class="mt-12">
                                         <p class="font-semibold">Payment Summary</p>
                                     </div>

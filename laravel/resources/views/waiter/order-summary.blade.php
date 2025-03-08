@@ -5,11 +5,11 @@
                 @php
                 //session()->forget('cart');
                 @endphp
-                <div class="relative flex flex-col">
-                    <div class="mb-2">
-                        <hr class="mt-3">
-                        <!-- Loop through products under the category -->
-                        @if (session('cart'))
+                <div class="flex flex-col">
+                    <hr class="mt-3">
+                    <!-- Loop through products under the category -->
+                    @if (session('cart'))
+                    <div class="mb-96">
                             @foreach (session('cart') as $cartKey => $cartItem)
                                 <div class="flex gap-x-10 items-center py-4 pl-8">
                                     <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
@@ -44,49 +44,49 @@
                                 </div>
                                 <hr class="mx-6">
                             @endforeach
+                        </div>
 
-                            <div class="w-full sticky bottom-0 flex flex-col px-6 font-pop pb-6 bg-white z-50">
-                                <div class="mt-12">
-                                    <p class="font-semibold">Payment Summary</p>
+                        <div class="w-full fixed bottom-0 flex flex-col px-6 font-pop pb-6 bg-white z-50">
+                            <div class="mt-12">
+                                <p class="font-semibold">Payment Summary</p>
+                            </div>
+
+                            <div class="flex flex-col mt-3 text-[#5B5B5B] gap-y-6">
+                                <div class="flex justify-between">
+                                    <p>Subtotal</p>
+                                    <p>RM {{ $subTotal = number_format(array_reduce(session('cart'), function($carry, $item) {
+                                    return $carry + ($item['price'] * $item['quantity']);
+                                }, 0), 2) }}</p>
                                 </div>
 
-                                <div class="flex flex-col mt-3 text-[#5B5B5B] gap-y-6">
-                                    <div class="flex justify-between">
-                                        <p>Subtotal</p>
-                                        <p>RM {{ $subTotal = number_format(array_reduce(session('cart'), function($carry, $item) {
-                                        return $carry + ($item['price'] * $item['quantity']);
-                                    }, 0), 2) }}</p>
-                                    </div>
-
-                                    <div class="flex justify-between">
-                                        <p>Tax 6%</p>
-                                        <p>RM {{ $tax = number_format($subTotal * 0.06, 2) }}</p>
-                                    </div>
-
-                                    <div class="flex justify-between">
-                                        <p>Service Charge 10%</p>
-                                        <p>RM {{ $serviceCharge = number_format($tax * 0.10, 2) }}</p>
-                                    </div>
+                                <div class="flex justify-between">
+                                    <p>Tax 6%</p>
+                                    <p>RM {{ $tax = number_format($subTotal * 0.06, 2) }}</p>
                                 </div>
 
-                                <div class="flex flex-col mt-4 gap-y-3">
-                                    <hr class="border border-dashed">
-                                    <div class="flex justify-between font-semibold">
-                                        <p>Total</p>
-                                        <p>RM {{ $total = $subTotal + $tax + $serviceCharge }}</p>
-                                    </div>
-                                    <hr class="border border-dashed">
-                                </div>
-
-                                <div class="bg-blue-button rounded-lg text-white flex items-center justify-center py-4 gap-x-2 mt-8">
-                                    <form action="{{ route('addOrder.post') }}" method="POST">
-                                        @csrf
-                                        <button type="submit">Place Order</button>
-                                    </form>
+                                <div class="flex justify-between">
+                                    <p>Service Charge 10%</p>
+                                    <p>RM {{ $serviceCharge = number_format($tax * 0.10, 2) }}</p>
                                 </div>
                             </div>
-                        @endif
-                    </div>
+
+                            <div class="flex flex-col mt-4 gap-y-3">
+                                <hr class="border border-dashed">
+                                <div class="flex justify-between font-semibold">
+                                    <p>Total</p>
+                                    <p>RM {{ $total = $subTotal + $tax + $serviceCharge }}</p>
+                                </div>
+                                <hr class="border border-dashed">
+                            </div>
+
+                            <div class="bg-blue-button rounded-lg text-white flex items-center justify-center py-4 gap-x-2 mt-8">
+                                <form action="{{ route('addOrder.post') }}" method="POST">
+                                    @csrf
+                                    <button type="submit">Place Order</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </x-waiter.table-header>
         </div>

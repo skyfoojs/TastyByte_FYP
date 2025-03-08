@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <div id="productTableContainer" class="bg-white p-6 rounded-3xl shadow-lg overflow-x-auto" style="height: 540px;">
+            <div id="productTableContainer" class="bg-white p-6 rounded-3xl shadow-lg overflow-x-auto flex flex-col justify-between" style="height: 540px;">
                 <table class="min-w-full table-auto border-collapse w-full" id="productTable">
                     <thead>
                     <tr class="text-gray-500 font-medium text-center">
@@ -99,20 +99,10 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
 
-            <div class="flex justify-end mt-4">
-                <nav aria-label="Page navigation">
-                    <ul class="flex space-x-2 mr-4">
-                        @for ($i = 1; $i <= $totalPages; $i++)
-                            <li>
-                                <a href="{{ request()->fullUrlWithQuery(['page' => $i]) }}" class="px-4 py-2 border rounded-md {{ $i == request()->get('page', 1) ? 'bg-indigo-500 text-white' : 'bg-white text-indigo-500' }} hover:bg-indigo-600 hover:text-white transition">
-                                    {{ $i }}
-                                </a>
-                            </li>
-                        @endfor
-                    </ul>
-                </nav>
+                <div>
+                {{ $products->appends(request()->query())->links() }}
+                </div>
             </div>
         </section>
 
@@ -153,7 +143,7 @@
 
         <div id="productEditModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
-                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit User</h2>
+                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit Product</h2>
                 <hr class="py-2">
                 <form action="{{ route('editProduct.post') }}" method="POST" enctype="multipart/form-data">
                     @csrf
