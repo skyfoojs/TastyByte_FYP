@@ -276,7 +276,7 @@ class AdminController extends Controller
             'customizableCategories.*.options.*.name' => 'nullable|string|max:255',
             'customizableCategories.*.options.*.maxAmount' => 'nullable|integer|min:1',
             'customizableCategories.*.options.*.sort' => 'nullable|integer|min:1|max:4',
-            'customizableCategories.*.options.*.status' => 'nullable|in:available,not-available',
+            'customizableCategories.*.options.*.status' => 'nullable|in:Available,Not Available',
         ]);
 
         // Handle dynamic category logic
