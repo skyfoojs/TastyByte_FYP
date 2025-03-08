@@ -10,8 +10,8 @@
                 <button id="dropdownToggle" class="flex items-center space-x-2">
                     <span class="font-semibold text-gray-300 mr-3">{{ session('username') ?? 'Null' }}</span>
                     <img class="size-12 rounded-full"
-                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                         alt="">
+                         src="{{ asset('images/' . 'ape_avatar.png') }}"
+                         alt="ape_avatar">
                 </button>
 
                 <div id="dropdownMenu" class="absolute right-0 mt-35 p-2 w-48 bg-white border border-gray-200 rounded-lg hidden">
