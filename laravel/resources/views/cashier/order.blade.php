@@ -169,7 +169,7 @@
             setTimeout(() => {
                 overlay.classList.remove('hidden');
                 document.getElementById("bottom-sheet").classList.remove("translate-y-full");
-            }, 100);
+            }, 50);
 
         } catch (error) {
             console.error("Error fetching product details:", error);
