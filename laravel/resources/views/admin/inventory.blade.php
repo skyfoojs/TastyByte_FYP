@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <div id="inventoryTableContainer" class="bg-white p-6 rounded-3xl shadow-lg overflow-x-auto" style="height: 540px;">
+            <div id="inventoryTableContainer" class="bg-white p-6 rounded-3xl shadow-lg overflow-x-auto flex flex-col justify-between" style="height: 540px;">
                 <table class="min-w-full table-auto border-collapse w-full" id="userTable">
                     <thead>
                     <tr class="text-gray-500 font-medium text-center">
@@ -48,7 +48,7 @@
                                 </td>
                                 <td class="p-3 mt-4">{{ $inventories->minLevel }}</td>
                                 <td class="p-3 mt-4 flex justify-center space-x-2">
-                                    <button class="text-gray-500 hover:text-blue-600" onclick="openInventoryEditModal({{ $inventories->inventoryID }}, '{{ $inventories->name }}', '{{ $inventories->productID }}', {{ $inventories->stockLevel }}, {{ $inventories->minLevel }})">
+                                    <button class="text-gray-500 hover:text-blue-600" onclick="openInventoryEditModal({{ $inventories->inventoryID }}, '{{ $inventories->name }}', {{ $inventories->stockLevel }}, {{ $inventories->minLevel }})">
                                         <i class="bx bx-pencil"></i>
                                     </button>
                                 </td>
@@ -56,20 +56,10 @@
                             @endforeach
                     </tbody>
                 </table>
-            </div>
 
-            <div class="flex justify-end mt-4">
-                <nav aria-label="Page navigation">
-                    <ul class="flex space-x-2 mr-4">
-                        @for ($i = 1; $i <= $totalPages; $i++)
-                            <li>
-                                <a href="{{ request()->fullUrlWithQuery(['page' => $i]) }}" class="px-4 py-2 border rounded-md {{ $i == request()->get('page', 1) ? 'bg-indigo-500 text-white' : 'bg-white text-indigo-500' }} hover:bg-indigo-600 hover:text-white transition">
-                                    {{ $i }}
-                                </a>
-                            </li>
-                        @endfor
-                    </ul>
-                </nav>
+                <div>
+                {{ $inventory->appends(request()->query())->links() }}
+                </div>
             </div>
         </section>
 
@@ -85,7 +75,6 @@
                         <option value="">Please Select a Type</option>
                         <option value="filterInventoryID">Inventory ID</option>
                         <option value="filterCategoryName">Category Name</option>
-                        <option value="filterProductName">Product Name</option>
                         <option value="filterStockMoreThan">Stock More Than</option>
                         <option value="filterStockLessThan">Stock Less Than</option>
                     </select>
@@ -242,7 +231,7 @@ function closeInventoryAddModal() {
     }, 300);
 }
 
-function openInventoryEditModal(id, name, product, stockLevel, minLevel) {
+function openInventoryEditModal(id, name, stockLevel, minLevel) {
     const modal = document.getElementById('inventoryEditModal');
     const overlay = document.getElementById('modalOverlay');
 

@@ -35,11 +35,9 @@ class AdminController extends Controller
             return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
-        $users = User::get();
-        $totalUsers = User::count();
         $limit = 6;
-        $totalPages = ceil($totalUsers / $limit);
-        return view('admin.users', compact('users', 'totalPages'));
+        $users = User::paginate($limit);
+        return view('admin.users', compact('users'));
     }
 
     public function products() {
@@ -50,19 +48,18 @@ class AdminController extends Controller
             return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
-        $totalProducts = Product::count();
         $limit = 6;
-        $totalPages = ceil($totalProducts / $limit);
+        // Fetch products with their categories, customizable categories, and options
+        $products = Product::with(['category', 'customizableCategory.options'])->distinct()->paginate($limit);
+
+        $categories = Category::all();
         // Get the count of distinct sort values from customizableCategory
         $categoryDistinctSortCount = DB::table('customizablecategory')->distinct('sort')->count('sort');
 
         // Get the count of distinct sort values from customizableCategory
         $optionDistinctSortCount = DB::table('customizableoptions')->distinct('sort')->count('sort');
 
-        // Fetch products with their categories, customizable categories, and options
-        $products = Product::with(['category', 'customizableCategory.options'])->distinct()->get();
-        $categories = Category::all();
-        return view('admin.products', compact('products', 'categoryDistinctSortCount', 'optionDistinctSortCount', 'categories', 'totalPages'));
+        return view('admin.products', compact('products', 'categoryDistinctSortCount', 'optionDistinctSortCount', 'categories'));
     }
 
 
@@ -74,12 +71,9 @@ class AdminController extends Controller
             return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
-        $totalInventory = Inventory::count();
         $limit = 6;
-        $totalPages = ceil($totalInventory / $limit);
-        $inventory = Inventory::with(['product'])->get();
-        $product = Product::all();
-        return view('admin.inventory', compact('inventory', 'totalPages'), compact('product'));
+        $inventory = Inventory::with(['product'])->paginate($limit);
+        return view('admin.inventory', compact('inventory'));
     }
 
     public function vouchers() {
@@ -90,11 +84,9 @@ class AdminController extends Controller
             return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
-        $vouchers = Vouchers::all();
-        $totalVouchers = Vouchers::count();
         $limit = 6;
-        $totalPages = ceil($totalVouchers / $limit);
-        return view('admin.vouchers', compact('vouchers', 'totalPages'));
+        $vouchers = Vouchers::paginate($limit);
+        return view('admin.vouchers', compact('vouchers'));
     }
 
     public function payments() {
@@ -105,12 +97,10 @@ class AdminController extends Controller
             return redirect()->route('login')->with('error', 'Unauthorized Access');
         }
 
-        $payments = Payment::all();
-        $totalPayments = Payment::count();
         $limit = 6;
-        $totalPages = ceil($totalPayments / $limit);
+        $payments = Payment::paginate($limit);
 
-        return view('admin.payments', compact('payments', 'totalPages'));
+        return view('admin.payments', compact('payments'));
     }
 
     public function getDashboardData() {
@@ -214,7 +204,7 @@ class AdminController extends Controller
     public function getFilteredUsers(Request $request)
     {
         $request->validate([
-            'filterType' => 'required|string|in:filterUserID,filterUsername,filterFullName,filterRole,filterPhone,filterEmail,filterGender',
+            'filterType' => 'required|string|in:filterUserID,filterUsername,filterFullName,filterRole,filterPhone,filterEmail,filterGender,filterStatus',
             'keywords' => 'required|string',
         ]);
 
@@ -246,13 +236,15 @@ class AdminController extends Controller
             case 'filterGender':
                 $query->where('gender', $keywords);
                 break;
+            case 'filterStatus':
+                $query->where('status', $keywords);
+                break;
         }
-        $totalUsers = User::count();
-        $limit = 6;
-        $totalPages = ceil($totalUsers / $limit);
-        $users = $query->paginate(6);
 
-        return view('admin.users', compact('users', 'totalPages'));
+        $limit = 6;
+        $users = $query->paginate($limit)->appends($request->except('page'));
+
+        return view('admin.users', compact('users'));
     }
 
     public function addProductPost(Request $request) {
@@ -550,30 +542,26 @@ class AdminController extends Controller
                 break;
         }
 
-        $totalProducts = Product::count();
         $limit = 6;
-        $totalPages = ceil($totalProducts / $limit);
-        $products = $query->paginate($limit);
+        $products = $query->paginate($limit)->appends($request->except('page'));
 
         $categories = Category::all();
         $categoryDistinctSortCount = DB::table('customizablecategory')->distinct('sort')->count('sort');
         $optionDistinctSortCount = DB::table('customizableoptions')->distinct('sort')->count('sort');
 
 
-        return view('admin.products', compact('products', 'totalPages', 'categories', 'categoryDistinctSortCount', 'optionDistinctSortCount'));
+        return view('admin.products', compact('products',  'categories', 'categoryDistinctSortCount', 'optionDistinctSortCount'));
     }
 
     public function addInventoryPost(Request $request) {
         $request->validate([
             'inventory' => 'required',
-            'product' => 'required',
             'stockLevel' => 'required',
             'minLevel' => 'required',
         ]);
 
         $inventory = Inventory::create([
             'name' => $request->inventory,
-            'productID' => $request->product,
             'stockLevel' => $request->stockLevel,
             'minLevel' => $request->minLevel,
         ]);
@@ -589,7 +577,6 @@ class AdminController extends Controller
         $request->validate([
             'inventoryID' => 'required',
             'editInventory' => 'required',
-            'editProduct' => 'required',
             'editStockLevel' => 'required',
             'editMinLevel' => 'required',
         ]);
@@ -603,7 +590,6 @@ class AdminController extends Controller
 
         // Update inventory details
         $inventory->name = $request->editInventory;
-        $inventory->productID = $request->editProduct;
         $inventory->stockLevel = $request->editStockLevel;
         $inventory->minLevel = $request->editMinLevel;
 
@@ -617,7 +603,7 @@ class AdminController extends Controller
     public function getFilteredInventories(Request $request)
     {
         $request->validate([
-            'filterType' => 'required|string|in:filterInventoryID,filterCategoryName,filterProductName,filterStockMoreThan,filterStockLessThan',
+            'filterType' => 'required|string|in:filterInventoryID,filterCategoryName,filterStockMoreThan,filterStockLessThan',
             'keywords' => 'required|string',
         ]);
 
@@ -634,12 +620,6 @@ class AdminController extends Controller
             case 'filterCategoryName':
                 $query->where('name', 'LIKE', "%$keywords%");
                 break;
-            case 'filterProductName':
-                // Filter by product name using a join
-                $query->whereHas('product', function ($q) use ($keywords) {
-                    $q->where('name', 'LIKE', "%$keywords%");
-                });
-                break;
             case 'filterStockMoreThan':
                 // Stock greater than the given number
                 $query->where('stockLevel', '>', (int)$keywords);
@@ -650,14 +630,10 @@ class AdminController extends Controller
                 break;
         }
 
-        $totalInventory = Inventory::count();
         $limit = 6;
-        $totalPages = ceil($totalInventory / $limit);
-        $inventory = $query->paginate($limit);
+        $inventory = $query->paginate($limit)->appends($request->except('page'));
 
-        $product = Product::all();
-
-        return view('admin.inventory', compact('inventory', 'totalPages', 'product'));
+        return view('admin.inventory', compact('inventory'));
     }
 
     public function addVoucherPost(Request $request) {
@@ -750,12 +726,10 @@ class AdminController extends Controller
                 break;
         }
 
-        $totalVouchers = Vouchers::count();
         $limit = 6;
-        $totalPages = ceil($totalVouchers / $limit);
-        $vouchers = $query->paginate($limit);
+        $vouchers = $query->paginate($limit)->appends($request->except('page'));
 
-        return view('admin.vouchers', compact('vouchers', 'totalPages'));
+        return view('admin.vouchers', compact('vouchers'));
     }
 
     public function getFilteredPayments(Request $request)
@@ -791,11 +765,9 @@ class AdminController extends Controller
                 break;
         }
 
-        $totalPayments = Payment::count();
         $limit = 6;
-        $totalPages = ceil($totalPayments / $limit);
-        $payments = $query->paginate($limit);
+        $payments = $query->paginate($limit)->appends($request->except('page'));
 
-        return view('admin.payments', compact('payments', 'totalPages'));
+        return view('admin.payments', compact('payments'));
     }
 }
