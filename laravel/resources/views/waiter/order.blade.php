@@ -11,7 +11,7 @@
                     </select>
                 </div>
 
-                <div class="flex flex-col" id="productList">
+                <div class="flex flex-col mb-32" id="productList">
                     @foreach ($groupedProducts as $categoryName => $products)
                         <div class="category-group" data-category="{{ $categoryName }}">
                             <div class="mt-6 mb-2 px-6">
@@ -56,7 +56,7 @@
                         </div>
                     @endforeach
                     @if(session('cart'))
-                        <div class="w-full bg-white p-6 sticky bottom-0">
+                        <div class="w-full bg-white p-6 fixed bottom-0">
                             <div class="bg-indigo-500 rounded-lg text-white flex items-center justify-center py-4 gap-x-2">
                                 <i class='bx bx-cart'></i>
                                 <a href="{{ route('orderSummary') }}">
