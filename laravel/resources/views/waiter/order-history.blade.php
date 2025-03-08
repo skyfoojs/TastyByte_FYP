@@ -8,7 +8,7 @@
                     @php
                         $selectedOrder = request()->orderID ? $orders->firstWhere('orderID', request()->orderID) : null;
                     @endphp
-                    {{--dd($selectedOrder)--}}
+
                     @if ($selectedOrder)
                         <div class="border rounded-lg p-4 mb-6">
                             @foreach ($selectedOrder->orderItems as $item)
@@ -91,6 +91,11 @@
                                     @if ($selectedOrder->status != 'Completed')
                                         <div class="bg-blue-button rounded-lg text-white flex items-center justify-center py-4 px-3 mt-8">
                                             <button onclick="openConfirmCompleteModal()">Mark as Completed</button>
+                                        </div>
+
+                                    @else
+                                        <div class="bg-light-gray rounded-lg text-white flex items-center justify-center py-4 px-3 mt-8">
+                                            <button title="Order Completed!">Order Completed</button>
                                         </div>
                                     @endif
 
