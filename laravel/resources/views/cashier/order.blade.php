@@ -74,9 +74,9 @@
                         </div>
 
                         <!-- Takeaway Option -->
-                        <div class="flex bg-white items-center mt-8 justify-between px-8 py-4 rounded-lg">
-                            <label class="font-bold" for="takeaway">Takeaway</label>
-                            <input name="takeaway" class="custom-radio bg-white" type="checkbox" value="Takeaway">
+                        <div class="flex bg-white items-center mt-4 justify-between px-8 py-4 rounded-lg">
+                            <label class="font-bold text-gray-600 tracking-wide" for="takeaway">Takeaway</label>
+                            <input name="takeaway" class="custom-radio bg-gray-100 appearance-none rounded-full w-5 h-5 border-none checked:bg-indigo-500 checked:shadow-inner focus:outline-none" type="checkbox" value="Takeaway">
                         </div>
                     </div>
 
@@ -150,7 +150,7 @@
                             <label for="option-${option.id}" class="text-gray-600">${option.name}</label>
                             <input id="option-${option.id}" type="${category.singleChoose ? 'radio' : 'checkbox'}"
                                 name="options[${category.name}][]" value="${option.name}"
-                                class="custom-radio bg-gray-200 appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
+                                class="custom-radio bg-gray-100 appearance-none rounded-full w-6 h-6 border-none checked:bg-blue-500 checked:shadow-inner focus:outline-none">
                         </div>`;
                         });
                     }
