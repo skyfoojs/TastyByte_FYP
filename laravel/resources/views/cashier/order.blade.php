@@ -76,7 +76,7 @@
                         <!-- Takeaway Option -->
                         <div class="flex bg-white items-center mt-4 justify-between px-8 py-4 rounded-lg">
                             <label class="font-bold text-gray-600 tracking-wide" for="takeaway">Takeaway</label>
-                            <input name="takeaway" class="custom-radio bg-gray-100 appearance-none rounded-full w-5 h-5 border-none checked:bg-indigo-500 checked:shadow-inner focus:outline-none" type="checkbox" value="Takeaway">
+                            <input name="takeaway" class="custom-radio bg-gray-200 appearance-none rounded-full w-5 h-5 border-none checked:bg-indigo-500 checked:shadow-inner focus:outline-none" type="checkbox" value="Takeaway">
                         </div>
                     </div>
 
