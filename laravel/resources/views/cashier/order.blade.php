@@ -53,7 +53,7 @@
         <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30"></div>
 
         <!-- Bottom Sheet for Product Details -->
-        <div id="bottom-sheet" class="fixed bottom-0 left-0 w-full bg-slate-50 shadow-xl transform translate-y-full transition-transform duration-300 rounded-t-3xl h-3/4 z-40">
+        <div id="bottom-sheet" class="fixed bottom-0 left-0 w-full bg-slate-200 shadow-xl transform translate-y-full transition-transform duration-300 rounded-t-3xl h-3/4 z-40">
             <div class="flex h-full">
                 <form action="{{ route('cashier.addToCart.post') }}" method="POST" class="flex w-full">
                     @csrf
@@ -64,22 +64,17 @@
 
                     <div class="px-10 w-1/4 flex flex-col">
                         <!-- Product Image -->
-                        <img id="product-image" class="h-64 w-64 rounded-lg mt-8" src="" alt="Product Image">
+                        <img id="product-image" class="h-72 w-72 rounded-xl mt-10" src="" alt="Product Image">
 
                         <!-- Product Name & Price -->
                         <div class="mt-4 text-lg">
                             <p id="product-name" class="font-bold"></p>
-                            <p class="text-red-700" id="product-price"></p>
-                        </div>
-
-                        <!-- Product Description -->
-                        <div class="text-base mt-4">
-                            <p class="text-slate-800">Description:</p>
                             <p id="product-description" class="text-slate-600"></p>
+                            <p class="mt-2 text-red-700" id="product-price"></p>
                         </div>
 
                         <!-- Takeaway Option -->
-                        <div class="flex bg-[#EEEEEE] items-center mt-8 justify-between px-8 py-4 rounded-lg">
+                        <div class="flex bg-white items-center mt-8 justify-between px-8 py-4 rounded-lg">
                             <label class="font-bold" for="takeaway">Takeaway</label>
                             <input name="takeaway" class="custom-radio bg-white" type="checkbox" value="Takeaway">
                         </div>
