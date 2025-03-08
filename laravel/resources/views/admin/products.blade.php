@@ -153,7 +153,7 @@
 
         <div id="productEditModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
-                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit User</h2>
+                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit Product</h2>
                 <hr class="py-2">
                 <form action="{{ route('editProduct.post') }}" method="POST" enctype="multipart/form-data">
                     @csrf
