@@ -67,10 +67,10 @@
                         <img id="product-image" class="h-72 w-72 rounded-xl mt-10" src="" alt="Product Image">
 
                         <!-- Product Name & Price -->
-                        <div class="mt-4 text-lg">
-                            <p id="product-name" class="font-bold"></p>
-                            <p id="product-description" class="text-slate-600"></p>
-                            <p class="mt-2 text-red-700" id="product-price"></p>
+                        <div class="mt-4">
+                            <p id="product-name" class="font-bold text-lg"></p>
+                            <p id="product-description" class="text-slate-600 text-base"></p>
+                            <p id="product-price" class="mt-2 text-red-700 text-lg font-bold"></p>
                         </div>
 
                         <!-- Takeaway Option -->
