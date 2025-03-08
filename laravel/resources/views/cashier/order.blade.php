@@ -6,13 +6,13 @@
             <div class="w-3/4 p-6 mt-25">
                 <!-- Select and search bar -->
                 <div class="flex items-center space-x-4 mt-2">
-                    <select class="p-2 bg-slate-200 border border-gray-500 px-10 rounded-full">
+                    <select class="bg-white px-10 py-2 rounded-full border border-gray-300 appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option>All Categories</option>
                         @foreach ($groupedProducts as $categoryName => $products)
                             <option>{{ $categoryName }}</option>
                         @endforeach
                     </select>
-                    <input type="text" placeholder="Search ..." class="p-2 bg-slate-200 border border-gray-500 rounded-full w-1/3 ps-4">
+                    <input type="text" placeholder="Search ..." class="py-2 bg-white border border-gray-300 appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-full w-1/3 ps-4">
                 </div>
 
                 @foreach ($groupedProducts as $categoryName => $products)
