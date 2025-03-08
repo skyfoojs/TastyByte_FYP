@@ -49,8 +49,11 @@
 
             <x-cashier.sidebar></x-cashier.sidebar>
         </div>
+
+        <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30"></div>
+
         <!-- Bottom Sheet for Product Details -->
-        <div id="bottom-sheet" class="fixed bottom-0 left-0 w-full bg-slate-50 shadow-xl transform translate-y-full transition-transform duration-300 rounded-t-3xl h-3/4">
+        <div id="bottom-sheet" class="fixed bottom-0 left-0 w-full bg-slate-50 shadow-xl transform translate-y-full transition-transform duration-300 rounded-t-3xl h-3/4 z-40">
             <div class="flex h-full">
                 <form action="{{ route('cashier.addToCart.post') }}" method="POST" class="font-varela flex w-full">
                     @csrf
@@ -100,6 +103,7 @@
 <script>
     async function openBottomSheet(productID) {
         try {
+            const overlay = document.getElementById('modalOverlay');
             // Ensure the sheet is hidden first
             document.getElementById("bottom-sheet").classList.add("translate-y-full");
             document.getElementById("bottom-sheet").classList.remove("hidden"); // Remove hidden class
@@ -163,6 +167,7 @@
             }
 
             setTimeout(() => {
+                overlay.classList.remove('hidden');
                 document.getElementById("bottom-sheet").classList.remove("translate-y-full");
             }, 100);
 
@@ -175,6 +180,7 @@
     function closeBottomSheet() {
         document.getElementById('bottom-sheet').classList.add('translate-y-full');
         document.getElementById('bottom-sheet').classList.remove('show');
+        document.getElementById('modalOverlay').classList.add('hidden');
     }
 
     document.addEventListener('click', function(event) {
