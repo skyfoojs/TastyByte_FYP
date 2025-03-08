@@ -67,7 +67,7 @@ class OrdersController extends Controller
                     'orderDate' => $orders->first()->created_at ?? null,
                     'isPaid' => $isPaid,
                     'paymentID' => $payment->paymentID ?? null,
-                    'paymentMethod' => $payment->paymentMethod === 'credit_debit_card' ? 'Credit/ Debit Card' : 'Cash',
+                    'paymentMethod' => $payment ? ($payment->paymentMethod === 'credit_debit_card' ? 'Credit/ Debit Card' : 'Cash') : null,
                     'voucherCode' => $payment->voucher_code ?? '-',
                     'paymentDate' => $payment->created_at ?? null,
                 ]]);
