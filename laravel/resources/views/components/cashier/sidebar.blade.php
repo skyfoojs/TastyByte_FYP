@@ -30,7 +30,21 @@
                         <div class="flex-1 flex flex-col justify-between">
                             <p class="text-base font-bold text-zinc-700">{{ $cartItem['name'] }}</p>
                             @if (!empty($cartItem['options']))
-                                <p class="text-sm text-gray-500">{{ collect($cartItem['options'])->map(function($values, $name) { return implode(', ', $values); })->implode(', ') }}</p>
+                                @php
+                                    $options = collect($cartItem['options'])->map(function($values, $name) {
+                                        return implode(', ', $values);
+                                    });
+
+                                    $takeaway = $options->pull('Takeaway');
+
+                                    if ($takeaway === 'Yes') {
+                                        $options = $options->prepend('<strong class="font-bold text-red-500">Takeaway</strong>');
+                                    } else {
+                                        $options = $options->prepend('<strong class="font-bold text-indigo-500">Dine In</strong>');
+                                    }
+                                @endphp
+
+                                <p class="text-sm text-gray-500">{!! $options->implode(', ') !!}</p>
                             @endif
                             <p class="text-sm">{{ '- RM ' . $cartItem['price'] }}</p>
                         </div>
