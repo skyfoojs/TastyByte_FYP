@@ -55,7 +55,7 @@
         <!-- Bottom Sheet for Product Details -->
         <div id="bottom-sheet" class="fixed bottom-0 left-0 w-full bg-slate-50 shadow-xl transform translate-y-full transition-transform duration-300 rounded-t-3xl h-3/4 z-40">
             <div class="flex h-full">
-                <form action="{{ route('cashier.addToCart.post') }}" method="POST" class="font-varela flex w-full">
+                <form action="{{ route('cashier.addToCart.post') }}" method="POST" class="flex w-full">
                     @csrf
                     <input type="hidden" id="productID" name="productID">
                     <input type="hidden" id="hidden-name" name="name">
