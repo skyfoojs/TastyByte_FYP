@@ -332,22 +332,19 @@ class OrdersController extends Controller
     }
 
     public function updateOrderItemStatus(Request $request) {
-        $request->validate([
+        $validated = $request->validate([
             'orderItemID' => 'required|integer|exists:orderitems,orderItemID',
         ]);
 
-        $orderItem = OrderItems::find($request->orderItemID);
+        $orderItem = OrderItems::find($validated['orderItemID']);
 
         if (!$orderItem) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Order item not found!',
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Order item not found!'], 404);
         }
 
         $orderItem->status = 'Completed';
         $orderItem->save();
 
-        return redirect()->route('kitchen.index')->with('success', 'Order marked as completed!');
+        return response()->json(['success' => true, 'message' => 'Order item marked as completed!']);
     }
 }
