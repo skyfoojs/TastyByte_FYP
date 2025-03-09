@@ -56,12 +56,12 @@
                                 <hr class="mx-6">
                             </div>
 
-                            <div class="w-full fixed bottom-0 flex flex-col px-6 font-pop pb-6 bg-white">
-                                <div class="mt-4">
-                                    <p class="font-semibold">Payment Summary</p>
+                            <div class="w-full fixed bottom-0 flex flex-col px-6 pb-6 bg-white">
+                                <div class="mt-6">
+                                    <p class="font-semibold text-lg">Payment Summary</p>
                                 </div>
 
-                                <div class="flex flex-col mt-3 text-[#5B5B5B] gap-y-6">
+                                <div class="flex flex-col mt-4 text-gray-600 gap-y-2">
                                     <div class="flex justify-between">
                                         <p>Subtotal</p>
                                         <p>RM {{ number_format($subtotal, 2) }}</p>
@@ -79,28 +79,28 @@
                                 </div>
 
                                 <div class="flex flex-col mt-4 gap-y-3">
-                                    <hr class="border border-dashed">
+                                    <hr class="border-t-4 border-dotted border-gray-200">
                                     <div class="flex justify-between font-semibold">
                                         <p>Total</p>
                                         <p>RM {{ number_format($total, 2) }}</p>
                                     </div>
-                                    <hr class="border border-dashed">
+                                    <hr class="border-t-4 border-dotted border-gray-200">
                                 </div>
 
-                                <div class="flex gap-x-5 justify-center items-center">
+                                <div class="flex gap-x-6 justify-center items-center">
 
                                     @if ($selectedOrder->status != 'Completed')
-                                        <div class="bg-indigo-500 rounded-lg text-white flex items-center justify-center py-4 px-3 mt-8">
+                                        <div class="bg-indigo-500 rounded-lg text-white flex items-center justify-center py-4 px-6 mt-4">
                                             <button onclick="openConfirmCompleteModal()">Mark as Completed</button>
                                         </div>
 
                                     @else
-                                        <div class="bg-light-gray rounded-lg text-white flex items-center justify-center py-4 px-3 mt-8">
+                                        <div class="bg-light-gray rounded-lg text-white flex items-center justify-center py-4 px-6 mt-4">
                                             <button title="Order Completed!">Order Completed</button>
                                         </div>
                                     @endif
 
-                                    <div class="bg-indigo-500 rounded-lg text-white flex items-center justify-center py-4 px-3 mt-8">
+                                    <div class="bg-indigo-500 rounded-lg text-white flex items-center justify-center py-4 px-6 mt-4">
                                         <a href="{{ route('menu') }}">Back To Home</a>
                                     </div>
                                 </div>
