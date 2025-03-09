@@ -36,15 +36,17 @@
                                     });
 
                                     $takeaway = $cartItem['takeaway'] ?? false;
-
-                                    if ($takeaway) {
-                                        $options = $options->prepend('<strong class="font-bold text-red-500">Takeaway</strong>');
-                                    } else {
-                                        $options = $options->prepend('<strong class="font-bold text-indigo-500">Dine In</strong>');
-                                    }
+                                    $orderType = $takeaway
+                                        ? '<strong class="font-bold text-red-500">[ Takeaway ]</strong>'
+                                        : '<strong class="font-bold text-indigo-500">[ Dine In ]</strong>';
                                 @endphp
 
-                                <p class="text-sm text-gray-500">{!! $options->implode(', ') !!}</p>
+                                <p class="text-sm text-gray-500">
+                                    {!! $orderType !!}
+                                    @if ($options->isNotEmpty())
+                                        - {!! $options->implode(', ') !!}
+                                    @endif
+                                </p>
                             @endif
                             <p class="text-sm">{{ '- RM ' . $cartItem['price'] }}</p>
                         </div>
