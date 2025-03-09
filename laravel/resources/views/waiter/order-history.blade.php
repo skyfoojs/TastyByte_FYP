@@ -20,7 +20,7 @@
                                         $total = $subtotal + $tax + $serviceCharge;
                                     @endphp
 
-                                    <div class="flex gap-x-10 items-center py-4">
+                                    <div class="flex gap-x-10 items-center py-4 p-2">
                                         <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
                                             @if (!empty($item->products->image))
                                                 <img class="w-full h-full rounded-lg object-cover" src="{{ asset($item->products->image) }}" alt="{{ $item->products->name }}">
@@ -31,29 +31,48 @@
 
                                         <div class="flex items-center w-1/2 justify-between">
                                             <div class="space-y-2 text-sm">
-                                                <p class="font-semibold">{{ $item->products->name ?? 'Unknown Product' }}</p>
-                                                <p>RM {{ number_format($item->products->price ?? 0, 2) }}</p>
+                                                <p class="text-base font-bold text-zinc-700">{{ $item->products->name ?? 'Unknown Product' }}</p>
 
-                                                @if (!empty($item->remark))
-                                                    @foreach (json_decode($item->remark, true) as $optionName => $optionValues)
-                                                        @if ($optionName === 'options')
-                                                            @foreach ($optionValues as $name => $values)
-                                                                <p>{{ $name }}: {{ implode(', ', (array) $values) }}</p>
-                                                            @endforeach
-                                                        @elseif ($optionName === 'takeaway')
-                                                            <p>{{ $optionValues ? 'Takeaway' : 'Dine in' }}</p>
-                                                        @endif
-                                                    @endforeach
-                                                @endif
+                                                @php
+                                                    $options = [];
+                                                    $takeaway = false;
+
+                                                    if (!empty($item->remark)) {
+                                                        $remarks = json_decode($item->remark, true);
+
+                                                        if (isset($remarks['options']) && is_array($remarks['options'])) {
+                                                            foreach ($remarks['options'] as $values) {
+                                                                $options = array_merge($options, (array) $values);
+                                                            }
+                                                        }
+
+                                                        if (isset($remarks['takeaway'])) {
+                                                            $takeaway = $remarks['takeaway'];
+                                                        }
+                                                    }
+
+                                                    $orderType = $takeaway
+                                                        ? '<strong class="font-bold text-red-500">[ Takeaway ]</strong>'
+                                                        : '<strong class="font-bold text-indigo-500">[ Dine In ]</strong>';
+                                                @endphp
+
+                                                <p class="text-sm text-gray-500">
+                                                    {!! $orderType !!}
+                                                    @if (!empty($options))
+                                                        - {!! implode(', ', array_unique($options)) !!}
+                                                    @endif
+                                                </p>
+
+                                                <p class="text-sm">{{ '- RM ' . number_format($item->products->price ?? 0, 2) }}</p>
                                             </div>
-                                            <div class="ml-2 flex border py-1 px-2 rounded-lg bg-[#efefef] text-center items-center">
-                                                <small>x</small>
-                                                <p class="ml-1">{{ $item->quantity }}</p>
+                                            <div class="flex items-center justify-center flex-col">
+                                                <div class="border w-8 h-8 ml-4 rounded-full bg-indigo-500 flex items-center justify-center">
+                                                    <p class="text-white">{{ $item->quantity }}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 @endforeach
-                                <hr class="mx-6">
                             </div>
 
                             <div class="w-full fixed bottom-0 flex flex-col px-6 pb-6 bg-white">
