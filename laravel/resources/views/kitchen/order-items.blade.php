@@ -140,19 +140,26 @@
                 filteredOrders.forEach(item => {
                     let remarkData = item.remark ? JSON.parse(item.remark) : {};
                     let isTakeaway = remarkData.takeaway;
-                    let takeawayText = isTakeaway ? "[ Takeaway ]" : "[ Dine In ]";
+                    let takeawayText = isTakeaway ? "Takeaway" : "Dine In";
                     let takeawayColor = isTakeaway ? "text-red-500" : "text-indigo-500";
                     let formattedRemarks = remarkData.options ? Object.values(remarkData.options).flat().join(", ") : "-";
 
                     orderList.innerHTML += `
-                    <div onclick="openOrderCompleteModal('${item.orderItemID}')"
-                         class="cursor-pointer bg-white p-4 shadow rounded-lg hover:shadow-lg transition">
-
-                        <p class="font-bold text-lg mb-2 ${takeawayColor}">${takeawayText} - ${item.status}</p>
+                    <div onclick="openOrderCompleteModal('${item.orderItemID}')" class="cursor-pointer bg-white p-4 shadow rounded-lg hover:shadow-lg transition">
+                        <div class="flex justify-between items-center mb-4">
+                            <p class="text-gray-700 font-bold">${takeawayText}</p>
+                            <div class="flex items-center space-x-2">
+                                    <p class="${item.status === 'Pending' ? 'text-red-500 bg-red-100 px-4 py-2 text-sm rounded-full' : 'text-green-500 bg-green-100 px-4 py-2 text-sm rounded-full'} font-bold">
+                                        ${item.status}
+                                    </p>
+                                </div>
+                            </div>
+                        <hr class="mb-2">
                         <p class="text-gray-700"><strong>Order ID:</strong> ${item.orderID}</p>
                         <p class="text-gray-700"><strong>Table No:</strong> ${item.orders?.tableNo || '-'}</p>
-                        <p class="text-gray-700"><strong>Product:</strong> ${item.products?.name || '-'}</p>
-                        <p class="text-gray-700"><strong>Remark:</strong> ${formattedRemarks}</p>
+                        <p class="text-gray-700"><strong>Order Item:</strong> ${item.products?.name || '-'}</p>
+                        <p class="text-gray-700"><strong>Quantity:</strong> ${item.quantity || '-'}</p>
+                        <p class="text-gray-700"><strong>Remark:</strong> ${formattedRemarks || '-'}</p>
                     </div>
                 `;
                 });
