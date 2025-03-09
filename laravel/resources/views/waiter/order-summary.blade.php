@@ -11,7 +11,7 @@
                     @if (session('cart'))
                         <div class="mb-96">
                             @foreach (session('cart') as $cartKey => $cartItem)
-                                <div class="flex gap-x-10 items-center py-4 pl-8">
+                                <div class="flex gap-x-6 items-center py-4 pl-8">
                                     <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
                                         @if (!empty($cartItem['image']))
                                             <img class="w-full h-full rounded-lg object-cover" src="{{ asset($cartItem['image']) }}" alt="Image Not Available">
@@ -20,15 +20,26 @@
                                         @endif
                                     </div>
 
-                                    <div class="flex items-center w-1/2 justify-between">
-                                        <div class="space-y-2 text-sm">
+                                    <div class="flex items-center w-1/2 space-x-4 justify-between">
+                                        <div class="space-y-2">
                                             <p class="text-base font-bold text-zinc-700">{{ $cartItem['name'] }}</p>
-                                            <p>{{ $cartItem['takeaway'] ? 'Takeaway' : 'Dine-In' }}</p>
+                                            @php
+                                                $options = collect($cartItem['options'])->map(function($values, $name) {
+                                                    return implode(', ', $values);
+                                                });
 
-                                            <!-- Loop through options -->
-                                            @foreach ($cartItem['options'] as $optionName => $optionValues)
-                                                <p>{{ $optionName }}:<br> {{ implode(', ', $optionValues) }}</p>
-                                            @endforeach
+                                                $takeaway = $cartItem['takeaway'] ?? false;
+                                                $orderType = $takeaway
+                                                    ? '<strong class="font-bold text-red-500">[ Takeaway ]</strong>'
+                                                    : '<strong class="font-bold text-indigo-500">[ Dine In ]</strong>';
+                                            @endphp
+
+                                            <p class="text-sm text-gray-500">
+                                                {!! $orderType !!}
+                                                @if ($options->isNotEmpty())
+                                                    - {!! $options->implode(', ') !!}
+                                                @endif
+                                            </p>
 
                                             <p class="text-sm">{{ '- RM ' . $cartItem['price'] }}</p>
                                         </div>
