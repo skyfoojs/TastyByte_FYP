@@ -20,10 +20,10 @@
         </div>
     @endif
         <div class="flex justify-between w-full items-center">
-            <div class="flex items-center space-x-4">
+            <a href="{{ route('menu') }}" class="flex items-center space-x-4">
                 <img src="{{ asset('images/' . 'Logo.png') }}" alt="Logo" class="w-12 h-12">
                 <p class="text-gray-300 text-2xl font-bold">TastyByte</p>
-            </div>
+            </a>
 
             <div class="relative flex items-center">
                 <button id="dropdownToggle" class="flex items-center">
