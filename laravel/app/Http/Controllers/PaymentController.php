@@ -132,6 +132,19 @@ class PaymentController extends Controller
         return back()->with('success', 'Voucher applied successfully!');
     }
 
+    public function removeVoucher()
+    {
+        $checkout = session('checkout', []);
+        unset($checkout['voucherCode'], $checkout['discount']);
+
+        $subtotal = $checkout['subtotal'] ?? 0;
+        $checkout['new_total'] = $subtotal;
+
+        session()->put('checkout', $checkout);
+
+        return redirect()->back()->with('success', 'Voucher removed successfully!');
+    }
+
 
     public function sendDigitalInvoice(Request $request) {
     // Validate email input
