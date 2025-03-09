@@ -114,12 +114,12 @@
                                         </div>
 
                                     @else
-                                        <div class="bg-light-gray rounded-lg text-white flex items-center justify-center py-4 px-6 mt-4">
+                                        <div class="bg-light-gray rounded-lg text-white flex items-center justify-center text-center py-4 px-6 mt-4">
                                             <button title="Order Completed!">Order Completed</button>
                                         </div>
                                     @endif
 
-                                    <div class="bg-gray-500 rounded-lg text-white flex items-center justify-center py-4 px-6 mt-4">
+                                    <div class="bg-gray-500 rounded-lg text-white flex items-center justify-center text-center py-4 px-6 mt-4">
                                         <a href="{{ route('menu') }}">Back To Home</a>
                                     </div>
                                 </div>
