@@ -90,7 +90,13 @@
 
             <form action="{{ route('cashier.addOrder.post') }}" method="POST">
                 @csrf
-                <button class="w-full bg-indigo-500 text-white py-2 mt-4 rounded" type="submit">Place Order</button>
+                <button
+                    class="w-full bg-indigo-500 text-white py-2 mt-4 rounded
+                    @if (!session('cart') || count(session('cart')) === 0) opacity-50 cursor-not-allowed @endif"
+                    type="submit"
+                    @if (!session('cart') || count(session('cart')) === 0) disabled @endif>
+                    Place Order
+                </button>
             </form>
         </div>
     </div>
