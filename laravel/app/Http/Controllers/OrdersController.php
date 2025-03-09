@@ -58,7 +58,7 @@ class OrdersController extends Controller
 
                 $isPaid = $orders->first()->payments->isNotEmpty();
 
-                session(['checkout' => [
+                session(['checkout' => array_merge(session('checkout', []), [
                     'orderID' => $request->orderID,
                     'subtotal' => $subtotal,
                     'tax' => $tax,
@@ -68,10 +68,11 @@ class OrdersController extends Controller
                     'isPaid' => $isPaid,
                     'paymentID' => $payment->paymentID ?? null,
                     'paymentMethod' => $payment ? ($payment->paymentMethod === 'credit_debit_card' ? 'Credit/ Debit Card' : 'Cash') : null,
-                    'voucherCode' => $payment->voucher_code ?? '-',
+                    'voucherCode' => session('checkout.voucherCode', '-'), // Preserve applied voucher
+                    'discount' => session('checkout.discount', 0),
+                    'new_total' => session('checkout.new_total', $total),
                     'paymentDate' => $payment->created_at ?? null,
-                ]]);
-
+                ])]);
                 return view('cashier.order-summary', compact('orders', 'isPaid', 'payment'));
             } elseif ($role === 'Waiter') {
                 return view('waiter.order-summary');
