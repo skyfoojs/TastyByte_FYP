@@ -99,23 +99,47 @@ class PaymentController extends Controller
         ]);
 
         $voucher = Vouchers::where('code', $request->voucher_code)->first();
+
         if (!$voucher) {
-            return response()->json(['success' => false, 'message' => 'Invalid voucher code.'], 400);
+            return back()->with('error', 'Invalid voucher code.');
         }
 
-        $order = session('checkout');
-        $subtotal = $order['subtotal'] ?? 0;
-        $newTotal = max(0, $subtotal - $voucher->discount);
+        $now = now();
 
-        return response()->json([
-            'success' => true,
-            'voucherID' => $voucher->voucherID,
-            'discount' => $voucher->discount,
-            'new_total' => $newTotal
-        ]);
+        if ($voucher->startedOn > $now || $voucher->expiredOn < $now) {
+            return back()->with('error', 'This voucher is not valid at this time.');
+        }
+
+        // 取 session 数据
+        $checkout = session('checkout', []);
+
+        // 计算税和服务费
+        $subtotal = $checkout['subtotal'] ?? 0;
+        $tax = $checkout['tax'] ?? ($subtotal * 0.06);
+        $serviceCharge = $checkout['serviceCharge'] ?? ($subtotal * 0.10);
+
+        // 计算折扣
+        $discount = ($voucher->type === 'Percentage')
+            ? ($subtotal * $voucher->value) / 100
+            : $voucher->value;
+
+        // 计算新总价
+        $newTotal = max(0, ($subtotal + $tax + $serviceCharge) - $discount);
+
+        // 确保 session 里有所有数据
+        $checkout['voucherCode'] = $voucher->code;
+        $checkout['discount'] = $discount;
+        $checkout['new_total'] = $newTotal;
+
+        // 强制存入 session 并保存
+        session()->put('checkout', $checkout);
+        session()->save();  // **强制 Laravel 立即保存 session**
+
+        return back()->with('success', 'Voucher applied successfully!');
     }
 
-public function sendDigitalInvoice(Request $request) {
+
+    public function sendDigitalInvoice(Request $request) {
     // Validate email input
     $request->validate([
         'emailAddress' => 'required|email',
