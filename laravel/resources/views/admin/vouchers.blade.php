@@ -101,7 +101,7 @@
         </div>
 
         <div id="voucherEditModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
-            <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
+            <div class="bg-white w-full max-w-xl rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit Voucher</h2>
                 <hr class="py-2">
                 <form action="{{ route('editVoucher.post') }}" method="POST">
@@ -164,7 +164,7 @@
         </div>
 
         <div id="voucherAddModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
-            <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
+            <div class="bg-white w-full max-w-xl rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
                 <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Voucher</h2>
                 <hr class="py-2">
                 <form action="{{ route('addVoucher.post') }}" method="POST">
