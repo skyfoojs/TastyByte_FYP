@@ -116,9 +116,15 @@ class PaymentController extends Controller
         $tax = $checkout['tax'] ?? ($subtotal * 0.06);
         $serviceCharge = $checkout['serviceCharge'] ?? ($subtotal * 0.10);
 
-        $discount = ($voucher->type === 'Percentage')
-            ? ($subtotal * $voucher->value) / 100
-            : $voucher->value;
+        if ($voucher->type === 'Percentage') {
+            $discount = ($subtotal * $voucher->value) / 100;
+        } else {
+            $discount = $voucher->value;
+        }
+
+        if ($discount > $subtotal) {
+            return back()->with('error', 'Voucher discount exceeds subtotal. Cannot apply.');
+        }
 
         $newTotal = max(0, ($subtotal + $tax + $serviceCharge) - $discount);
 
