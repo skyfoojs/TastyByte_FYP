@@ -64,6 +64,9 @@
 </style>
 
 <script>
+    if(window.innerWidth < 768) {
+        window.location.href = "{{ url('/404') }}";
+    }
     let selectedOrderItemID = null;
 
     function openOrderCompleteModal(orderItemID) {
