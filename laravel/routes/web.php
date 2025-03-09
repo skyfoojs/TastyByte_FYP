@@ -111,6 +111,8 @@ Route::post('/summary', [OrdersController::class, 'addOrderPost'])->name('addOrd
 
 Route::post('/apply-voucher', [PaymentController::class, 'applyVoucher'])->name('applyVoucher');
 
+Route::post('/remove-voucher', [PaymentController::class, 'removeVoucher'])->name('removeVoucher');
+
 Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
 
 // Get the cart item from the View.
