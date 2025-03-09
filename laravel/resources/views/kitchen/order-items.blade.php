@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="mt-6">
-                    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="orderList"></div>
+                    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="orderList"></div>
                 </div>
             </div>
         </div>
