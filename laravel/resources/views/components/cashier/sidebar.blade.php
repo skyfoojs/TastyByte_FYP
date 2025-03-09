@@ -149,20 +149,23 @@
 @elseif ($routeName === 'orderSummary')
     @php
         $checkout = session('checkout', []);
-        $orderID = $checkout['orderID'] ?? 'Error';
         $subtotal = $checkout['subtotal'] ?? 0;
-        $tax = $checkout['tax'] ?? 0;
-        $serviceCharge = $subtotal * 0.10;
-        $total = $checkout['total'] ?? 0;
+        $tax = $checkout['tax'] ?? ($subtotal * 0.06);
+        $serviceCharge = $checkout['serviceCharge'] ?? ($subtotal * 0.10);
+        $voucherCode = $checkout['voucherCode'] ?? null; // Ensure keys match session data
+        $discount = $checkout['discount'] ?? 0;
+        $total = $checkout['new_total'] ?? ($subtotal + $tax + $serviceCharge);
+
+        $orderID = $checkout['orderID'] ?? 'Error';
         $tableNo = $checkout['tableNo'] ?? 'Error';
-        $orderDate = session('checkout.orderDate') ?? '-';
-        $isPaid = session('checkout.isPaid', false);
-        $paymentID = session('checkout.paymentID') ?? '-';
-        $paymentMethod = session('checkout.paymentMethod') ?? '-';
-        $voucherCode = session('checkout.voucherCode') ?? '-';
-        $paymentDate = session('checkout.paymentDate') ?? '-';
+        $orderDate = $checkout['orderDate'] ?? '-';
+        $isPaid = $checkout['isPaid'] ?? false;
+        $paymentID = $checkout['paymentID'] ?? '-';
+        $paymentMethod = $checkout['paymentMethod'] ?? '-';
+        $paymentDate = $checkout['paymentDate'] ?? '-';
     @endphp
 
+    <pre>{{ print_r(session('checkout'), true) }}</pre>
     <!-- Cashier Sidebar -->
     <div class="w-1/4 bg-white p-6 shadow-lg fixed right-0 top-26 h-[calc(100%-6rem)] flex flex-col justify-between">
         <div class="overflow-y-auto flex-1">
@@ -206,15 +209,22 @@
                     <!-- Voucher Section -->
                     <div class="pt-4 mt-4">
                         <h3 class="font-semibold text-lg mb-2">Voucher</h3>
-                        <form id="voucherForm">
+                        <form action="{{ route('applyVoucher') }}" method="POST">
                             @csrf
-                            <input type="text" name="voucher_code" id="voucherCode" placeholder="Enter voucher code"
-                                   class="border border-gray-300 rounded-lg px-3 py-2 flex-1 mr-4 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="text" name="voucher_code" placeholder="Enter voucher code"
+                                   class="border border-gray-300 rounded-lg px-3 py-2 flex-1 mr-4 focus:ring-indigo-500 focus:border-indigo-500"
+                                   value="{{ old('voucher_code') }}">
                             <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-lg">Apply</button>
                         </form>
-                        <p id="voucherMessage" class="text-red-500 mt-2"></p>
+                        @if (session('success'))
+                            <p class="text-green-500 mt-2">{{ session('success') }}</p>
+                        @elseif (session('error'))
+                            <p class="text-red-500 mt-2">{{ session('error') }}</p>
+                        @endif
                     </div>
-               @endif
+
+
+                @endif
         </div>
 
         <!-- Order Summary -->
@@ -231,6 +241,13 @@
                 <span>Service Charge 10%</span>
                 <span>RM {{ number_format($serviceCharge, 2) }}</span>
             </div>
+
+            @if($voucherCode)
+                <div class="flex justify-between text-red-500 font-semibold">
+                    <span>Voucher Discount ({{ $voucherCode }})</span>
+                    <span>- RM {{ number_format($discount, 2) }}</span>
+                </div>
+            @endif
 
             <hr class="border-t-4 mt-4 mb-4 border-dotted border-gray-200">
 
@@ -250,7 +267,7 @@
                     @csrf
                     <input type="hidden" name="orderID" value="{{ request()->orderID }}">
                     <input type="hidden" name="paymentMethod" id="selectedPaymentMethod" value="cash">
-                    <input type="hidden" name="voucher_code" id="hiddenVoucherCode" value="">
+                    <input type="hidden" name="voucher_code" id="hiddenVoucherCode" value="{{ $voucherCode }}">
 
                     <button type="submit" class="w-full bg-indigo-500 text-white py-2 mt-4 rounded">
                         Checkout
@@ -260,43 +277,3 @@
         </div>
     </div>
 @endif
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        function updatePaymentMethod(radio) {
-            document.getElementById('selectedPaymentMethod').value = radio.value;
-        }
-
-        document.getElementById('voucherForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            let code = document.getElementById('voucherCode').value;
-
-            fetch("{{ route('applyVoucher') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({ voucher_code: code })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('voucherMessage').textContent = "Voucher applied successfully!";
-                        document.getElementById('hiddenVoucherCode').value = code;
-                        document.getElementById('totalAmount').textContent = "RM " + data.new_total.toFixed(2);
-                    } else {
-                        document.getElementById('voucherMessage').textContent = "Invalid voucher code.";
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        });
-
-        document.querySelectorAll('input[name="paymentMethod"]').forEach((radio) => {
-            radio.addEventListener("change", function() {
-                updatePaymentMethod(this);
-            });
-        });
-    });
-</script>
