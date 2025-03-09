@@ -17,59 +17,59 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h2>TastyByte Invoice</h2>
-            <p>Thank you for your purchase!</p>
-        </div>
+<div class="container">
+    <div class="header">
+        <h2>TastyByte Invoice</h2>
+        <p>Thank you for your purchase!</p>
+    </div>
 
-        <table class="details-table">
-            <tr><td><strong>Invoice No:</strong></td><td>#{{ $payment->paymentID }}</td></tr>
-            <tr><td><strong>Order ID:</strong></td><td>#{{ $payment->orders->orderID }}</td></tr>
-            <tr><td><strong>Payment Method:</strong></td><td>{{ $payment->paymentMethod }}</td></tr>
+    <table class="details-table">
+        <tr><td><strong>Invoice No:</strong></td><td>#{{ $payment->paymentID }}</td></tr>
+        <tr><td><strong>Order ID:</strong></td><td>#{{ $payment->orders->orderID }}</td></tr>
+        <tr><td><strong>Payment Method:</strong></td><td>{{ $payment->paymentMethod }}</td></tr>
+        <tr>
+            <td><strong>Status:</strong></td>
+            <td style="color: {{ $payment->status == 'Completed' ? 'green' : 'red' }}; font-weight: bold;">
+                {{ $payment->status }}
+            </td>
+        </tr>
+        <tr><td><strong>Total Amount:</strong></td><td>RM{{ number_format($payment->totalAmount, 2) }}</td></tr>
+        <tr><td><strong>Date:</strong></td><td>{{ \Carbon\Carbon::parse($payment->created_at)->format('d/m/Y H:i:s') }}</td></tr>
+    </table>
+
+    <h3 style="margin-top: 20px;">Order Items</h3>
+    <table class="order-table">
+        <thead>
+        <tr><th>Item</th><th>Quantity</th><th>Remark</th></tr>
+        </thead>
+        <tbody>
+        @foreach($payment->orders->orderItems as $item)
             <tr>
-                <td><strong>Status:</strong></td>
-                <td style="color: {{ $payment->status == 'Completed' ? 'green' : 'red' }}; font-weight: bold;">
-                    {{ $payment->status }}
+                <td>{{ $item->products->name }}</td>
+                <td>{{ $item->quantity }}</td>
+                <td>
+                    @php $remark = json_decode($item->remark, true); @endphp
+                    @if(isset($remark['options']))
+                        @foreach($remark['options'] as $option => $values)
+                            <strong>{{ $option }}:</strong> {{ implode(', ', $values) }}<br>
+                        @endforeach
+                    @endif
+                    @if(isset($remark['takeaway']) && $remark['takeaway'])
+                        <strong>Takeaway:</strong> Yes
+                    @endif
                 </td>
             </tr>
-            <tr><td><strong>Total Amount:</strong></td><td>RM{{ number_format($payment->totalAmount, 2) }}</td></tr>
-            <tr><td><strong>Date:</strong></td><td>{{ \Carbon\Carbon::parse($payment->created_at)->format('d/m/Y H:i:s') }}</td></tr>
-        </table>
+        @endforeach
+        </tbody>
+    </table>
 
-        <h3 style="margin-top: 20px;">Order Items</h3>
-        <table class="order-table">
-            <thead>
-                <tr><th>Item</th><th>Quantity</th><th>Remark</th></tr>
-            </thead>
-            <tbody>
-                @foreach($payment->orders->orderItems as $item)
-                <tr>
-                    <td>{{ $item->products->name }}</td>
-                    <td>{{ $item->quantity }}</td>
-                    <td>
-                        @php $remark = json_decode($item->remark, true); @endphp
-                        @if(isset($remark['options']))
-                            @foreach($remark['options'] as $option => $values)
-                                <strong>{{ $option }}:</strong> {{ implode(', ', $values) }}<br>
-                            @endforeach
-                        @endif
-                        @if(isset($remark['takeaway']) && $remark['takeaway'])
-                            <strong>Takeaway:</strong> Yes
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="#" class="btn">View Invoice</a>
-        </div>
-
-        <div class="footer">
-            <p>&copy; {{ date('Y') }} TastyByte. All rights reserved.</p>
-        </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="#" class="btn">View Invoice</a>
     </div>
+
+    <div class="footer">
+        <p>&copy; {{ date('Y') }} TastyByte. All rights reserved.</p>
+    </div>
+</div>
 </body>
 </html>
