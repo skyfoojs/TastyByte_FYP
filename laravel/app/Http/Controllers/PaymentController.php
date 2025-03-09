@@ -106,7 +106,7 @@ class PaymentController extends Controller
 
         $now = now();
 
-        if ($voucher->startedOn > $now || $voucher->expiredOn < $now) {
+        if ($voucher->expiredOn < $now) {
             return back()->with('error', 'This voucher is not valid at this time.');
         }
 
@@ -129,6 +129,8 @@ class PaymentController extends Controller
         $newTotal = max(0, ($subtotal + $tax + $serviceCharge) - $discount);
 
         $checkout['voucherCode'] = $voucher->code;
+        $checkout['voucherType'] = $voucher->type;
+        $checkout['voucherValue'] = $voucher->value;
         $checkout['discount'] = $discount;
         $checkout['new_total'] = $newTotal;
 
