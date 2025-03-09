@@ -208,21 +208,27 @@
                     <!-- Voucher Section -->
                     <div class="pt-4 mt-4">
                         <h3 class="font-semibold text-lg mb-2">Voucher</h3>
-                        <form action="{{ route('applyVoucher') }}" method="POST">
-                            @csrf
-                            <input type="text" name="voucher_code" placeholder="Enter voucher code"
-                                   class="border border-gray-300 rounded-lg px-3 py-2 flex-1 mr-4 focus:ring-indigo-500 focus:border-indigo-500"
-                                   value="{{ old('voucher_code') }}">
-                            <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-lg">Apply</button>
-                        </form>
-                        @if (session('success'))
-                            <p class="text-green-500 mt-2">{{ session('success') }}</p>
-                        @elseif (session('error'))
-                            <p class="text-red-500 mt-2">{{ session('error') }}</p>
+
+                        @if (!empty($voucherCode) && $voucherCode !== '-')
+                            <div class="flex justify-between items-center rounded-lg">
+                                <span class="border border-gray-300 bg-gray-100 rounded-lg px-3 py-2 flex-1 mr-4 focus:ring-indigo-500 focus:border-indigo-500">{{ $voucherCode }}</span>
+                                <form action="{{ route('removeVoucher') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg">Remove</button>
+                                </form>
+                            </div>
+                        @else
+                            <form id="applyVoucherForm" action="{{ route('applyVoucher') }}" method="POST">
+                                @csrf
+                                <input type="text" name="voucher_code" id="voucherInput" placeholder="Enter voucher code"
+                                       class="border border-gray-300 rounded-lg px-3 py-2 flex-1 mr-4 focus:ring-indigo-500 focus:border-indigo-500"
+                                       value="{{ old('voucher_code') }}">
+                                <button type="submit" id="applyVoucherBtn" class="bg-indigo-500 text-white px-4 py-2 rounded-lg">Apply</button>
+                            </form>
                         @endif
+
+                        <p id="voucherMessage" class="mt-2"></p>
                     </div>
-
-
                 @endif
         </div>
 
