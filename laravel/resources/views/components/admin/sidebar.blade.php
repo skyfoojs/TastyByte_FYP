@@ -5,10 +5,10 @@ $is_users_page = Str::contains($current_route, 'users'); // Check if the route c
 
 <aside class="w-64 bg-gray-800 h-full fixed">
     <div class="flex justify-center items-center mt-12">
-        <div class="flex items-center space-x-4">
+        <a href="{{ route('admin-dashboard') }}" class="flex items-center space-x-4">
             <img src="{{ asset('images/' . 'Logo.png') }}" alt="Logo" class="w-12 h-12">
             <p class="text-gray-300 text-2xl font-bold">TastyByte</p>
-        </div>
+        </a>
     </div>
 
     <nav class="px-6 text-gray-300 mt-10">
