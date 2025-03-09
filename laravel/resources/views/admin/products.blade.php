@@ -1,3 +1,5 @@
+@section('title', 'Admin Products Page - TastyByte')
+
 <x-admin.layout>
     <x-admin.sidebar>
         <x-admin.navbar>

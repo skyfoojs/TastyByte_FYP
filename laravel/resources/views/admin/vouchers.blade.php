@@ -1,3 +1,5 @@
+@section('title', 'Admin Vouchers Page - TastyByte')
+
 <x-admin.layout>
     <x-admin.sidebar>
         <x-admin.navbar>

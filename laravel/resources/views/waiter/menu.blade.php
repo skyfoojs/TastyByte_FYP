@@ -1,6 +1,7 @@
+@section('title', 'Waiter Dashboard - TastyByte')
+
 <x-waiter.layout>
     <x-waiter.navbar>
-
     <div class="flex flex-col justify-center items-center px-2 mt-24">
         <p class="mt-6 font-semibold text-xl">Waiter Menu</p>
 
