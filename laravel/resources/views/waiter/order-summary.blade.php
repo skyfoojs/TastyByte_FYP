@@ -84,12 +84,12 @@
                             </div>
 
                             <div class="flex flex-col mt-4 gap-y-3">
-                                <hr class="border border-dashed">
+                                <hr class="border-t-4 border-dotted border-gray-200">
                                 <div class="flex justify-between font-semibold">
                                     <p>Total</p>
                                     <p>RM {{ $total = $subTotal + $tax + $serviceCharge }}</p>
                                 </div>
-                                <hr class="border border-dashed">
+                                <hr class="border-t-4 border-dotted border-gray-200">
                             </div>
 
                             <div class="bg-indigo-500 rounded-lg text-white font-bold tracking-wide flex items-center justify-center py-4 mt-6">
