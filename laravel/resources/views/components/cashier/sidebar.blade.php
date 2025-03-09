@@ -29,7 +29,7 @@
 
                         <div class="flex-1 flex flex-col justify-between">
                             <p class="text-base font-bold text-zinc-700">{{ $cartItem['name'] }}</p>
-                            @if (!empty($cartItem['options']))
+                            @if (!empty($cartItem))
                                 @php
                                     $options = collect($cartItem['options'])->map(function($values, $name) {
                                         return implode(', ', $values);
