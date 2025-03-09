@@ -87,7 +87,7 @@
                                     <hr class="border-t-4 border-dotted border-gray-200">
                                 </div>
 
-                                <div class="flex gap-x-6 justify-center items-center">
+                                <div class="flex gap-x-4 justify-center items-center">
 
                                     @if ($selectedOrder->status != 'Completed')
                                         <div class="bg-indigo-500 rounded-lg text-white flex items-center justify-center py-4 px-6 mt-4">
@@ -100,7 +100,7 @@
                                         </div>
                                     @endif
 
-                                    <div class="bg-indigo-500 rounded-lg text-white flex items-center justify-center py-4 px-6 mt-4">
+                                    <div class="bg-gray-500 rounded-lg text-white flex items-center justify-center py-4 px-6 mt-4">
                                         <a href="{{ route('menu') }}">Back To Home</a>
                                     </div>
                                 </div>
