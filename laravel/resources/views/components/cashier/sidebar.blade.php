@@ -153,6 +153,8 @@
         $tax = $checkout['tax'] ?? ($subtotal * 0.06);
         $serviceCharge = $checkout['serviceCharge'] ?? ($subtotal * 0.10);
         $voucherCode = $checkout['voucherCode'] ?? null;
+        $voucherType = $checkout['voucherType'] ?? null;
+        $voucherValue = $checkout['voucherValue'] ?? null;
         $discount = $checkout['discount'] ?? 0;
         $total = $checkout['new_total'] ?? ($subtotal + $tax + $serviceCharge);
 
@@ -227,7 +229,11 @@
                             </form>
                         @endif
 
-                        <p id="voucherMessage" class="mt-2"></p>
+                        @if (session('success'))
+                            <p class="text-green-500 mt-2">{{ session('success') }}</p>
+                        @elseif (session('error'))
+                            <p class="text-red-500 mt-2">{{ session('error') }}</p>
+                        @endif
                     </div>
                 @endif
         </div>
@@ -249,7 +255,12 @@
 
             @if($voucherCode && $voucherCode !== '-')
                 <div class="flex justify-between text-gray-600">
-                    <span>Voucher Discount<br>({{ $voucherCode }})</span>
+                    <span>Voucher Discount
+                        @if ($checkout['voucherType'] === 'Percentage')
+                            {{ number_format($checkout['voucherValue'], 0) }}%
+                        @endif
+                        <br>({{ $voucherCode }})
+                    </span>
                     <span><br>- RM {{ number_format($discount, 2) }}</span>
                 </div>
             @endif
