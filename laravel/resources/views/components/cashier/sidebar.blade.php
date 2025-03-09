@@ -247,7 +247,7 @@
                 <span>RM {{ number_format($serviceCharge, 2) }}</span>
             </div>
 
-            @if($voucherCode)
+            @if($voucherCode && $voucherCode !== '-')
                 <div class="flex justify-between text-gray-600">
                     <span>Voucher Discount<br>({{ $voucherCode }})</span>
                     <span><br>- RM {{ number_format($discount, 2) }}</span>
