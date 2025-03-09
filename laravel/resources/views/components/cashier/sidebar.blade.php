@@ -35,9 +35,9 @@
                                         return implode(', ', $values);
                                     });
 
-                                    $takeaway = $options->pull('Takeaway');
+                                    $takeaway = $cartItem['takeaway'] ?? false;
 
-                                    if ($takeaway === 'Yes') {
+                                    if ($takeaway) {
                                         $options = $options->prepend('<strong class="font-bold text-red-500">Takeaway</strong>');
                                     } else {
                                         $options = $options->prepend('<strong class="font-bold text-indigo-500">Dine In</strong>');
