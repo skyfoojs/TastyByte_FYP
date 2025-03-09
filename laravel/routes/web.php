@@ -14,6 +14,11 @@ Route::get('/', function () {
     return view('login');
 })->name('login');
 
+// Set the 404 view as not-found.
+Route::get('/404', function () {
+    return abort(404);
+});
+
 // Get the login credentials from the view.
 Route::post('/', [LoginController::class, 'loginPost'])->name('login.post');
 

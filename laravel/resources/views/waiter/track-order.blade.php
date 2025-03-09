@@ -1,3 +1,5 @@
+@section('title', 'Track Order - TastyByte')
+
 <x-waiter.layout>
     <x-waiter.navbar>
         <div class="flex flex-col mt-24">

@@ -42,3 +42,8 @@
         </div>
     </x-cashier.navbar>
 </x-cashier.layout>
+<script>
+    if(window.innerWidth < 768) {
+        window.location.href = "{{ url('/404') }}";
+    }
+</script>

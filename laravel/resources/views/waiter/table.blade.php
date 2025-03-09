@@ -1,3 +1,5 @@
+@section('title', 'Enter a Table No - TastyByte')
+
 <x-waiter.layout>
     <x-waiter.navbar>
         <div class="flex items-center justify-center min-h-screen">

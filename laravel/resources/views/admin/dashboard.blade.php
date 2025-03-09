@@ -1,3 +1,5 @@
+@section('title', 'Admin Dashboard - TastyByte')
+
 <x-admin.layout>
     <x-admin.sidebar>
         <x-admin.navbar>
@@ -56,6 +58,9 @@
     </x-admin.sidebar>
 </x-admin.layout>
 <script>
+    if(window.innerWidth < 768) {
+        window.location.href = "{{ url('/404') }}";
+    }
 
     async function fetchDashboardData() {
         try {
