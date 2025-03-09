@@ -68,7 +68,9 @@ class OrdersController extends Controller
                     'isPaid' => $isPaid,
                     'paymentID' => $payment->paymentID ?? null,
                     'paymentMethod' => $payment ? ($payment->paymentMethod === 'credit_debit_card' ? 'Credit/ Debit Card' : 'Cash') : null,
-                    'voucherCode' => session('checkout.voucherCode', '-'), // Preserve applied voucher
+                    'voucherCode' => session('checkout.voucherCode', '-'),
+                    'voucherType' => session('checkout.voucherType', '-'),
+                    'voucherValue' => session('checkout.voucherValue', '-'),
                     'discount' => session('checkout.discount', 0),
                     'new_total' => session('checkout.new_total', $total),
                     'paymentDate' => $payment->created_at ?? null,
