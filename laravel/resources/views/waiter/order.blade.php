@@ -19,21 +19,20 @@
 
                                 @foreach ($products as $product)
                                     @if ($product->status == 'Not Available')
-                                        <div class="flex gap-x-10 items-center py-4 bg-gray-400 opacity-70">
-                                            <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
+                                        <div class="flex items-center py-3 rounded-xl">
+                                            <div class="w-32 h-32 flex items-center justify-center bg-gray-300 rounded-s-xl">
                                                 @if (!empty($product->image))
-                                                    <img class="w-full h-full rounded-lg object-cover" src="{{ asset($product->image) }}" alt="Image Not Available">
+                                                    <img class="w-full h-full object-cover rounded-s-xl grayscale opacity-60" src="{{ asset($product->image) }}" alt="Image Not Available">
                                                 @else
-                                                    <p class="text-white">No Image</p>
+                                                    <p class="text-gray-500">No Image</p>
                                                 @endif
                                             </div>
-                                            <div class="text-white">
-                                                <p>{{ $product->name }}</p>
-                                                <p>{{ $product->price }}</p>
-                                                <p class="text-red-500 text-sm">Product not available</p>
+                                            <div class="flex-1 h-32 flex flex-col justify-center px-6 bg-gray-100 rounded-r-xl">
+                                                <p class="text-gray-600 font-semibold">{{ $product->name }}</p>
+                                                <p class="text-gray-500">{{ $product->price }}</p>
+                                                <p class="text-red-600 text-base">Product not available</p>
                                             </div>
                                         </div>
-                                        <hr>
                                     @else
                                         <a href="{{ url('/product-details/' . $product->productID) }}">
                                             <div class="flex items-center py-3">
