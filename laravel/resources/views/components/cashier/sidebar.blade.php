@@ -18,7 +18,7 @@
         <div class="flex-1 overflow-y-auto mt-6 mb-6">
             @if (session('cart'))
                 @foreach (session('cart') as $cartKey => $cartItem)
-                <div class="flex gap-x-4 mb-6">
+                    <div class="flex gap-x-4 mb-6 cart-item" data-key="{{ $cartKey }}">
                         <div class="border w-24 h-24 rounded-lg flex items-center justify-center">
                             @if (!empty($cartItem['image']))
                                 <img class="w-full h-full rounded-lg object-cover" src="{{ asset($cartItem['image']) }}" alt="Image Not Available">
@@ -120,21 +120,24 @@
                         .then(data => {
                             if (data.success) {
                                 if (data.redirect) {
-                                    location.reload()
+                                    location.reload();
                                 } else {
-                                    alert("Error occurred while removing the item.");
+                                    let cartItem = document.querySelector(`.cart-item[data-key='${cartKey}']`);
+                                    if (cartItem) {
+                                        cartItem.remove();
+                                    }
+
+                                    if (document.querySelectorAll('.cart-item').length === 0) {
+                                        location.reload();
+                                    }
                                 }
+                            } else {
+                                alert("Error occurred while removing the item.");
                             }
                         })
-                        .catch(async (error) => {
+                        .catch(error => {
                             console.error("Error:", error);
-
-                            if (error.response) {
-                                const errorText = await error.response.text();
-                                alert("Error occurred: " + errorText);
-                            } else {
-                                alert("An unknown error occurred while removing the item.");
-                            }
+                            alert("An unknown error occurred while removing the item.");
                         });
                 });
             });
