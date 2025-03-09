@@ -152,7 +152,7 @@
         $subtotal = $checkout['subtotal'] ?? 0;
         $tax = $checkout['tax'] ?? ($subtotal * 0.06);
         $serviceCharge = $checkout['serviceCharge'] ?? ($subtotal * 0.10);
-        $voucherCode = $checkout['voucherCode'] ?? null; // Ensure keys match session data
+        $voucherCode = $checkout['voucherCode'] ?? null;
         $discount = $checkout['discount'] ?? 0;
         $total = $checkout['new_total'] ?? ($subtotal + $tax + $serviceCharge);
 
@@ -165,7 +165,6 @@
         $paymentDate = $checkout['paymentDate'] ?? '-';
     @endphp
 
-    <pre>{{ print_r(session('checkout'), true) }}</pre>
     <!-- Cashier Sidebar -->
     <div class="w-1/4 bg-white p-6 shadow-lg fixed right-0 top-26 h-[calc(100%-6rem)] flex flex-col justify-between">
         <div class="overflow-y-auto flex-1">
@@ -243,9 +242,9 @@
             </div>
 
             @if($voucherCode)
-                <div class="flex justify-between text-red-500 font-semibold">
-                    <span>Voucher Discount ({{ $voucherCode }})</span>
-                    <span>- RM {{ number_format($discount, 2) }}</span>
+                <div class="flex justify-between text-gray-600">
+                    <span>Voucher Discount<br>({{ $voucherCode }})</span>
+                    <span><br>- RM {{ number_format($discount, 2) }}</span>
                 </div>
             @endif
 
