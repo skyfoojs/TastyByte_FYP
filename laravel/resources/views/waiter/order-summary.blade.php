@@ -3,13 +3,13 @@
         <div class="flex flex-col mt-24">
             <x-waiter.table-header :table="'Table ' . session('tableNo')" :trackOrder="'Summary'">
                 @php
-                //session()->forget('cart');
+                    //session()->forget('cart');
                 @endphp
                 <div class="flex flex-col">
                     <hr class="mt-3">
                     <!-- Loop through products under the category -->
                     @if (session('cart'))
-                    <div class="mb-96">
+                        <div class="mb-96">
                             @foreach (session('cart') as $cartKey => $cartItem)
                                 <div class="flex gap-x-10 items-center py-4 pl-8">
                                     <div class="border w-28 h-28 rounded-lg flex items-center justify-center">
@@ -22,24 +22,26 @@
 
                                     <div class="flex items-center w-1/2 justify-between">
                                         <div class="space-y-2 text-sm">
-                                            <p>{{ $cartItem['name'] }}</p>
-                                            <p>{{ 'RM ' . $cartItem['price'] }}</p>
+                                            <p class="text-base font-bold text-zinc-700">{{ $cartItem['name'] }}</p>
                                             <p>{{ $cartItem['takeaway'] ? 'Takeaway' : 'Dine-In' }}</p>
 
                                             <!-- Loop through options -->
                                             @foreach ($cartItem['options'] as $optionName => $optionValues)
                                                 <p>{{ $optionName }}:<br> {{ implode(', ', $optionValues) }}</p>
                                             @endforeach
+
+                                            <p class="text-sm">{{ '- RM ' . $cartItem['price'] }}</p>
                                         </div>
 
-                                        <div class="ml-2 flex border py-1 px-2 rounded-lg bg-[#efefef] text-center items-center">
-                                            <small>x</small>
-                                            <p class="ml-1">{{ $cartItem['quantity'] }}</p>
-                                        </div>
+                                        <div class="flex items-center justify-center flex-col">
+                                            <div class="border w-8 h-8 mr-2 rounded-full bg-indigo-500 flex items-center justify-center">
+                                                <p class="text-white">{{ $cartItem['quantity'] }}</p>
+                                            </div>
 
-                                        <button class="remove-from-cart" data-key="{{ $cartKey }}">
-                                            <i class='bx bx-trash text-red-500 bx-sm'></i>
-                                        </button>
+                                            <button class="w-8 h-8 mr-2 mt-4 text-red-600 remove-from-cart flex items-center justify-center" data-key="{{ $cartKey }}">
+                                                <i class="bx bx-trash text-xl"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr class="mx-6">
@@ -93,34 +95,34 @@
     </x-waiter.navbar>
 </x-waiter.layout>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".remove-from-cart").forEach(button => {
-        button.addEventListener("click", function () {
-            let cartKey = this.getAttribute("data-key");
-            let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".remove-from-cart").forEach(button => {
+            button.addEventListener("click", function () {
+                let cartKey = this.getAttribute("data-key");
+                let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-            fetch("{{ route('cart.remove') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": csrfToken,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ cartKey: cartKey })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    if (data.redirect) {
-                        window.location.href = data.redirect; // Redirect first
-                    } else {
-                        location.reload(); // Refresh page if cart is not empty
-                    }
-                }
-            })
-            .catch(error => console.error("Error:", error));
+                fetch("{{ route('cart.remove') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ cartKey: cartKey })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (data.redirect) {
+                                window.location.href = data.redirect; // Redirect first
+                            } else {
+                                location.reload(); // Refresh page if cart is not empty
+                            }
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
         });
     });
-});
 
 
 </script>
