@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="w-full fixed bottom-0 flex flex-col px-6 font-pop pb-6 bg-white z-50">
-                            <div class="mt-12">
+                            <div class="mt-6">
                                 <p class="font-semibold">Payment Summary</p>
                             </div>
 
