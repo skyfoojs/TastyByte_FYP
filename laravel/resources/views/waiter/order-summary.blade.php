@@ -59,12 +59,12 @@
                             @endforeach
                         </div>
 
-                        <div class="w-full fixed bottom-0 flex flex-col px-6 font-pop pb-6 bg-white z-50">
+                        <div class="w-full fixed bottom-0 flex flex-col px-6 pb-6 bg-white z-50">
                             <div class="mt-6">
-                                <p class="font-semibold">Payment Summary</p>
+                                <p class="font-semibold text-lg">Payment Summary</p>
                             </div>
 
-                            <div class="flex flex-col mt-3 text-[#5B5B5B] gap-y-6">
+                            <div class="flex flex-col text-gray-600 gap-y-2 mt-4">
                                 <div class="flex justify-between">
                                     <p>Subtotal</p>
                                     <p>RM {{ $subTotal = number_format(array_reduce(session('cart'), function($carry, $item) {
@@ -92,7 +92,7 @@
                                 <hr class="border border-dashed">
                             </div>
 
-                            <div class="bg-blue-button rounded-lg text-white flex items-center justify-center py-4 gap-x-2 mt-8">
+                            <div class="bg-indigo-500 rounded-lg text-white font-bold tracking-wide flex items-center justify-center py-4 mt-6">
                                 <form action="{{ route('addOrder.post') }}" method="POST">
                                     @csrf
                                     <button type="submit">Place Order</button>
