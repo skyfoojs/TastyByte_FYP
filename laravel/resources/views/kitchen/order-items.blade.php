@@ -36,11 +36,11 @@
                 <div class="flex justify-end mt-10">
                     <button type="button" onclick="closeOrderCompleteModal()"
                             class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mr-2">
-                        取消
+                        Cancel
                     </button>
                     <button type="button" onclick="confirmOrderCompletion()"
                             class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">
-                        确认
+                        Update
                     </button>
                 </div>
             </div>
