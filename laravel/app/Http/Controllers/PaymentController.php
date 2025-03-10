@@ -60,12 +60,12 @@ class PaymentController extends Controller
                 return $item->quantity * ($item->products->price ?? 0);
             });
 
+            $voucherID = null;
             if ($request->filled('voucher_code')) {
                 $voucher = Vouchers::where('code', $request->voucher_code)->first();
                 if ($voucher) {
                     $totalAmount -= $voucher->discount;
                     $voucherID = $voucher->voucherID;
-
                     $voucher->increment('usedCount');
                 }
             }
