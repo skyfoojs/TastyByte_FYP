@@ -1,66 +1,69 @@
 @section('title', 'Admin Dashboard - TastyByte')
 
-<x-admin.layout>
-    <x-admin.sidebar>
-        <x-admin.navbar>
-        <section class="p-6 space-y-6">
-            <p class="text-3xl mx-4 font-bold">Dashboard</p>
+<div class="bg-slate-200 text-3xl font-bold flex items-center justify-center h-screen md:hidden">
+    <p>404</p>
+</div>
 
-            <div class="grid grid-cols-4 gap-6">
-                <div class="bg-white p-6 rounded-2xl">
-                    <h2 class="text-gray-600 font-medium">Users</h2>
-                    <p id="usersCount" class="text-3xl font-semibold mt-2">0</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl">
-                    <h2 class="text-gray-600 font-medium">Products</h2>
-                    <p id="productsCount" class="text-3xl font-semibold mt-2">0</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl">
-                    <h2 class="text-gray-600 font-medium">Inventory</h2>
-                    <p id="inventoriesCount" class="text-3xl font-semibold mt-2">0</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl">
-                    <h2 class="text-gray-600 font-medium">Vouchers</h2>
-                    <p id="vouchersCount" class="text-3xl font-semibold mt-2">0</p>
-                </div>
-            </div>
+<div class="hidden md:block">
+    <x-admin.layout>
+        <x-admin.sidebar>
+            <x-admin.navbar>
+            <section class="p-6 space-y-6">
+                <p class="text-3xl mx-4 font-bold">Dashboard</p>
 
-            <div class="grid grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-md">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-gray-600 font-bold">Inventories Less Than 10</h2>
-                        <a href="{{ route('admin-inventory') }}" class="text-sm text-indigo-500 font-medium hover:underline hover:text-indigo-600">view ></a>
+                <div class="grid grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-2xl">
+                        <h2 class="text-gray-600 font-medium">Users</h2>
+                        <p id="usersCount" class="text-3xl font-semibold mt-2">0</p>
                     </div>
-                    <ul id="lowStockList" class="space-y-4"></ul>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl shadow-md">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-gray-600 font-bold">Upcoming Vouchers</h2>
-                        <a href="{{ route('admin-vouchers') }}" class="text-sm text-indigo-500 font-medium hover:underline hover:text-indigo-600">view ></a>
+                    <div class="bg-white p-6 rounded-2xl">
+                        <h2 class="text-gray-600 font-medium">Products</h2>
+                        <p id="productsCount" class="text-3xl font-semibold mt-2">0</p>
                     </div>
-                    <ul id="upcomingVoucherList" class="space-y-4"></ul>
+                    <div class="bg-white p-6 rounded-2xl">
+                        <h2 class="text-gray-600 font-medium">Inventory</h2>
+                        <p id="inventoriesCount" class="text-3xl font-semibold mt-2">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl">
+                        <h2 class="text-gray-600 font-medium">Vouchers</h2>
+                        <p id="vouchersCount" class="text-3xl font-semibold mt-2">0</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-md col-span-2">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-gray-600 font-bold">Latest Payment Records</h2>
-                    <a href="{{ route('admin-payments') }}" class="text-sm text-indigo-500 font-medium hover:underline hover:text-indigo-600">view ></a>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-gray-600 font-bold">Inventories Less Than 10</h2>
+                            <a href="{{ route('admin-inventory') }}" class="text-sm text-indigo-500 font-medium hover:underline hover:text-indigo-600">view ></a>
+                        </div>
+                        <ul id="lowStockList" class="space-y-4"></ul>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-gray-600 font-bold">Upcoming Vouchers</h2>
+                            <a href="{{ route('admin-vouchers') }}" class="text-sm text-indigo-500 font-medium hover:underline hover:text-indigo-600">view ></a>
+                        </div>
+                        <ul id="upcomingVoucherList" class="space-y-4"></ul>
+                    </div>
                 </div>
 
-                <div class="flex flex-col space-y-2">
-                    <ul id="latestPaymentList" class="space-y-4"></ul>
+                <div class="bg-white p-6 rounded-2xl shadow-md col-span-2">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-gray-600 font-bold">Latest Payment Records</h2>
+                        <a href="{{ route('admin-payments') }}" class="text-sm text-indigo-500 font-medium hover:underline hover:text-indigo-600">view ></a>
+                    </div>
+
+                    <div class="flex flex-col space-y-2">
+                        <ul id="latestPaymentList" class="space-y-4"></ul>
+                    </div>
                 </div>
-            </div>
-        </section>
-        </x-admin.navbar>
-    </x-admin.sidebar>
-</x-admin.layout>
+            </section>
+            </x-admin.navbar>
+        </x-admin.sidebar>
+    </x-admin.layout>
+</div>
 <script>
-    if(window.innerWidth < 768) {
-        window.location.href = "{{ url('/404') }}";
-    }
 
     async function fetchDashboardData() {
         try {
