@@ -1,32 +1,37 @@
-<x-kitchen.layout>
-    <x-kitchen.navbar>
-        <div class="flex h-screen relative">
-            <div class="w-full p-6 mt-25">
-                <div class="flex items-center mt-2">
-                    <a href="{{ route('kitchen.index', ['filter' => 'pending']) }}"
-                       class="p-3 mr-4 {{ request('filter', 'pending') === 'pending' ? 'bg-indigo-500 text-white' : 'bg-indigo-200 text-indigo-500' }}
-                       tracking-normal px-10 rounded-full">
-                        Pending
-                    </a>
-                    <a href="{{ route('kitchen.index', ['filter' => 'completed']) }}"
-                       class="p-3 mr-4 {{ request('filter') === 'completed' ? 'bg-indigo-500 text-white' : 'bg-indigo-200 text-indigo-500' }}
-                       tracking-normal px-10 rounded-full">
-                        Completed
-                    </a>
-                    <a href="{{ route('kitchen.index', ['filter' => 'all']) }}"
-                       class="p-3 {{ request('filter') === 'all' ? 'bg-indigo-500 text-white' : 'bg-indigo-200 text-indigo-500' }}
-                       tracking-normal px-10 rounded-full">
-                        All
-                    </a>
-                </div>
+<div class="bg-slate-200 text-3xl font-bold flex items-center justify-center h-screen md:hidden">
+    <p>404</p>
+</div>
 
-                <div class="mt-6">
-                    <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="orderList"></div>
+<div class="hidden md:block">
+    <x-kitchen.layout>
+        <x-kitchen.navbar>
+            <div class="flex h-screen relative">
+                <div class="w-full p-6 mt-25">
+                    <div class="flex items-center mt-2">
+                        <a href="{{ route('kitchen.index', ['filter' => 'pending']) }}"
+                        class="p-3 mr-4 {{ request('filter', 'pending') === 'pending' ? 'bg-indigo-500 text-white' : 'bg-indigo-200 text-indigo-500' }}
+                        tracking-normal px-10 rounded-full">
+                            Pending
+                        </a>
+                        <a href="{{ route('kitchen.index', ['filter' => 'completed']) }}"
+                        class="p-3 mr-4 {{ request('filter') === 'completed' ? 'bg-indigo-500 text-white' : 'bg-indigo-200 text-indigo-500' }}
+                        tracking-normal px-10 rounded-full">
+                            Completed
+                        </a>
+                        <a href="{{ route('kitchen.index', ['filter' => 'all']) }}"
+                        class="p-3 {{ request('filter') === 'all' ? 'bg-indigo-500 text-white' : 'bg-indigo-200 text-indigo-500' }}
+                        tracking-normal px-10 rounded-full">
+                            All
+                        </a>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="orderList"></div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+            <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
 
         <div id="orderCompleteModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
             <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content">
