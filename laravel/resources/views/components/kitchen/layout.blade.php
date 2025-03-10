@@ -16,7 +16,11 @@
 
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 </head>
-<body class="font-varela bg-slate-200">
-{{ $slot }}
-</body>
+    <body class="font-varela bg-slate-200">
+        <div class="flex-col md:flex hidden">{{ $slot }}</div>
+
+        <div class="bg-slate-200 text-3xl font-bold flex items-center justify-center h-screen md:hidden">
+            <p>404</p>
+        </div>
+    </body>
 </html>

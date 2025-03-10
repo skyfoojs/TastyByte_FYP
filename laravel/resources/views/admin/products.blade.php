@@ -1,354 +1,349 @@
 @section('title', 'Admin Products Page - TastyByte')
 
-<div class="bg-slate-200 text-3xl font-bold flex items-center justify-center h-screen md:hidden">
-    <p>404</p>
-</div>
+<x-admin.layout>
+    <x-admin.sidebar>
+        <x-admin.navbar>
+        <section class="p-6 space-y-6">
+            <div class="mx-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl font-bold">Products</h2>
+                    <div class="flex items-center space-x-4">
+                        <button onclick="openCreateModal()" class="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center space-x-2">
+                            <i class='bx bx-plus-circle'></i>
+                            <span>Add Products</span>
+                        </button>
 
-<div class="hidden md:block">
-    <x-admin.layout>
-        <x-admin.sidebar>
-            <x-admin.navbar>
-            <section class="p-6 space-y-6">
-                <div class="mx-4">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-2xl font-bold">Products</h2>
-                        <div class="flex items-center space-x-4">
-                            <button onclick="openCreateModal()" class="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center space-x-2">
-                                <i class='bx bx-plus-circle'></i>
-                                <span>Add Products</span>
-                            </button>
-
-                            <button onclick="openFilterModal()" class="bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center space-x-2">
-                                <i class='bx bx-filter-alt'></i>
-                                <span>Filter</span>
-                            </button>
-                        </div>
+                        <button onclick="openFilterModal()" class="bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium py-2 px-4 rounded-lg flex items-center space-x-2">
+                            <i class='bx bx-filter-alt'></i>
+                            <span>Filter</span>
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <div id="productTableContainer" class="bg-white p-6 rounded-3xl shadow-lg overflow-x-auto flex flex-col justify-between" style="height: 540px;">
-                    <table class="min-w-full table-auto border-collapse w-full" id="productTable">
-                        <thead>
-                        <tr class="text-gray-500 font-medium text-center">
-                            <th class="py-4 px-6 border-b border-gray-200">Product ID</th>
-                            <th class="py-4 px-6 border-b border-gray-200">Product Category</th>
-                            <th class="py-4 px-6 border-b border-gray-200">Product Name</th>
-                            <th class="py-4 px-6 border-b border-gray-200">Sort</th>
-                            <th class="py-4 px-6 border-b border-gray-200">Status</th>
-                            <th class="py-4 px-6 border-b border-gray-200">Edit</th>
+            <div id="productTableContainer" class="bg-white p-6 rounded-3xl shadow-lg overflow-x-auto flex flex-col justify-between" style="height: 540px;">
+                <table class="min-w-full table-auto border-collapse w-full" id="productTable">
+                    <thead>
+                    <tr class="text-gray-500 font-medium text-center">
+                        <th class="py-4 px-6 border-b border-gray-200">Product ID</th>
+                        <th class="py-4 px-6 border-b border-gray-200">Product Category</th>
+                        <th class="py-4 px-6 border-b border-gray-200">Product Name</th>
+                        <th class="py-4 px-6 border-b border-gray-200">Sort</th>
+                        <th class="py-4 px-6 border-b border-gray-200">Status</th>
+                        <th class="py-4 px-6 border-b border-gray-200">Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-gray-700 text-center" id="userTableBody">
+                        @if (!sizeof($products))
+                        <tr>
+                            <td colspan="7" class="py-4">No records found.</td>
                         </tr>
-                        </thead>
-                        <tbody class="text-gray-700 text-center" id="userTableBody">
-                            @if (!sizeof($products))
-                            <tr>
-                                <td colspan="7" class="py-4">No records found.</td>
-                            </tr>
-                            @endif
+                        @endif
 
-                            @foreach ($products->unique('productID') as $product)
-                            <tr>
-                                <td class="p-3 mt-4">{{ $product->productID }}</td>
-                                <td class="p-3 mt-4">
-                                    <span class="font-semibold">{{ $product->category->name }}<br></span>
-                                </td>
-                                <td class="p-3 mt-4">{{ $product->name }}</td>
-                                <td class="p-3 mt-4">{{ $product->category->sort }}</td>
-                                <td class="p-3 mt-4">
-                                    <span class="<?php echo $product->status === 'Available' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'; ?> text-sm font-medium px-3 py-1 rounded-lg">
-                                            <?php echo $product->status; ?>
-                                    </span>
-                                </td>
+                        @foreach ($products->unique('productID') as $product)
+                        <tr>
+                            <td class="p-3 mt-4">{{ $product->productID }}</td>
+                            <td class="p-3 mt-4">
+                                <span class="font-semibold">{{ $product->category->name }}<br></span>
+                            </td>
+                            <td class="p-3 mt-4">{{ $product->name }}</td>
+                            <td class="p-3 mt-4">{{ $product->category->sort }}</td>
+                            <td class="p-3 mt-4">
+                                <span class="<?php echo $product->status === 'Available' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'; ?> text-sm font-medium px-3 py-1 rounded-lg">
+                                        <?php echo $product->status; ?>
+                                </span>
+                            </td>
 
-                                    @foreach ($product->customizableCategory->unique('customizeCategoryID') as $customizableCategory)
-                                        @foreach ($customizableCategory->options->unique('customizeOptionsID') as $option)
+                                @foreach ($product->customizableCategory->unique('customizeCategoryID') as $customizableCategory)
+                                    @foreach ($customizableCategory->options->unique('customizeOptionsID') as $option)
 
-                                        @endforeach
                                     @endforeach
+                                @endforeach
 
-                                <td class="p-3 mt-4 flex justify-center space-x-2">
-                                <button class="text-gray-500 hover:text-blue-600" onclick="openPhotoModal('{{ asset($product->image) }}')">
-                                    <i class="bx bx-image"></i>
-                                </button>
-                                <button
-                                    class="text-gray-500 hover:text-blue-600"
-                                    onclick="openEditModal(
-                                        {{ $product->productID }},
-                                        '{{ $product->name }}',
-                                        {{ $product->price }},
-                                        '{{ $product->description }}',
-                                        '{{ $product->status }}',
-                                        {{ $product->category->categoryID }},
-                                        '{{ $product->category->name }}',
-                                        '{{ $product->category->status }}',
-                                        {{ $product->category->sort }},
-                                        {{ json_encode($product->customizableCategory->map(function ($cat) {
-                                            return [
-                                                'name' => $cat->name,
-                                                'sort' => $cat->sort,
-                                                'status' => $cat->status,
-                                                'singleChoose' => $cat->singleChoose,
-                                                'isRequired' => $cat->isRequired,
-                                                'options' => $cat->options->map(function ($opt) {
-                                                    return [
-                                                        'name' => $opt->name,
-                                                        'maxAmount' => $opt->maxAmount,
-                                                        'status' => $opt->status,
-                                                        'sort' => $opt->sort,
-                                                    ];
-                                                }),
-                                            ];
-                                        })) }}
-                                    )">
-                                    <i class="bx bx-pencil"></i>
-                                </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                    <div>
-                    {{ $products->appends(request()->query())->links() }}
-                    </div>
-                </div>
-            </section>
-
-            <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
-
-            <div id="photoModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
-                <div class="bg-white rounded-xl p-6">
-                    <img id="photoModalImage" src="" alt="Photo Not Available" class="max-w-full max-h-96 rounded-lg">
-                    <button onclick="closePhotoModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mt-4">Close</button>
-                </div>
-            </div>
-
-            <div id="productsFilterModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
-                <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4">
-                    <h2 class="text-2xl font-semibold mb-4">Filter Products</h2>
-                    <hr class="py-2">
-                    <form action="{{ route('filterProducts.get') }}" method="GET">
-                        <label class="block text-gray-700 text-sm font-medium">Filter By <span class="text-red-500">*</span></label>
-                        <select name="filterType" id="filterType" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-                            <option value="">Please Select a Type</option>
-                            <option value="filterProductID">Product ID</option>
-                            <option value="filterCategory">Product Category</option>
-                            <option value="filterProductName">Product Name</option>
-                            <option value="filterStatus">Product Status</option>
-                        </select>
-
-                        <label class="block text-gray-700 text-sm font-medium mt-4">Keyword <span class="text-red-500">*</span></label>
-                        <input name="keywords" type="text" id="scheduleKeywords" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-
-                        <div class="flex justify-end mt-10">
-                            <button type="button" onclick="closeFilterModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mr-2">Close</button>
-                            <a href="{{ route('admin-products') }}" class="text-white bg-red-500 hover:bg-red-600 font-bold py-2 px-6 rounded-lg mr-2">Reset</a>
-                            <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">Filter</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div id="productEditModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
-                <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
-                    <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit Product</h2>
-                    <hr class="py-2">
-                    <form action="{{ route('editProduct.post') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" id="productID" name="productID">
-                        <input type="hidden" id="editCustomizableCategoriesInput" name="editCustomizableCategories">
-                        <div class="flex space-x-4">
-                            <div class="flex-1">
-                                <label class="block text-gray-700 text-sm font-medium">Product Name <span class="text-red-500">*</span></label>
-                                <input name="editName" type="text" id="editName" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-                            </div>
-
-                            <div class="flex-1">
-                                <label class="block text-gray-700 text-sm font-medium">Product Price <span class="text-red-500">*</span></label>
-                                <input name="editPrice" type="numeric" id="editPrice" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-                            </div>
-                        </div>
-
-                        <div class="flex space-x-4">
-                            <div class="flex-1 mt-4">
-                                <label class="block text-gray-700 text-sm font-medium">Category<span class="text-red-500">*</span></label>
-                                <select name="editCategory" id="editCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                                    <option value="">Select Category</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->categoryID }}">{{ $category->name }}</option>
-                                    @endforeach
-                                    <option value="others">Others</option>
-                                </select>
-                            </div>
-
-                            <div class="flex-1 mt-4">
-                                <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ count($products->unique('category.name')) + 1 }}&#41;<span class="text-red-500">*</span></label>
-                                <input name="editCategorySort" type="number" id="editCategorySort" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ count($products->unique('category.name')) + 1 }}" required>
-                            </div>
-                        </div>
-
-                        <!-- Hidden input field for "Others" -->
-                        <div id="editOtherCategoryField" class="mt-4" style="display: none;">
-                            <label for="otherCategory" class="block text-gray-700 text-sm font-medium mt-4">Specify Category</label>
-                            <input type="text" name="editOtherCategory" id="editOtherCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" placeholder="Enter Category">
-                        </div>
-
-                        <label class="block text-gray-700 text-sm font-medium mt-4">Description</label>
-                        <input name="editDescription" type="text" id="editDescription" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                        <label class="block text-gray-700 text-sm font-medium mt-4">Product Status <span class="text-red-500">*</span></label>
-                        <select name="editStatus" id="editStatus" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                            <option value="">Select Status</option>
-                            <option value="Available">Available</option>
-                            <option value="Not Available">Not Available</option>
-                        </select>
-
-                        <label class="block text-gray-700 text-sm font-medium mt-4">Product Image</label>
-                        <input name="editImage" type="file" id="image" accept="image/png, image/jpg, image/jpeg, image/webp" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                        <div id="editCustomizableContainer" class="space-y-4"></div>
-
-                        <div id="editDefaultButtonLocation">
-                            <div id="edit-modalFooter" class="flex justify-end mt-10">
-                                <button type="button" onclick="closeEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                                <button type="submit" id="" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Update Product</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div id="productAddModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
-                <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
-                    <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Product</h2>
-                    <hr class="py-2">
-                    <form action="{{ route('addProduct.post') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="flex space-x-4">
-                            <div class="flex-1">
-                                <label class="block text-gray-700 text-sm font-medium">Product Name <span class="text-red-500">*</span></label>
-                                <input name="name" type="text" id="name" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-                            </div>
-
-                            <div class="flex-1">
-                                <label class="block text-gray-700 text-sm font-medium">Product Price <span class="text-red-500">*</span></label>
-                                <input name="price" type="numeric" id="price" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
-                            </div>
-                        </div>
-
-                        <div class="flex space-x-4">
-                            <div class="flex-1 mt-4">
-                                <label class="block text-gray-700 text-sm font-medium">Category<span class="text-red-500">*</span></label>
-                                <select name="category" id="category" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                                    <option value="">Select Category</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->categoryID }}">{{ $category->name }}</option>
-                                    @endforeach
-                                    <option value="others">Others</option>
-                                </select>
-                            </div>
-
-                            <div class="flex-1 mt-4">
-                                <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ count($products->unique('category.name')) + 1 }}&#41;<span class="text-red-500">*</span></label>
-                                <input name="sort" type="number" id="sort" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ count($products->unique('category.name')) + 1 }}" required>
-                            </div>
-                        </div>
-
-                        <!-- Hidden input field for "Others" -->
-                        <div id="otherCategoryField" class="mt-4" style="display: none;">
-                            <label for="otherCategory" class="block text-gray-700 text-sm font-medium mt-4">Specify Category</label>
-                            <input type="text" name="otherCategory" id="otherCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" placeholder="Enter Category">
-                        </div>
-
-                        <label class="block text-gray-700 text-sm font-medium mt-4">Description</label>
-                        <input name="description" type="text" id="description" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                        <label class="block text-gray-700 text-sm font-medium mt-4">Product Status <span class="text-red-500">*</span></label>
-                        <select name="status" id="status" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
-                            <option value="">Select Status</option>
-                            <option value="Available">Available</option>
-                            <option value="Not Available">Not Available</option>
-                        </select>
-
-                        <label class="block text-gray-700 text-sm font-medium mt-4">Product Image</label>
-                        <input name="image" type="file" id="image" accept="image/png, image/jpg, image/jpeg, image/webp" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
-
-                        <div id="addCategoryButtonContainer" class="flex mt-4 flex-col">
-                            <button type="button" id="addCategoryButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
-                                Add Category
+                            <td class="p-3 mt-4 flex justify-center space-x-2">
+                            <button class="text-gray-500 hover:text-blue-600" onclick="openPhotoModal('{{ asset($product->image) }}')">
+                                <i class="bx bx-image"></i>
                             </button>
-                        </div>
+                            <button
+                                class="text-gray-500 hover:text-blue-600"
+                                onclick="openEditModal(
+                                    {{ $product->productID }},
+                                    '{{ $product->name }}',
+                                    {{ $product->price }},
+                                    '{{ $product->description }}',
+                                    '{{ $product->status }}',
+                                    {{ $product->category->categoryID }},
+                                    '{{ $product->category->name }}',
+                                    '{{ $product->category->status }}',
+                                    {{ $product->category->sort }},
+                                    {{ json_encode($product->customizableCategory->map(function ($cat) {
+                                        return [
+                                            'name' => $cat->name,
+                                            'sort' => $cat->sort,
+                                            'status' => $cat->status,
+                                            'singleChoose' => $cat->singleChoose,
+                                            'isRequired' => $cat->isRequired,
+                                            'options' => $cat->options->map(function ($opt) {
+                                                return [
+                                                    'name' => $opt->name,
+                                                    'maxAmount' => $opt->maxAmount,
+                                                    'status' => $opt->status,
+                                                    'sort' => $opt->sort,
+                                                ];
+                                            }),
+                                        ];
+                                    })) }}
+                                )">
+                                <i class="bx bx-pencil"></i>
+                            </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-                        <div id="defaultButtonLocation">
-                            <div id="modalFooter" class="flex justify-end mt-10">
-                                <button type="button" onclick="closeCreateModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
-                                <button type="submit" id="addProductButton" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
-                            </div>
-                        </div>
-
-                        <div id="categories-container" class="mt-8">
-                            <h2 class="text-xl font-bold hidden" id="categories-container-header">Customizable Category</h2>
-                        </div>
-                    </form>
+                <div>
+                {{ $products->appends(request()->query())->links() }}
                 </div>
             </div>
-            </x-admin.navbar>
-        </x-admin.sidebar>
-    </x-admin.layout>
+        </section>
+
+        <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+        <div id="photoModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
+            <div class="bg-white rounded-xl p-6">
+                <img id="photoModalImage" src="" alt="Photo Not Available" class="max-w-full max-h-96 rounded-lg">
+                <button onclick="closePhotoModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mt-4">Close</button>
+            </div>
+        </div>
+
+        <div id="productsFilterModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
+            <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4">
+                <h2 class="text-2xl font-semibold mb-4">Filter Products</h2>
+                <hr class="py-2">
+                <form action="{{ route('filterProducts.get') }}" method="GET">
+                    <label class="block text-gray-700 text-sm font-medium">Filter By <span class="text-red-500">*</span></label>
+                    <select name="filterType" id="filterType" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        <option value="">Please Select a Type</option>
+                        <option value="filterProductID">Product ID</option>
+                        <option value="filterCategory">Product Category</option>
+                        <option value="filterProductName">Product Name</option>
+                        <option value="filterStatus">Product Status</option>
+                    </select>
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Keyword <span class="text-red-500">*</span></label>
+                    <input name="keywords" type="text" id="scheduleKeywords" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+
+                    <div class="flex justify-end mt-10">
+                        <button type="button" onclick="closeFilterModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg mr-2">Close</button>
+                        <a href="{{ route('admin-products') }}" class="text-white bg-red-500 hover:bg-red-600 font-bold py-2 px-6 rounded-lg mr-2">Reset</a>
+                        <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg">Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="productEditModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
+            <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
+                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Edit Product</h2>
+                <hr class="py-2">
+                <form action="{{ route('editProduct.post') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="productID" name="productID">
+                    <input type="hidden" id="editCustomizableCategoriesInput" name="editCustomizableCategories">
+                    <div class="flex space-x-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Product Name <span class="text-red-500">*</span></label>
+                            <input name="editName" type="text" id="editName" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Product Price <span class="text-red-500">*</span></label>
+                            <input name="editPrice" type="numeric" id="editPrice" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <div class="flex-1 mt-4">
+                            <label class="block text-gray-700 text-sm font-medium">Category<span class="text-red-500">*</span></label>
+                            <select name="editCategory" id="editCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Category</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->categoryID }}">{{ $category->name }}</option>
+                                @endforeach
+                                <option value="others">Others</option>
+                            </select>
+                        </div>
+
+                        <div class="flex-1 mt-4">
+                            <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ count($products->unique('category.name')) + 1 }}&#41;<span class="text-red-500">*</span></label>
+                            <input name="editCategorySort" type="number" id="editCategorySort" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ count($products->unique('category.name')) + 1 }}" required>
+                        </div>
+                    </div>
+
+                    <!-- Hidden input field for "Others" -->
+                    <div id="editOtherCategoryField" class="mt-4" style="display: none;">
+                        <label for="otherCategory" class="block text-gray-700 text-sm font-medium mt-4">Specify Category</label>
+                        <input type="text" name="editOtherCategory" id="editOtherCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" placeholder="Enter Category">
+                    </div>
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Description</label>
+                    <input name="editDescription" type="text" id="editDescription" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Product Status <span class="text-red-500">*</span></label>
+                    <select name="editStatus" id="editStatus" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                        <option value="">Select Status</option>
+                        <option value="Available">Available</option>
+                        <option value="Not Available">Not Available</option>
+                    </select>
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Product Image</label>
+                    <input name="editImage" type="file" id="image" accept="image/png, image/jpg, image/jpeg, image/webp" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+
+                    <div id="editCustomizableContainer" class="space-y-4"></div>
+
+                    <div id="editDefaultButtonLocation">
+                        <div id="edit-modalFooter" class="flex justify-end mt-10">
+                            <button type="button" onclick="closeEditModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                            <button type="submit" id="" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Update Product</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="productAddModal" class="fixed inset-0 flex items-center justify-center hidden z-50 modal">
+            <div class="bg-white w-full max-w-lg rounded-2xl shadow-lg p-6 mx-4 modal-content max-h-[90vh] overflow-y-auto">
+                <h2 id="modalTitle" class="text-2xl font-semibold mb-4">Add Product</h2>
+                <hr class="py-2">
+                <form action="{{ route('addProduct.post') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="flex space-x-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Product Name <span class="text-red-500">*</span></label>
+                            <input name="name" type="text" id="name" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+
+                        <div class="flex-1">
+                            <label class="block text-gray-700 text-sm font-medium">Product Price <span class="text-red-500">*</span></label>
+                            <input name="price" type="numeric" id="price" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" required>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <div class="flex-1 mt-4">
+                            <label class="block text-gray-700 text-sm font-medium">Category<span class="text-red-500">*</span></label>
+                            <select name="category" id="category" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                                <option value="">Select Category</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->categoryID }}">{{ $category->name }}</option>
+                                @endforeach
+                                <option value="others">Others</option>
+                            </select>
+                        </div>
+
+                        <div class="flex-1 mt-4">
+                            <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ count($products->unique('category.name')) + 1 }}&#41;<span class="text-red-500">*</span></label>
+                            <input name="sort" type="number" id="sort" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ count($products->unique('category.name')) + 1 }}" required>
+                        </div>
+                    </div>
+
+                    <!-- Hidden input field for "Others" -->
+                    <div id="otherCategoryField" class="mt-4" style="display: none;">
+                        <label for="otherCategory" class="block text-gray-700 text-sm font-medium mt-4">Specify Category</label>
+                        <input type="text" name="otherCategory" id="otherCategory" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" placeholder="Enter Category">
+                    </div>
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Description</label>
+                    <input name="description" type="text" id="description" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Product Status <span class="text-red-500">*</span></label>
+                    <select name="status" id="status" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700" required>
+                        <option value="">Select Status</option>
+                        <option value="Available">Available</option>
+                        <option value="Not Available">Not Available</option>
+                    </select>
+
+                    <label class="block text-gray-700 text-sm font-medium mt-4">Product Image</label>
+                    <input name="image" type="file" id="image" accept="image/png, image/jpg, image/jpeg, image/webp" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1">
+
+                    <div id="addCategoryButtonContainer" class="flex mt-4 flex-col">
+                        <button type="button" id="addCategoryButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
+                            Add Category
+                        </button>
+                    </div>
+
+                    <div id="defaultButtonLocation">
+                        <div id="modalFooter" class="flex justify-end mt-10">
+                            <button type="button" onclick="closeCreateModal()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg mr-2">Close</button>
+                            <button type="submit" id="addProductButton" name="addUserButton" value="Add Product" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg">Add Product</button>
+                        </div>
+                    </div>
+
+                    <div id="categories-container" class="mt-8">
+                        <h2 class="text-xl font-bold hidden" id="categories-container-header">Customizable Category</h2>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </x-admin.navbar>
+    </x-admin.sidebar>
+</x-admin.layout>
 </div>
 <script type="text/template" id="category-template">
-    <div class="category mt-2 border p-4 rounded-lg">
-        <h2 class="font-semibold text-lg category-title">Category ${categoryIndex}</h2>
-        <div class="flex space-x-4">
-            <div class="flex-1 mt-2">
-                <label class="block text-gray-700 text-sm font-medium">Customizable Category<span class="text-red-500">*</span></label>
-                <input name="customizableCategories[${categoryIndex}][name]" type="text" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
-            </div>
-
-            <div class="flex-1 mt-2">
-                <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ $categoryDistinctSortCount + 1 }}&#41;<span class="text-red-500">*</span></label>
-                <input name="customizableCategories[${categoryIndex}][sort]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ $categoryDistinctSortCount + 1 }}">
-            </div>
+<div class="category mt-2 border p-4 rounded-lg">
+    <h2 class="font-semibold text-lg category-title">Category ${categoryIndex}</h2>
+    <div class="flex space-x-4">
+        <div class="flex-1 mt-2">
+            <label class="block text-gray-700 text-sm font-medium">Customizable Category<span class="text-red-500">*</span></label>
+            <input name="customizableCategories[${categoryIndex}][name]" type="text" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700"/>
         </div>
 
-        <div class="flex space-x-4">
-            <div class="flex-1">
-                <label class="block text-gray-700 text-sm font-medium mt-2">Is Category Required <span class="text-red-500">*</span></label>
-                <select name="customizableCategories[${categoryIndex}][isRequired]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
-                    <option value="">Select Required or Optional</option>
-                    <option value="1">Required</option>
-                    <option value="0">Optional</option>
-                </select>
-            </div>
-            <div class="flex-1">
-                <label class="block text-gray-700 text-sm font-medium mt-2">Single Choose</label>
-                <select name="customizableCategories[${categoryIndex}][singleChoose]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
-                    <option value="">Select Yes or No</option>
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-            </div>
-        </div>
-
-        <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
-        <select name="customizableCategories[${categoryIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
-            <option value="">Select Status</option>
-            <option value="Available">Available</option>
-            <option value="Not Available">Not Available</option>
-        </select>
-
-        <div class="mt-4" id="options-container-${categoryIndex}"></div>
-
-        <div class="flex justify-between mt-4">
-            <button type="button" class="add-option-btn bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
-                Add Option
-            </button>
-
-            <button type="button" class="remove-category-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg">
-                Remove Category
-            </button>
+        <div class="flex-1 mt-2">
+            <label class="block text-gray-700 text-sm font-medium">Category Sort &#40;Max: {{ $categoryDistinctSortCount + 1 }}&#41;<span class="text-red-500">*</span></label>
+            <input name="customizableCategories[${categoryIndex}][sort]" type="number" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1" min="1" max="{{ $categoryDistinctSortCount + 1 }}">
         </div>
     </div>
+
+    <div class="flex space-x-4">
+        <div class="flex-1">
+            <label class="block text-gray-700 text-sm font-medium mt-2">Is Category Required <span class="text-red-500">*</span></label>
+            <select name="customizableCategories[${categoryIndex}][isRequired]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+                <option value="">Select Required or Optional</option>
+                <option value="1">Required</option>
+                <option value="0">Optional</option>
+            </select>
+        </div>
+        <div class="flex-1">
+            <label class="block text-gray-700 text-sm font-medium mt-2">Single Choose</label>
+            <select name="customizableCategories[${categoryIndex}][singleChoose]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+                <option value="">Select Yes or No</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+    </div>
+
+    <label class="block text-gray-700 text-sm font-medium mt-2">Customizable Category Status <span class="text-red-500">*</span></label>
+    <select name="customizableCategories[${categoryIndex}][status]" class="w-full border border-gray-300 rounded-lg py-2 px-3 mt-1 text-gray-700">
+        <option value="">Select Status</option>
+        <option value="Available">Available</option>
+        <option value="Not Available">Not Available</option>
+    </select>
+
+    <div class="mt-4" id="options-container-${categoryIndex}"></div>
+
+    <div class="flex justify-between mt-4">
+        <button type="button" class="add-option-btn bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+            Add Option
+        </button>
+
+        <button type="button" class="remove-category-btn bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg">
+            Remove Category
+        </button>
+    </div>
+
 </script>
 
 <style>
