@@ -93,7 +93,7 @@ class OrdersController extends Controller
         if (Auth::check()) {
             $role = session('role', Auth::user()->role);
 
-            $orders = Orders::with('orderItems', 'payments') ->orderBy('created_at', 'desc') ->get();
+            $orders = Orders::with('orderItems', 'payments') ->get();
 
             if ($role === 'Cashier') {
                 return view('cashier.track-order', compact('orders'));
