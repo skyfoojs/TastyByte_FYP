@@ -672,7 +672,7 @@ class AdminController extends Controller
             'editType' => 'required|string|max:20|in:Percentage,Amount',
             'editVoucherValue' => 'required|numeric',
             'editSingleUse' => 'required',
-            'editStartDate' => 'required|date|after_or_equal:today',
+            'editStartDate' => 'required|date',
             'editExpiredDate' => 'required|date|after:startDate',
             'editUsage' => 'required'
         ]);
