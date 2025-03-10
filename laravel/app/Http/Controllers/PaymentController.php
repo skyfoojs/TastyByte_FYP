@@ -154,30 +154,30 @@ class PaymentController extends Controller
     }
 
 
-    public function sendDigitalInvoice(Request $request) {
-    // Validate email input
-    $request->validate([
-        'emailAddress' => 'required|email',
-        'paymentID' => 'required|integer',
-    ]);
+    public function sendDigitalInvoice(Request $request)
+    {
+        // Validate email input
+        $request->validate([
+            'emailAddress' => 'required|email',
+            'paymentID' => 'required|integer',
+        ]);
 
-    // Get email and payment ID from request
-    $email = $request->input('emailAddress');
-    $paymentID = $request->input('paymentID');
+        // Get email and payment ID from request
+        $email = $request->input('emailAddress');
+        $paymentID = $request->input('paymentID');
 
-    // Retrieve payment details from the database
-    $payment = Payment::with('orders.orderItems.products')->where('paymentID', $paymentID)->first();
+        // Retrieve payment details from the database
+        $payment = Payment::with(['orders.orderItems.products', 'vouchers'])->where('paymentID', $paymentID)->first();
 
-    // Check if payment exists
-    if (!$payment) {
-        return back()->with('error', 'Payment not found.');
+        // Check if payment exists
+        if (!$payment) {
+            return back()->with('error', 'Payment not found.');
+        }
+
+        // Send email with payment details
+        Mail::to($email)->send(new SendMail($payment));
+
+        // Redirect with success message
+        return redirect()->route('cashier.order')->with('success', 'Digital Invoice sent successfully to ' . $email);
     }
-
-    // Send email with payment details
-    Mail::to($email)->send(new SendMail($payment));
-
-    // Redirect with success message
-    return redirect()->route('cashier.order')->with('success', 'Digital Invoice sent successfully to ' . $email);
-}
-
 }
