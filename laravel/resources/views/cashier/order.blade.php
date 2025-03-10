@@ -5,7 +5,7 @@
         <div class="flex h-screen relative">
             <div class="w-3/4 p-6 mt-25">
                 <!-- Select and search bar -->
-                <div class="flex items-center space-x-4 mt-2">
+                <div class="flex items-center space-x-4 mt-2 mb-6">
                     <select class="bg-white px-10 py-2 rounded-full border border-gray-300 appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option>All Categories</option>
                         @foreach ($groupedProducts as $categoryName => $products)
@@ -16,9 +16,9 @@
                 </div>
 
                 @foreach ($groupedProducts as $categoryName => $products)
-                    <h2 class="text-xl font-bold mb-4 p-2 mt-6">{{ $categoryName }}</h2>
+                    <h2 class="text-xl font-bold mb-4 p-2">{{ $categoryName }}</h2>
 
-                    <div class="overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
                         @foreach ($products as $product)
                             @if ($product->status == 'Not Available')
                                 <div class="bg-gray-300 rounded-lg shadow-md overflow-hidden w-80 opacity-50">
