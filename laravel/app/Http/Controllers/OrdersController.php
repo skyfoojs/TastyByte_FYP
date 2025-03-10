@@ -304,6 +304,7 @@ class OrdersController extends Controller
 
             // Clear cart session
             session()->forget('cart');
+            session()->forget('tableNo');
 
             if ($request->route()->getName() === 'addOrder.post') {
                 return redirect()->route('orderHistory', ['orderID' => $order->orderID])
