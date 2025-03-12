@@ -82,12 +82,6 @@ class PaymentController extends Controller
 
             $paymentID = $payment->paymentID;
 
-            Session::forget('checkout.voucherCode');
-            Session::forget('checkout.voucherType');
-            Session::forget('checkout.voucherValue');
-            Session::forget('checkout.discount');
-            Session::forget('checkout.new_total');
-
             DB::commit();
 
             return redirect()->route('order.success', ['paymentID' => $paymentID])->with('success', 'Payment completed! Payment ID: ' . $payment->paymentID);
