@@ -122,7 +122,7 @@ class OrdersController extends Controller
             $query->where('status', 'Completed');
         }
 
-        $orderItems = $query->orderBy('created_at', 'desc')->get();
+        $orderItems = $query->get();
 
         return response()->json([
             'orderItems' => $orderItems,
